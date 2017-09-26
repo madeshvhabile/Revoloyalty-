@@ -1,0 +1,150 @@
+<box-loader loading="GroupCtrl.loaderStates.coverLoader" cover="1" class="cover" delay="1000"></box-loader>
+
+<div class="heading" ng-init="GroupCtrl.getCatagory()">
+    <!-- <h1>Category</h1> -->
+    <!-- <div class="action-buttons">
+        <button class="button button-primary medium button-septenary-colorized" type="button" ng-click="GroupCtrl.openCatagoryModal()">Add Category
+        </button>
+    </div> -->
+</div>
+<div style="clear:both;"></div>
+<div class="client-list box">
+    <div class="box-title">
+        <h1 class="text-left"><i class="fa fa-list" aria-hidden="true"></i> 
+             Category List <button style="float:right;margin:-5px 0 0 0" class="button button-primary small button-septenary-colorized" type="button" ng-click="GroupCtrl.openCatagoryModal()">
+                 
+                    <i class="fa fa-plus" aria-hidden="true"></i>  Add Category
+                </button></h1>
+    </div>
+    <div class="box-content">
+        <box-loader loading="GroupCtrl.loaderStates.groupList"></box-loader>
+        <table ng-table="GroupCtrl.catagorytableParams" class="default" template-pagination="templatePagination.html">
+            <tr ng-repeat="row in $data track by $index">
+                <td data-title="'Category Id'" filter="{categoryId: 'text'}" sortable="'categoryId'">
+                    <span ng-bind="row.categoryId"></span>
+                </td>
+                <td data-title="'Category'" sortable="'name'" filter="{name: 'text'}" sortable="'Catagory'">
+                    <span ng-bind="row.name"></span>
+                </td>
+                <!-- <td data-title="'No Of Merchants'" sortable="'Merchants'" filter="{Merchants: 'text'}">
+                    <span ng-bind="row.Merchants"></span>
+                </td>
+                <td data-title="'No Of Stores'" sortable="'Stores'" filter="{Stores: 'text'}">
+                    <span ng-bind="row.Stores"></span>
+                </td> -->
+                <td data-title="'Active'" sortable="'active'" >
+                        <span ng-if="row.active == 1">Yes </span>
+                        <span ng-if="row.active == 0">No</span>
+                    </td>               
+                
+                <td data-title="'seller.actions'|translate">
+                    <!-- <button class="button button-septenary-colorized tiny" title="Delete Category" ng-click="GroupCtrl.showDeleteCatagoryModel(row)">
+                        <i class="fa fa-times"></i>
+                    </button>     -->
+                    <button class="button button-septenary-colorized tiny" title="Edit Catagory"
+                        ng-click="GroupCtrl.openEditModal(row)">
+                        <i class="fa fa-pencil" aria-hidden="true"></i>
+                    </button>                
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>
+
+
+<modal class="addgroup-modal" show='GroupCtrl.linkAddCatagoryModal' modalId="linkAddCatagoryModal" modal-title="'Add Category'">
+    <form  novalidate ng-submit="GroupCtrl.addCatagory(newCatagory)">
+        <fieldset class="fieldset default">
+            <div class="row">
+                <div class="small-12" form-validation="categoryValidate.name.errors">
+                    <div class="row">
+                        <div class="small-4 columns" >
+                            <label for="right-label" class="right">Category </label>
+                        </div>
+                        <div class="small-8 columns">
+                            <input type="text" id="right-label" ng-model="newCatagory.name" placeholder="Category Name" required >
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                    <div class="small-12">
+                        <div class="row" form-validation="categoryValidate.active.errors">
+                            <div class="small-4 columns" >
+                                <label for="right-label" class="right">Active</label>
+                            </div>
+                            <div class="small-8 columns">
+                                <selectize config="GroupCtrl.activeConfig" options="GroupCtrl.active" ng-model="newCatagory.active"></selectize>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            <div class="row">
+                <div class="columns small-12 text-center">
+                    <button type="button" ng-click="GroupCtrl.closeCatagory()" type="button" class="button button-septenary-colorized m-t-10 m-b-0">
+                      {{ "global.cancel" | translate }}
+                  </button>
+                    <button class="button button-septenary-colorized m-t-10 m-b-0" type="submit">
+                        {{ "global.save" | translate }}
+                    </button>
+                </div>
+            </div>
+        </fieldset>
+    </form>
+</modal>
+
+<modal size="'tiny'" show="GroupCtrl.showCatagoryRemoveModal" modal-title="'Do you want to remove this catagory?'">
+    <div class="text-center">
+        <p class="color-dark">{{"seller.delete_confirmation_description"|translate}}</p>
+        <div class="btns">
+            <button type="button" ng-click="GroupCtrl.deleteCatagoryConform()" class="button small button-septenary-colorized m-t-10 m-b-0"
+                ng-disabled="GroupCtrl.loaderStates.deleteStore">{{"global.confirm"|translate}}
+        </button>
+            <div class="spinner-loader-wrapper">
+                <spinner-loader loading="GroupCtrl.loaderStates.deleteStore" class="inline" delay="5"></spinner-loader>
+            </div>
+        </div>
+        <div style="clear:both;"></div>
+    </div>
+</modal>
+
+<modal class="addgroup-modal" show='GroupCtrl.linkEditCatagoryModal' modalId="linkAddCatagoryModal" modal-title="'Edit Catagory'">
+    <form  novalidate ng-submit="GroupCtrl.editCatagory(editableCatagory)">
+        <fieldset class="fieldset default">
+            <div class="row">
+                <div class="small-12" form-validation="categoryValidator.name.errors">
+                    <div class="row">
+                        <div class="small-4 columns" >
+                            <label for="right-label" class="right">Category </label>
+                        </div>
+                        <div class="small-8 columns">
+                            <input  type="text" id="right-label" ng-model="editableCatagory.name" placeholder="Category Name" required >
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                    <div class="small-12">
+                        <div class="row" form-validation="categoryValidator.active.errors">
+                            <div class="small-4 columns" >
+                                <label for="right-label" class="right">Active</label>
+                            </div>
+                            <div class="small-8 columns">
+                                <selectize config="GroupCtrl.activeConfig" options="GroupCtrl.active" ng-model="editableCatagory.active"></selectize>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            <div class="row">
+                <div class="columns small-12 text-center">
+                    <button type="button" ng-click="GroupCtrl.linkEditCatagoryModal= false" type="button" class="button button-septenary-colorized m-t-10 m-b-0">
+                      {{ "global.cancel" | translate }}
+                  </button>
+                    <button class="button button-septenary-colorized m-t-10 m-b-0" type="submit">
+                        {{ "global.save" | translate }}
+                    </button>
+                </div>
+            </div>
+        </fieldset>
+    </form>
+</modal>

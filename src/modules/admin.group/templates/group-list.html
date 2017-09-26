@@ -1,0 +1,149 @@
+<box-loader loading="GroupCtrl.loaderStates.coverLoader" cover="1" class="cover" delay="1000"></box-loader>
+
+<div class="heading" ng-init="GroupCtrl.getData()">
+    <!-- <h1>Group</h1> -->
+    <!-- <div class="action-buttons">
+   
+    </div> -->
+</div>
+<div style="clear:both;"></div>
+<div class="client-list box">
+    <div class="box-title">
+        <h1 class="text-left"><i class="fa fa-list" aria-hidden="true"></i> Group List 
+        
+            <button style="margin:-5px 0 0 0;float:right " class="button button-primary small button-septenary-colorized" type="button" ng-click="GroupCtrl.openModal()"> <i class="fa fa-plus" aria-hidden="true"></i> Add Group
+                </button>
+
+        </h1>
+    </div>
+    <div class="box-content">
+        <box-loader loading="GroupCtrl.loaderStates.groupList"></box-loader>
+        <table ng-table="GroupCtrl.tableParams" class="default" template-pagination="templatePagination.html">
+            <tr ng-repeat="row in $data">
+                <td data-title="'Group Id'" filter="{groupId: 'text'}" sortable="'groupId'">
+                    <span ng-bind="row.groupId"></span>
+                </td>
+                <td data-title="'Group'" filter="{name: 'text'}" sortable="'name'" sortable="'name'">
+                    <span ng-bind="row.name"></span>
+                </td>
+                <td data-title="'No Of Merchants'" sortable="'noofmerchants'" filter="{noofmerchants: 'number'}">
+                    <span ng-bind="row.noofmerchants"></span>
+                </td>
+                <!-- <td data-title="'No Of Stores'" sortable="'Stores'" filter="{Stores: 'text'}">
+                    <span ng-bind="row.Stores"></span>
+                </td> -->
+                <td data-title="'Active'" sortable="'active'" >
+                        <span ng-if="row.active == 1">Yes </span>
+                        <span ng-if="row.active == 0">No</span>
+                    </td>                  
+                <td data-title="'seller.actions'|translate">
+                    <!-- <button class="button button-septenary-colorized tiny" title="Delete Group" ng-click="GroupCtrl.showDeleteStoreModel(row)">
+                        <i class="fa fa-times"></i>
+                    </button>     -->
+                    <button class="button button-septenary-colorized tiny" title="Edit Group"
+                    ng-click="GroupCtrl.openEditGroupModal(row)">
+                    <i class="fa fa-pencil" aria-hidden="true"></i>
+                </button>                  
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>
+
+
+<modal class="addgroup-modal" show='GroupCtrl.linkAddGroupModal' modalId="linkAddGroupModal" modal-title="'Add Group'">
+    <form novalidate ng-submit="GroupCtrl.addGroup(newGroup)">
+        <fieldset class="fieldset default">
+            <div class="row">
+                <div class="small-12">
+                    <div class="row" form-validation="groupValidate.name.errors">
+                        <div class="small-4 columns" >
+                            <label for="right-label" class="right">Group Name</label>
+                        </div>
+                        <div class="small-8 columns">
+                            <input type="text" id="right-label" ng-model="newGroup.name" placeholder="Group Name">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="small-12">
+                    <div class="row" form-validation="groupValidate.active.errors">
+                        <div class="small-4 columns" >
+                            <label for="right-label" class="right">Active</label>
+                        </div>
+                        <div class="small-8 columns">
+                            <selectize config="GroupCtrl.activeConfig" options="GroupCtrl.active" ng-model="newGroup.active"></selectize>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="columns small-12 text-center">
+                    <button type="button" ng-click="GroupCtrl.closeGroup()" class="button button-septenary-colorized m-t-10 m-b-0">
+                      {{ "global.cancel" | translate }}
+                  </button>
+                    <button class="button button-septenary-colorized m-t-10 m-b-0" type="submit">
+                        {{ "global.save" | translate }}
+                    </button>
+                </div>
+            </div>
+        </fieldset>
+    </form>
+</modal>
+
+<modal size="'tiny'" show="GroupCtrl.showStoreRemoveModal" modal-title="'Do you want to remove this group?'">
+    <div class="text-center">
+        <p class="color-dark">{{"seller.delete_confirmation_description"|translate}}</p>
+        <div class="btns">
+            <button type="button" ng-click="GroupCtrl.deleteStoreConform()" class="button small button-septenary-colorized m-t-10 m-b-0"
+                ng-disabled="GroupCtrl.loaderStates.deleteStore">{{"global.confirm"|translate}}
+        </button>
+
+            <div class="spinner-loader-wrapper">
+                <spinner-loader loading="GroupCtrl.loaderStates.deleteStore" class="inline" delay="5"></spinner-loader>
+            </div>
+        </div>
+        <div style="clear:both;"></div>
+    </div>
+</modal>
+<modal class="addgroup-modal" show='GroupCtrl.linkEditGroupModal' modalId="linkAddGroupModal" modal-title="'Edit Group'">
+    <form novalidate ng-submit="GroupCtrl.editGroup(editableGroup)">
+        <fieldset class="fieldset default">
+            <div class="row">
+                <div class="small-12">
+                    <div class="row" form-validation="EditgroupValidate.name.errors">
+                        <div class="small-4 columns" >
+                            <label for="right-label" class="right">Group Name</label>
+                        </div>
+                        <div class="small-8 columns">
+                            <input type="text" id="right-label" ng-model="editableGroup.name" placeholder="Group Name">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="small-12">
+                    <div class="row" form-validation="EditgroupValidate.active.errors">
+                        <div class="small-4 columns" >
+                            <label for="right-label" class="right">Active</label>
+                        </div>
+                        <div class="small-8 columns">
+                            <selectize config="GroupCtrl.activeConfig" options="GroupCtrl.active" ng-model="editableGroup.active"></selectize>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="columns small-12 text-center">
+                    <button type="button" ng-click="GroupCtrl.linkEditGroupModal = false" class="button button-septenary-colorized m-t-10 m-b-0">
+                      {{ "global.cancel" | translate }}
+                  </button>
+                    <button class="button button-septenary-colorized m-t-10 m-b-0" type="submit">
+                        {{ "global.save" | translate }}
+                    </button>
+                </div>
+            </div>
+        </fieldset>
+    </form>
+</modal>

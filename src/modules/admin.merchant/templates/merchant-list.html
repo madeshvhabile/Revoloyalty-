@@ -1,0 +1,149 @@
+<box-loader loading="MerchantCtrl.loaderStates.coverLoader" cover="1" class="cover" delay="1000"></box-loader>
+
+<div class="heading" ng-init="MerchantCtrl.getData()">
+    <!-- <h1>Merchant</h1>
+    <div class="action-buttons">
+        <button class="button button-primary medium button-septenary-colorized" ui-sref="admin.add-merchant">Add Merchant
+        </button>
+    </div> -->
+</div>
+<div style="clear:both;"></div>
+<!-- <div class="client-list box"> -->
+    <!-- <div class="box-title">
+        <h1 class="text-left"><i class="fa fa-info" aria-hidden="true"></i> Info 
+       
+        <button type="button" class="button  button-secondary tiny" >
+         <i class="fa fa-pencil" aria-hidden="true"></i>
+     </button>
+        <button style="float: right;margin: -5px 0 0 0;" class="button button-primary small button-septenary-colorized " type="button" ng-click="MerchantCtrl.openEditModal()"><i class="fa fa-pencil" aria-hidden="true"></i>Edit Group
+        </h1>
+     </button>
+     </div> -->
+    <!-- <div class="box-content">
+            <div class="row">
+                <div class="large-6 columns">
+                    <label>Group Name
+                    <div class="val-box">{{EditableGroup.Group}}</div>
+                    </label>
+                </div>
+                <div class="large-6 columns">
+                 <label>Group Id
+                 <div class="val-box">{{EditableGroup.groupId}}</div>
+                 </label>
+             </div>
+            </div> 
+            <div class="row">
+             <div class="large-6 columns">
+                 <label>No of Merchants
+                 <div class="val-box">{{merchants.length}}</div>
+                 </label>
+             </div> 
+                <div class="large-6 columns">
+                    <label>status
+                    <div class="val-box">{{EditableGroup.Status}}</div>
+                    </label>
+                </div>
+            </div>       
+    </div>  -->
+ <!-- </div> -->
+<div class="client-list box">
+    <div class="box-title">
+        <h1 class="text-left"><i class="fa fa-list" aria-hidden="true"></i> Merchant List <button style="float:right;margin:-5px 0 0 0 " class="button button-primary small button-septenary-colorized" ui-sref="admin.add-merchant">  <i class="fa fa-plus" aria-hidden="true"></i> Add Merchant
+               
+            </button> </h1>
+    </div>
+    <div class="box-content">
+        <box-loader loading="MerchantCtrl.loaderStates.merchantList"></box-loader>
+        <table ng-table="MerchantCtrl.tableParams" class="default" template-pagination="templatePagination.html">
+            <tr ng-repeat="row in $data">
+                <td data-title="'MID'" filter="{merchantId: 'text'}" sortable="'merchantId'">
+                    <span ng-bind="row.merchantId"></span>
+                </td>
+                <td data-title="'Merchant'" sortable="'name'" filter="{name: 'text'}">
+                    <span ng-bind="row.name"></span>
+                </td>
+                <td data-title="'Group'" sortable="'group'" filter="{group: 'text'}">
+                        <span ng-bind="row.group"></span>
+                    </td>
+                <!-- <td data-title="'Group'" sortable="'Group'" filter="{Group: 'text'}">
+                    <span ng-bind="row.Group"></span>
+                </td> -->
+                <td data-title="'Stores'" class="text-center">   
+                            <span>{{row.noofstores}}</span> 
+                            <a class="button button-septenary-colorized tiny pull-right" 
+                                ui-sref="admin.store-list({merchantId: row.merchantId})" >view Store</a>     
+                </td>
+                <td data-title="'Status'" sortable="'active'" >
+                    <span ng-bind="row.active"></span>
+                </td>   
+                <td data-title="'Merchant Type'" sortable="'postype'"  filter="{postype: 'text'}" >
+                        <span ng-bind="row.postype"></span>
+                    </td>               
+                <td data-title="'seller.actions'|translate">
+                    <!-- <button class="button button-septenary-colorized tiny" title="Delete Merchant" ng-click="MerchantCtrl.showDeleteMerchantModel(row)">
+                        <i class="fa fa-times"></i>
+                    </button> -->
+                    <button class="button button-septenary-colorized tiny" title="View Merchant"
+                            ui-sref="admin.view-merchant({merchantId: row.merchantId})">
+                        <i class="fa fa-eye" aria-hidden="true"></i>
+                    </button>
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>
+<modal size="'tiny'" show="MerchantCtrl.showMerchantRemoveModal" modal-title="'Do you want to remove this merchant?'">
+        <div class="text-center">
+            <p class="color-dark">{{"seller.delete_confirmation_description"|translate}}</p>
+            <div class="btns">
+                <button type="button" ng-click="MerchantCtrl.deleteMerchantConform()" class="button small button-septenary-colorized m-t-10 m-b-0"
+                    ng-disabled="MerchantCtrl.loaderStates.deleteStore">{{"global.confirm"|translate}}
+            </button>
+    
+                <div class="spinner-loader-wrapper">
+                    <spinner-loader loading="MerchantCtrl.loaderStates.deleteStore" class="inline" delay="5"></spinner-loader>
+                </div>
+            </div>
+            <div style="clear:both;"></div>
+        </div>
+    </modal>
+    <modal class="addgroup-modal" show='MerchantCtrl.linkEditGroupModal' modalId="linkAddGroupModal" modal-title="'Add Group'">
+        <form novalidate ng-submit="MerchantCtrl.editGroup(EditableGroup)">
+            <fieldset class="fieldset default">
+                <div class="row">
+                    <div class="small-12">
+                        <div class="row" form-validation="groupValidate.Group.errors">
+                            <div class="small-4 columns" >
+                                <label for="right-label" class="right">Group Name</label>
+                            </div>
+                            <div class="small-8 columns">
+                                <input type="text" id="right-label" ng-model="EditableGroup.Group" placeholder="Group Name">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="small-12">
+                        <div class="row" form-validation="groupValidate.Status.errors">
+                            <div class="small-4 columns" >
+                                <label for="right-label" class="right">Status</label>
+                            </div>
+                            <div class="small-8 columns">
+                                <selectize config="MerchantCtrl.activeConfig" options="MerchantCtrl.active" ng-model="EditableGroup.Status"></selectize>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="columns small-12 text-center">
+                        <button type="button" ng-click="MerchantCtrl.linkEditGroupModal = false" class="button button-septenary-colorized m-t-10 m-b-0">
+                          {{ "global.cancel" | translate }}
+                      </button>
+                        <button class="button button-septenary-colorized m-t-10 m-b-0" type="submit">
+                            {{ "global.save" | translate }}
+                        </button>
+                    </div>
+                </div>
+            </fieldset>
+        </form>
+    </modal>

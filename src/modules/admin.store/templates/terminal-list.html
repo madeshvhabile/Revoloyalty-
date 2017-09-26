@@ -1,0 +1,243 @@
+<box-loader loading="StoreCtrl.loaderStates.coverLoader" cover="1" class="cover" delay="1000"></box-loader>
+
+<div class="heading" ng-init="StoreCtrl.getTerminalData()">
+    <!-- <h1>Terminal</h1>
+    <div class="action-buttons">
+        <button class="button button-primary medium button-septenary-colorized" type="button" ng-click="StoreCtrl.openTerminalModal()">Add Terminals
+        </button>
+    </div> -->
+</div>
+
+<div style="clear:both;"></div>
+<div class="client-list box">
+    <div class="box-title">
+        <h1 class="text-left"><i class="fa fa-info" aria-hidden="true"></i> Info
+
+            <!-- <button type="button" class="button  button-secondary tiny" >
+        <i class="fa fa-pencil" aria-hidden="true"></i>
+    </button> -->
+            <button style="float: right;margin: -5px 0 0 0;" class="button button-primary small button-septenary-colorized " type="button"
+                ng-click="StoreCtrl.openEditModel()"><i class="fa fa-pencil" aria-hidden="true"></i>Edit Store
+       </h1>
+    </button>
+    </div>
+    <div class="box-content">
+        <div class="row">
+            <div class="large-6 columns">
+                <label>Store Name
+                   <div class="val-box">{{EditableStoreDetails.name}}</div>
+                   </label>
+            </div>
+            <div class="large-6 columns">
+                <label>Contact Person
+                <div class="val-box">{{EditableStoreDetails.contactperson}}</div>
+                </label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="large-6 columns">
+                <label>Status
+                <div class="val-box">{{EditableStoreDetails.status}}</div>
+                </label>
+            </div>
+            <div class="large-6 columns">
+                <label>No of Terminals
+                   <div class="val-box">{{EditableStoreDetails.noofterminals}}</div>
+                   </label>
+            </div>
+            <div class="large-6 columns">
+                <label>Address
+                   <div class="val-box">{{EditableStoreDetails.address}}</div>
+                   </label>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div style="clear:both;"></div>
+<div class="client-list box">
+    <div class="box-title">
+        <h1 class="text-left"><i class="fa fa-list" aria-hidden="true"></i> Terminal List <button style="float:right;margin:-5px 0 0 0" class="button button-primary small button-septenary-colorized" type="button" ng-click="StoreCtrl.openTerminalModal()"><i class="fa fa-plus" aria-hidden="true"></i> Add Terminals
+            </button></h1>
+    </div>
+    <div class="box-content">
+        <box-loader loading="StoreCtrl.loaderStates.terminalList"></box-loader>
+        <table ng-table="StoreCtrl.TerminaltableParams" class="default" template-pagination="templatePagination.html">
+            <tr ng-repeat="row in $data">
+                <td data-title="'Terminal Id'" filter="{terminalId: 'text'}" sortable="'terminalId'">
+                    <span ng-bind="row.terminalId"></span>
+                </td>
+                <td data-title="'Type'" sortable="'terminaltype'" filter="{terminaltype: 'text'}">
+                    <span ng-bind="row.terminaltype"></span>
+                </td>
+                <td data-title="'Status'" sortable="'status'" filter="{status: 'text'}">
+                    <span ng-bind="row.status"></span>
+                </td>
+
+                <td data-title="'seller.actions'|translate">
+                    <button class="button button-septenary-colorized tiny" title="Delete Terminal" ng-click="StoreCtrl.showDeleteTerminalModel(row)">
+                        <i class="fa fa-times"></i>
+                    </button>
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>
+<modal class="addgroup-modal" show='StoreCtrl.linkAddTerminalModal' modalId="linkAddCategoryModal" modal-title="'Add Terminals'">
+    <form novalidate ng-submit="StoreCtrl.addTerminals(newTerminals)">
+        <fieldset class="fieldset default">
+            <div class="row">
+                <div class="small-12">
+                    <div class="row" form-validation="terminalValidate.noofterminals.errors">
+                        <div class="small-4 columns">
+                            <label for="right-label" class="right">No of Terminals</label>
+                        </div>
+                        <div class="small-8 columns">
+                            <input type="number" id="right-label" ng-model="newTerminals.noofterminals" placeholder="No of Terminals">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="small-12">
+                    <div class="row" form-validation="terminalValidate.terminaltype.errors">
+                        <div class="small-4 columns">
+                            <label for="right-label" class="right">Type</label>
+                        </div>
+                        <div class="small-8 columns">
+                            <selectize config="StoreCtrl.typeConfig" options="StoreCtrl.type" ng-model="newTerminals.terminaltype"></selectize>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="columns small-12 text-center">
+                    <button type="button" ng-click="StoreCtrl.closeModal()" class="button button-septenary-colorized m-t-10 m-b-0">
+                          {{ "global.cancel" | translate }}
+                      </button>
+                    <button class="button button-septenary-colorized m-t-10 m-b-0" type="submit">
+                            {{ "global.save" | translate }}
+                        </button>
+                </div>
+            </div>
+        </fieldset>
+    </form>
+</modal>
+
+<modal size="'tiny'" show="StoreCtrl.showTerminalRemoveModal" modal-title="'Do you want to remove this terminal?'">
+    <div class="text-center">
+        <p class="color-dark">{{"seller.delete_confirmation_description"|translate}}</p>
+        <div class="btns">
+            <button type="button" ng-click="StoreCtrl.deleteTerminalConform()" class="button small button-septenary-colorized m-t-10 m-b-0"
+                ng-disabled="StoreCtrl.loaderStates.deleteStore">{{"global.confirm"|translate}}
+        </button>
+
+            <div class="spinner-loader-wrapper">
+                <spinner-loader loading="StoreCtrl.loaderStates.deleteStore" class="inline" delay="5"></spinner-loader>
+            </div>
+        </div>
+        <div style="clear:both;"></div>
+    </div>
+</modal>
+<modal class="addgroup-modal" show='StoreCtrl.linkEditStoreModal' modalId="linkEditStoreModal" modal-title="'Edit Store'">
+    <form novalidate ng-submit="StoreCtrl.editStore(EditableStore)">
+        <fieldset class="fieldset default">
+            <div class="row">
+                <div class="large-4 columns" form-validation="EditStoreValidate.name.errors">
+                    <label>Store Name
+                     <input type="text" placeholder="Store Name" ng-model="EditableStore.name"  />
+                     </label>
+                </div>
+                <div class="large-4 columns" form-validation="EditStoreValidate.contactperson.errors">
+                    <label>Contact Person
+                      <input type="text" placeholder="Contact Person" ng-model="EditableStore.contactperson"/>
+                      </label>
+                </div>
+                <div class="large-4 columns" form-validation="EditStoreValidate.active.errors">
+                    <label>Active
+                    <selectize config="StoreCtrl.activeConfig" options="StoreCtrl.active" ng-model="EditableStore.active"></selectize>
+                    </label>
+                </div>
+
+            </div>
+            <div class="row">
+                <div class="large-4 columns" form-validation="EditStoreValidate.email.errors">
+                    <label>Email
+                    <input type="email" placeholder="Email"  ng-model="EditableStore.email"/>
+                  </label>
+                </div>
+                <div class="large-4 columns">
+                    <label>Store URL (optional)
+                    <input type="text" placeholder="Store URL" ng-model="EditableStore.storeurl"  />
+                  </label>
+                </div>
+                <div class="large-4 columns" form-validation="EditStoreValidate.postalcode.errors">
+                    <label>Postal Code
+                    <input type="number" placeholder="Postal code"  ng-model="EditableStore.postalcode"/>
+                  </label>
+                </div>
+            </div>
+            <div class="row">
+                    <div class="large-6 columns" form-validation="storeValidate.storetype.errors">
+                            <label>Store Type
+                                    <selectize config="StoreCtrl.typeConfig" options="StoreCtrl.type" ng-model="EditableStore.storetype"></selectize>
+                            </label>
+                        </div>
+                <div class="large-6 columns" form-validation="EditStoreValidate.address.errors">
+                    <label>Address
+                    <textarea id="addstoreaddress" placeholder="Address" ng-model="EditableStore.address"></textarea>
+                  </label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="large-6 columns" form-validation="EditStoreValidate.city.errors">
+                    <label>City
+                            <input type="text" placeholder="City"  ng-model="EditableStore.city"/>
+                      </label>
+                </div>
+                <div class="large-6 columns" form-validation="EditStoreValidate.country.errors">
+                    <label>Country
+                                <selectize config="StoreCtrl.countryConfig" options="StoreCtrl.country" style="border-radius:0" ng-model="EditableStore.country" required>
+                                    </selectize>
+                      </label>
+                </div>
+            </div>
+            <div class="row">
+
+                <div class="large-6 columns" form-validation="EditStoreValidate.contactno.errors">
+                    <label>Contact No1
+                    <input type="number" placeholder="Contact No 1"  ng-model="EditableStore.contactno"/>
+                  </label>
+                </div>
+                <div class="large-6 columns">
+                    <label>Contact No2 (optional)
+                    <input type="number" placeholder="Contact No 2" ng-model="EditableStore.alternatecontactno" />
+                  </label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="large-6 columns" form-validation="EditStoreValidate.bankaccno.errors">
+                    <label>Bank Acc No
+                      <input type="text" placeholder="Bank Acc No"  ng-model="EditableStore.bankaccno"/>
+                    </label>
+                </div>
+                <div class="large-6 columns" form-validation="EditStoreValidate.bankname.errors">
+                    <label>Bank Name
+                      <input type="text" placeholder="Bank Name" ng-model="EditableStore.bankname"  />
+                    </label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="columns small-12 text-center">
+                    <button type="button" ng-click='StoreCtrl.closeEditModal()' class="button button-septenary-colorized m-t-10 m-b-0">
+                      {{ "global.cancel" | translate }}
+                  </button>
+                    <button class="button button-septenary-colorized m-t-10 m-b-0" type="submit">
+                        {{ "global.save" | translate }}
+                    </button>
+                </div>
+            </div>
+        </fieldset>
+    </form>
+</modal>

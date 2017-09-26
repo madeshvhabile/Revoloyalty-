@@ -1,0 +1,6 @@
+<div class='form-validate' ng-class="{'hasError' : customValidation}">
+        <div ng-transclude></div>
+        <span class="error-msg" ng-repeat="error in customValidation track by $index">
+            <span ng-bind="error"></span>
+        </span>
+    </div>

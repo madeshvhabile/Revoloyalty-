@@ -1,0 +1,217 @@
+<box-loader loading="StoreCtrl.loaderStates.coverLoader" cover="1" class="cover" delay="1000"></box-loader>
+
+<div class="heading" ng-init="StoreCtrl.getData()">
+    <!-- <h1>Store</h1> -->
+    <div class="action-buttons">
+        <!-- <button style="float: right;margin: -5px 0 0 0;" class="button button-primary small button-septenary-colorized" type="button" ng-click="StoreCtrl.openModal()">Add Store
+        </button> -->
+    </div>
+</div>
+<div style="clear:both;"></div>
+<div class="client-list box">
+    <div class="box-title">
+        <h1 class="text-left"><i class="fa fa-info" aria-hidden="true"></i> Info
+
+            <!-- <button type="button" class="button  button-secondary tiny" >
+        <i class="fa fa-pencil" aria-hidden="true"></i>
+    </button> -->
+            <button style="float: right;margin: -5px 0 0 0;" class="button button-primary small button-septenary-colorized " type="button"
+            ui-sref="admin.edit-merchant({merchantId:merchantInfo.merchantId})"><i class="fa fa-pencil" aria-hidden="true"></i>Edit Merchant
+       </h1>
+    </button>
+    </div>
+<div class="box-content">
+    <div class="row">
+        <div class="large-6 columns">
+            <label>Merchat Name
+            <div class="val-box">{{merchantInfo.name}}</div>
+            </label>
+        </div>
+        <div class="large-6 columns">
+         <label>Contact Person
+         <div class="val-box">{{merchantInfo.contactperson}}</div>
+         </label>
+     </div>
+    </div> 
+    <div class="row">
+     <div class="large-6 columns">
+         <label>Group
+         <div class="val-box">{{merchantInfo.group}}</div>
+         </label>
+     </div> 
+        <div class="large-6 columns">
+            <label>No Of Stores
+            <div class="val-box">{{merchantInfo.noofstores}}</div>
+            </label>
+        </div>
+        <div class="large-6 columns">
+            <label>Address
+            <div class="val-box">{{merchantInfo.address}}</div>
+            </label>
+        </div>
+    </div>       
+</div> 
+</div>
+<div class="client-list box">
+    <div class="box-title">
+        <h1 class="text-left"><i class="fa fa-list" aria-hidden="true"></i> Store List 
+            <button style="float: right;margin: -5px 0 0 0;" class="button button-primary small button-septenary-colorized" type="button" ng-click="StoreCtrl.openModal()"><i class="fa fa-plus" aria-hidden="true"></i> Add Store
+            </button>
+        </h1>
+    </div>
+    <div class="box-content">
+        <box-loader loading="StoreCtrl.loaderStates.sellerList"></box-loader>
+        <table ng-table="StoreCtrl.StorestableParams" class="default" template-pagination="templatePagination.html">
+            <tr ng-repeat="row in $data">
+                <td data-title="'Store'" filter="{name: 'text'}" sortable="'name'">
+                    <span ng-bind="row.name"></span>
+                </td>
+                <td data-title="'Terminals'" filter="{noofterminals: 'text'}" sortable="'noofterminals'">
+                    <span ng-bind="row.noofterminals"></span>
+                </td>
+                <td data-title="'Contact Person'" sortable="'contactperson'"  filter="{contactperson: 'text'}">
+                    <span ng-bind="row.contactperson"></span>
+                </td>
+                <td data-title="'Active'" sortable="'active'" >
+                    <span ng-if="row.active= 1">Yes</span>
+                    <span ng-if="row.active = 0">No</span>
+                </td>
+    
+                
+                <td data-title="'seller.actions'|translate">
+                    <!-- <button class="button button-septenary-colorized tiny" title="Delete Store" ng-click="StoreCtrl.showDeleteStoreModel(row)">
+                        <i class="fa fa-times"></i>
+                    </button>   -->
+                    <button class="button button-septenary-colorized tiny" title="View Terminals"
+                        ui-sref="admin.terminal-list({storeId: row.storeId})">
+                     <i class="fa fa-eye" aria-hidden="true"></i>
+                    </button>                  
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>
+
+
+<modal class="addstore-modal" show='StoreCtrl.linkAddStoreModal' modalId="linkAddStoreModal" modal-title="'Add Store'">
+    <form novalidate ng-submit="StoreCtrl.addStore(newStore)">
+        <fieldset class="fieldset default">
+            <div class="row">
+                <div class="large-4 columns" form-validation="storeValidate.name.errors">
+                    <label>Store Name
+                     <input type="text" placeholder="Store Name" ng-model="newStore.name"  />
+                     </label>
+                </div>
+                <div class="large-4 columns" form-validation="storeValidate.contactperson.errors">
+                    <label>Contact Person
+                      <input type="text" placeholder="Contact Person" ng-model="newStore.contactperson"/>
+                      </label>
+                </div>
+                <div class="large-4 columns" form-validation="storeValidate.noofterminals.errors">
+                    <label>No of Terminals
+                       <input type="number" placeholder="No of Terminals" ng-model="newStore.noofterminals" />
+                       </label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="large-4 columns" form-validation="storeValidate.email.errors">
+                    <label>Email
+                    <input type="email" placeholder="Email"  ng-model="newStore.email"/>
+                  </label>
+                </div>
+                <div class="large-4 columns"  >
+                    <label>Store URL (optional)
+                    <input type="text" placeholder="Store URL" ng-model="newStore.storeurl"  />
+                  </label>
+                </div>
+                <div class="large-4 columns" form-validation="storeValidate.postalcode.errors">
+                    <label>Postal Code
+                    <input type="number" placeholder="Postal code"  ng-model="newStore.postalcode"/>
+                  </label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="large-12 columns" form-validation="storeValidate.address.errors">
+                    <label>Address
+                    <textarea id="addstoreaddress" placeholder="Address" ng-model="newStore.address"></textarea>
+                  </label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="large-6 columns" form-validation="storeValidate.city.errors">
+                    <label>City
+                        <input type="text" placeholder="City"  ng-model="newStore.city"/>
+                  </label>
+                </div>
+                <div class="large-6 columns" form-validation="storeValidate.country.errors">
+                    <label>Country
+                            <selectize config="StoreCtrl.countryConfig" options="StoreCtrl.country" style="border-radius:0" ng-model="newStore.country" required>
+                                </selectize>
+                  </label>
+                </div>
+            </div>
+            <div class="row">
+
+                <div class="large-6 columns" form-validation="storeValidate.contactno.errors">
+                    <label>Contact No1
+                    <input type="number" placeholder="Contact No 1"  ng-model="newStore.contactno"/>
+                  </label>
+                </div>
+                <div class="large-6 columns">
+                    <label>Contact No2 (optional)
+                    <input type="number" placeholder="Contact No 2" ng-model="newStore.alternatecontactno" />
+                  </label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="large-6 columns" form-validation="storeValidate.bankaccno.errors">
+                    <label>Bank Acc No
+                      <input type="number" placeholder="Bank Acc No"  ng-model="newStore.bankaccno"/>
+                    </label>
+                </div>
+                <div class="large-6 columns" form-validation="storeValidate.bankname.errors">
+                    <label>Bank Name
+                      <input type="text" placeholder="Bank Name" ng-model="newStore.bankname"  />
+                    </label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="large-6 columns" form-validation="storeValidate.storetype.errors">
+                    <label>Store Type
+                            <selectize config="StoreCtrl.typeConfig" options="StoreCtrl.type" ng-model="newStore.storetype"></selectize>
+                    </label>
+                </div>
+                <div class="large-6 columns" form-validation="storeValidate.active.errors">
+                    <label>Active
+                            <selectize config="StoreCtrl.activeConfig" options="StoreCtrl.active" ng-model="newStore.active"></selectize>
+                    </label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="columns small-12 text-center">
+                    <button type="button" ng-click='StoreCtrl.closeModal()' class="button button-septenary-colorized m-t-10 m-b-0">
+                      {{ "global.cancel" | translate }}
+                  </button>
+                  <button class="button button-septenary-colorized m-t-10 m-b-0" type="submit">
+                        {{ "global.save" | translate }}
+                    </button>
+                </div>
+            </div>
+        </fieldset>
+    </form>
+</modal>
+<modal size="'tiny'" show="StoreCtrl.showStoreRemoveModal" modal-title="'Do you want to remove this store?'">
+    <div class="text-center">
+        <p class="color-dark">{{"seller.delete_confirmation_description"|translate}}</p>
+        <div class="btns">
+            <button type="button" ng-click="StoreCtrl.deleteStoreConform()" class="button small button-septenary-colorized m-t-10 m-b-0"
+                ng-disabled="StoreCtrl.loaderStates.deleteStore">{{"global.confirm"|translate}}
+        </button>
+
+            <div class="spinner-loader-wrapper">
+                <spinner-loader loading="StoreCtrl.loaderStates.deleteStore" class="inline" delay="5"></spinner-loader>
+            </div>
+        </div>
+        <div style="clear:both;"></div>
+    </div>
+</modal>

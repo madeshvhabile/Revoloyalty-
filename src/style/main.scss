@@ -1,0 +1,376 @@
+
+@import "../node_modules/foundation-sites/scss/foundation";
+
+@include foundation-everything;
+
+@import "../node_modules/motion-ui/src/motion-ui.scss";
+
+@import "vars";
+@import "mixins";
+@import "login";
+@import "buttons";
+@import "box";
+@import "cards";
+@import "table";
+@import "labels";
+@import "navs";
+@import "modal";
+@import "lists";
+@import "sidebars";
+@import "content";
+@import "helper";
+@import "select2";
+@import "loader";
+@import "icon_set_1";
+@import "icon_set_2";
+@import "static-pages";
+@import "media";
+@import "rfm";
+
+body {
+  font-family: $default-font;
+  background: $lightgray;
+  color: $gray;
+  font-size:100%;
+  font-weight: 600;
+}
+
+h1, h2, h3, h4, img {
+  font-family: $default-font;
+  font-weight:bold;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+  &:hover, &:focus, &:active {
+    text-decoration: none;
+    color: $primary;
+  }
+}
+.radio-align {
+  label {
+    margin-bottom: 0px !important;
+    padding-bottom: 0px !important;
+    padding-top: 0px !important;
+  }
+}
+.transspan {
+  span {
+    font-size: 13px;
+    font-weight: 500;
+  }
+}
+
+.oddModules {
+	float: left;
+}
+.evenModules {
+	float: right;
+}
+/* For Firefox */
+/* Webkit browsers like Safari and Chrome */
+input[type='number'] {
+	-moz-appearance: textfield;
+}
+input[type=number] {
+	&::-webkit-inner-spin-button {
+		-webkit-appearance: none;
+		margin: 0;
+	}
+	&::-webkit-outer-spin-button {
+		-webkit-appearance: none;
+		margin: 0;
+	}
+}
+
+/**********Custom CSS Changes*******
+************************************/
+/***Mobie***/
+@media screen and (max-width:767px) {
+  .sidebar-left {
+      width: 65%;
+      transform: translateX(-60rem);
+      transition: all 1s;
+  }
+  .left-nav {
+      transform: translateX(0);
+  }
+  section.content {
+      margin-left: auto;
+  }
+  #mob-menu {
+      cursor: pointer;
+      padding: 14px 15px;
+      display: inline-block !important;
+  }
+}
+@media only screen and (min-width:320px) and (max-width:568px) and (orientation : landscape) {
+  .sidebar-left {
+      #openLoyaltyLogo {
+          width: 60%;
+      }
+  }
+}
+@media only screen and (min-width:375px) and (max-width:667px) and (orientation : landscape) {
+  .sidebar-left {
+      #openLoyaltyLogo {
+          width: 60%;
+      }
+  }
+}
+@media only screen and (min-width:414px) and (max-width:736px) and (orientation : landscape) {
+  .sidebar-left {
+      #openLoyaltyLogo {
+          width: 60%;
+      }
+  }
+}
+@media only screen and (min-width:384px) and (max-width:600px) and (orientation : landscape) {
+  .sidebar-left {
+      #openLoyaltyLogo {
+          width: 60%;
+      }
+  }
+}
+#mob-menu {
+  display: none;
+}
+
+//
+/****Add Store Model****/
+#addstoreaddress {
+  width: 100%;
+}
+.addstore-modal {
+  form {
+      fieldset.fieldset {
+          label {
+              padding: 0;
+              margin: 0;
+          }
+      }
+  }
+}
+.model {
+  top: 25% !important;
+}
+
+/****List Table****/
+table.default {
+  thead {
+      input {
+          height: 2.30rem;
+          border-radius: 7px;
+      }
+  }
+}
+
+/***Color changes***/
+$color_1: #ffffff;
+$background_color_1: #3C8DBC;
+$background_color_2: #235790;
+$background_color_3: #3244AC;
+$background_color_4: #3c8bbb;
+$background_color_5: #333438;
+$background_color_6: #324087;
+$background_color_7: #3763ac;
+
+nav {
+	.top-bar-right {
+		ul.menu {
+			li {
+				&:hover {
+					background-color: $background_color_7;
+				}
+			}
+			li.is-active {
+				background-color: $background_color_7;
+			}
+		}
+	}
+}
+
+
+.button-septenary-colorized {
+    &:hover {
+        background-color: $background_color_6;
+    }
+    &:focus {
+        background-color: $background_color_6;
+    }
+    &:active {
+        background-color: $background_color_6;
+    }
+}
+
+.sidebar-left {
+  #openLoyaltyLogo {
+      margin-top: 4px;
+      width: 32%;
+  }
+  .logo {
+      background: linear-gradient(to left,rgba(60,141,188,1),#32449f);
+      h1 {
+          color: $color_1;
+          line-height: 50px;
+          font-weight: 400;
+          font-size: 33px;
+          text-shadow: 2px 2px 4px #222;
+      }
+  }
+  background: linear-gradient(to top,#333,#3246ac);
+  ul {
+      &:not(.submenu) {
+          >li {
+              >a {
+                  &:hover {
+                      background: linear-gradient(to left,rgba(60,141,188,1),#3140AB);
+                  }
+              }
+          }
+      }
+  }
+  li[aria-expanded="true"] {
+      >a {
+          background: #32439B;
+      }
+  }
+}
+.top-navigation.admin {
+  .top-bar {
+      ul {
+          li {
+              background-color: $background_color_1;
+              color: $color_1;
+          }
+          span {
+              background-color: $background_color_1;
+              color: $color_1;
+          }
+          a {
+              color: $color_1;
+          }
+      }
+      background-color: $background_color_1;
+      .top-bar-right {
+          .dropdown.menu {
+              li.is-dropdown-submenu-parent.is-active {
+                  .arrow-up {
+                      border-bottom: 12px solid #3c8dbc;
+                  }
+              }
+          }
+      }
+  }
+}
+.is-submenu-item.is-accordion-submenu-item {
+  background: linear-gradient(to left,rgba(60,141,188,1),#3140AB);
+}
+.button-septenary-colorized {
+  background-color: $background_color_2;
+  &:hover {
+      background-color: $background_color_3;
+  }
+  &:active {
+      background-color: $background_color_4;
+  }
+}
+section.footer {
+  background-color: $background_color_5;
+}
+
+/****Merchant Tabs****/
+$background_color_1: transparent;
+
+.val-box {
+  border: 1px solid #e4e4e4;
+  padding: 6px;
+  margin-bottom: 15px;
+  box-shadow: inset 0px 0px 3px 1px #e9e9e9;
+  border-radius: 4px;
+}
+.tabs {
+  border-right: none;
+  border-left: none;
+  border-top: none;
+}
+ul.tabs {
+  background-color: $background_color_1;
+}
+@media screen and (max-width:1023px) {
+  .tabs-title {
+      width: 100%;
+  }
+  ul.tabs {
+      li.is-active {
+          a {
+              border: none;
+          }
+      }
+  }
+}
+/** logo,tab and click event css **/
+
+$color_1: #ffffff;
+$color_2: #1779ba;
+$color_11: #1779ba;
+
+.addings {
+color: $color_11 !important;
+font-size: 15px;
+    font-weight: normal;
+text-decoration: underline;
+i{
+margin-bottom: 20px;
+}
+}
+
+.noclick {
+        pointer-events: none;
+        color: $color_2 !important;
+    }
+ul.tabs {
+    li {
+        &:hover {
+            a {
+                color: $color_2 !important;
+            }
+        }
+    }
+}
+
+.login {
+	.login-form {
+		.logo {
+			h1 {
+				color: $color_1;
+				font-size: 42px;
+			}
+		}
+	}
+}
+
+
+/***Fixed Top Nav and Dashboard Adjust****/
+.top-navigation.admin {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    left: 0;
+    z-index: 99;
+}
+#dashpaddingtop {
+    margin-top: 55px;
+}
+.heading {
+    color: $black;
+}
+
+
+//new added
+
+
+
+@include margin(0);
+@include padding(0);

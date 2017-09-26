@@ -1,0 +1,206 @@
+<box-loader loading="false" cover="1" class="cover" delay="1000"></box-loader>
+
+<div class="heading" ng-init="MerchantCtrl.getMerchantData();MerchantCtrl.getStore();">
+    <h1>Merchant</h1>
+    
+            <button class="button button-septenary-colorized  float-right m-r-1" ui-sref="admin.edit-merchant({merchantId:merchant.merchantId})"  type="submit">
+               Edit
+            </button>
+           
+        
+</div>
+<div style="clear:both;"></div>
+<div class="client-list box">
+  <div class="box-content">
+        <div class="row">
+            <div class="columns medium-12 merchat-tab" data-tabs-content="collapsing-tabs">
+                    <ul class="tabs merchat-tab-ul" data-active-collapse="true" data-tabs id="collapsing-tabs">
+                                <li class="tabs-title is-active"><a href="#panel1c" aria-selected="true">Merchant and Store Info</a></li>
+                                <!-- <li class="tabs-title"><a href="#panel2c">Purchase Order and Card Info</a></li>
+                                <li class="tabs-title"><a href="#panel3c">Terminal Info</a></li> -->
+                    </ul>
+                    <div class="tabs-panel" id="panel1c">
+                                <div class="row">
+                                  <div class="large-6 columns">
+                                    <label>Merchant Name
+                                      <div class="val-box" ng-bind="merchant.name"></div>
+                                    </label>
+                                  </div>
+                                  <div class="large-6 columns">
+                                    <label>Merchant Group Indication
+                                      <div class="val-box" ng-bind="merchant.group"></div>
+                                    </label>
+                                  </div>
+                                </div>
+                                <div class="row">
+                                  <div class="large-6 columns">
+                                    <label>Merchant ID
+                                      <div class="val-box" ng-bind="merchant.merchantId"></div>
+                                    </label>
+                                  </div>
+                                  <div class="large-6 columns">
+                                    <label>ROC
+                                      <div class="val-box" ng-bind="merchant.roc"></div>
+                                    </label>
+                                  </div>
+                                </div>
+                                <div class="row">
+                                  <div class="large-6 columns">
+                                    <label>Contact person 
+                                      <div class="val-box" ng-bind="merchant.contactperson"></div>
+                                    </label>
+                                  </div>
+                                  <div class="large-6 columns">
+                                    <label>Address
+                                      <div class="val-box" ng-bind="merchant.address"></div>
+                                    </label>
+                                  </div>
+                                </div>
+                                <div class="heading">
+                                        <h5>Store List :</h5>
+                                    </div>
+                                <table ng-table="MerchantCtrl.storetableParams" class="default" template-pagination="templatePagination.html">
+                                        <tr ng-repeat="row in $data">
+                                            <td data-title="'Store'" filter="{storeId: 'text'}" sortable="'storeId'">
+                                                <span ng-bind="row.storeId"></span>
+                                            </td>
+                                            <td data-title="'No Of Terminals'" filter="{noofterminals: 'text'}" sortable="'noofterminals'">
+                                                <span ng-bind="row.noofterminals"></span>
+                                            </td>
+                                            <td data-title="'Status'" sortable="'status'" filter="{status: 'text'}">
+                                                <span ng-bind="row.status || ('global.not_set'|translate)"></span>
+                                            </td>
+
+                                            <!-- <td data-title="'Action'">
+                                                <button class="button button-septenary tiny" title="Delete" ng-click="">
+                                                    <i class="fa fa-times"></i>
+                                                </button>
+                                                <button class="button button-secondary tiny"
+                                                      title="View"  ui-sref="admin.edit-seller()">
+                                                    <i class="fa fa-eye"></i>
+                                                </button>
+                                            </td> -->
+                                        </tr>
+                                    </table>
+                                    <!-- <div class="row title-bar-right">
+                                            <div class="columns small-12">
+                                                <button class="button button-septenary-colorized  float-left m-r-1" type="submit">
+                                                     Next
+                                                </button>
+                                                <button type="button" ui-sref="admin.seller-list" class="button button-default float-left" href="#">
+                                                    {{ "global.cancel" | translate }}
+                                                </button>
+                                            </div>
+                                            <div style="clear:both;"></div>
+                                    </div> -->
+                            </div>
+
+                    <div class="tabs-panel" id="panel2c">
+                              <table ng-table="" class="default" template-pagination="templatePagination.html">
+                                      <tr ng-repeat="row in $data">
+                                          <td data-title="'Order Id'" filter="{firstName: 'text'}" sortable="'firstName'">
+                                              <span ng-bind="row.firstName"></span>
+                                          </td>
+                                          <td data-title="'Store'" filter="{lastName: 'text'}" sortable="'lastName'">
+                                              <span ng-bind="row.lastName"></span>
+                                          </td>
+                                          <td data-title="'Cards Type'" sortable="'phone'" filter="{phone: 'text'}">
+                                              <span ng-bind="row.phone || ('global.not_set'|translate)"></span>
+                                          </td>
+                                          <td data-title="'Cards Qty'" sortable="'phone'" filter="{phone: 'text'}">
+                                              <span ng-bind="row.phone || ('global.not_set'|translate)"></span>
+                                          </td>
+                                          <td data-title="'Action'">
+                                            <button class="button button-secondary tiny"
+                                                  title="View"  ui-sref="admin.edit-seller()">
+                                                <i class="fa fa-eye"></i>
+                                            </button>
+                                              <button class="button button-septenary tiny" title="Delete" ng-click="">
+                                                  <i class="fa fa-times"></i>
+                                              </button>
+                                          </td>
+                                      </tr>
+                                  </table>
+                                  <div class="row title-bar-right">
+                                          <div class="columns small-12">
+                                              <button class="button button-septenary-colorized  float-left m-r-1" type="submit">
+                                                   Next
+                                              </button>
+                                              <button type="button" ui-sref="admin.seller-list" class="button button-default float-left" href="#">
+                                                  {{ "global.cancel" | translate }}
+                                              </button>
+                                          </div>
+                                          <div style="clear:both;"></div>
+                                  </div>
+                              </div>
+
+                          <div class="tabs-panel" id="panel3c">
+                            <div class="row">
+                              <div class="large-6 columns">
+                                <label>Merchant Name
+                                  <div class="val-box">Reliance</div>
+                                </label>
+                              </div>
+                              <div class="large-6 columns">
+                                <label>Merchant Id
+                                  <div class="val-box">1252356565465665</div>
+                                </label>
+                              </div>
+                            </div>
+                            <div class="row">
+                              <div class="large-6 columns">
+                                <label>Store Name
+                                  <div class="val-box">Relience Trends</div>
+                                </label>
+                              </div>
+                              <div class="large-6 columns">
+                                <label>No. Of Terminals
+                                  <div class="val-box">5</div>
+                                </label>
+                              </div>
+                            </div>
+                            <div class="separator"></div>
+                                <div class="heading">
+                                    <h5>Terminal List :</h5>
+                                 </div>
+                                  <table ng-table="" class="default" template-pagination="templatePagination.html">
+                                          <tr ng-repeat="row in $data">
+                                              <td data-title="'Order Id'" filter="{firstName: 'text'}" sortable="'firstName'">
+                                                  <span ng-bind="row.firstName"></span>
+                                              </td>
+                                              <td data-title="'Store'" filter="{lastName: 'text'}" sortable="'lastName'">
+                                                  <span ng-bind="row.lastName"></span>
+                                              </td>
+                                              <td data-title="'Cards Type'" sortable="'phone'" filter="{phone: 'text'}">
+                                                  <span ng-bind="row.phone || ('global.not_set'|translate)"></span>
+                                              </td>
+                                              <td data-title="'Cards Qty'" sortable="'phone'" filter="{phone: 'text'}">
+                                                  <span ng-bind="row.phone || ('global.not_set'|translate)"></span>
+                                              </td>
+                                              <td data-title="'Action'">
+                                                <button class="button button-secondary tiny"
+                                                      title="View"  ui-sref="admin.edit-seller()">
+                                                    <i class="fa fa-eye"></i>
+                                                </button>
+                                                  <button class="button button-septenary tiny" title="Delete" ng-click="">
+                                                      <i class="fa fa-times"></i>
+                                                  </button>
+                                              </td>
+                                          </tr>
+                                      </table>
+                                      <div class="row title-bar-right">
+                                              <div class="columns small-12">
+                                                  <button class="button button-septenary-colorized  float-left m-r-1" type="submit">
+                                                      {{ "global.save" | translate }}
+                                                  </button>
+                                                  <button type="button" ui-sref="admin.seller-list" class="button button-default float-left" href="#">
+                                                      {{ "global.cancel" | translate }}
+                                                  </button>
+                                              </div>
+                                              <div style="clear:both;"></div>
+                                      </div>
+                          </div>
+                 </div>
+            </div>
+        </div>
+</div>
