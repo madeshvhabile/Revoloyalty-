@@ -1,0 +1,71 @@
+
+<box-loader loading="OrderCtrl.loaderStates.coverLoader" cover="1" class="cover" delay="1000"></box-loader>
+
+<div class="heading" ng-init="OrderCtrl.getData()">
+    <!-- <h1>Merchant</h1>
+    <div class="action-buttons">
+        <button class="button button-primary medium button-septenary-colorized" ui-sref="admin.add-merchant">Add Merchant
+        </button>
+    </div> -->
+</div>
+<div style="clear:both;"></div>
+
+<div class="client-list box">
+    <div class="box-title">
+        <h1 class="text-left"><i class="fa fa-list" aria-hidden="true"></i> Order List <button style="float:right;margin:-5px 0 0 0 " class="button button-primary small button-septenary-colorized" ui-sref="admin.add-order">  <i class="fa fa-plus" aria-hidden="true"></i> Add Order
+
+            </button> </h1>
+    </div>
+    <div class="box-content">
+        <box-loader loading="OrderCtrl.loaderStates.merchantList"></box-loader>
+        <table ng-table="OrderCtrl.tableParams" class="default" template-pagination="templatePagination.html">
+            <tr ng-repeat="row in $data">
+                <td data-title="'Order Id'" filter="{orderpurchaseId: 'text'}" sortable="'orderpurchaseId'">
+                    <span ng-bind="row.orderpurchaseId"></span>
+                </td>
+                <td data-title="'Merchant name'" sortable="'merchantname'" filter="{merchantname: 'text'}">
+                    <span ng-bind="row.merchantname"></span>
+                </td>
+                <td data-title="'Order Date'" sortable="'created'" filter="{created: 'text'}">
+                        {{row.created|date:'medium'}}
+                </td>
+                <td data-title="'CardSchemeName'" sortable="'cardschemename'" filter="{cardschemename: 'text'}">
+                    <span ng-bind="row.cardschemename"></span>
+                </td>
+                <td data-title="'Status'" sortable="'status'" filter="{status: 'text'}">
+                    <span ng-bind="row.status"></span>
+                </td>
+                <td data-title="'Active'" sortable="'active'" filter="{active: 'text'}">
+                    <span ng-if="row.active==1">Yes</span>
+                    <span ng-if="row.active!=1">No</span>
+                </td>
+                <td data-title="'seller.actions'|translate">
+                    <button class="button button-septenary-colorized tiny" title="Delete Order" ng-click="OrderCtrl.showDeleteOrdertModel(row)">
+                        <i class="fa fa-times"></i>
+                    </button>
+                     <button class="button button-septenary-colorized tiny" title="View Order"
+                            ui-sref="admin.view-order({OrderId: row.orderpurchaseId})">
+                        <i class="fa fa-eye" aria-hidden="true"></i>
+                    </button>
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>
+<modal size="'tiny'" show="OrderCtrl.showOrderRemoveModal" modal-title="'Do you want to remove this Order? '">
+        <div class="text-center">
+            <p class="color-dark">{{"seller.delete_confirmation_description"|translate}}</p>
+            <div class="btns">
+                <button type="button" ng-click="OrderCtrl.deleteOrderConform()" class="button small button-septenary-colorized m-t-10 m-b-0"
+                    ng-disabled="OrderCtrl.loaderStates.deleteOrder">{{"global.confirm"|translate}}
+            </button>
+            <button type="button" ng-click="OrderCtrl.closedeleteModal()" class="button small button-septenary-colorized m-t-10 m-b-0"
+            >No
+            </button>
+                <div class="spinner-loader-wrapper">
+                    <spinner-loader loading="OrderCtrl.loaderStates.deleteOrder" class="inline" delay="5"></spinner-loader>
+                </div>
+            </div>
+            <div style="clear:both;"></div>
+        </div>
+    </modal>

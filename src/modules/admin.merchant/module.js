@@ -66,6 +66,27 @@ angular.module(MODULE_NAME, [])
                     }
                 }
             })
+            .state('admin.merchant-login-credential', {
+                url: "/merchant-login-credential",
+                views: {
+                    'extendTop@': {
+                        templateUrl: './templates/merchant-login-credential-top.html',
+                        controller: 'MerchantController',
+                        controllerAs: 'MerchantCtrl'
+                    },
+                    'main@': {
+                        templateUrl: './templates/merchant-credential.html',
+                        controller: 'MerchantController',
+                        controllerAs: 'MerchantCtrl'
+                    },
+                    'extendBottom@': {
+                        templateUrl: './templates/merchant-login-credential-bottom.html',
+                        controller: 'MerchantController',
+                        controllerAs: 'MerchantCtrl'
+                    }
+                }
+            })
+
             .state('admin.view-merchant', {
                 url: "/view-merchant/:merchantId",
                 views: {
@@ -105,6 +126,9 @@ angular.module(MODULE_NAME, [])
         $templateCache.put('./templates/edit-merchant-extend-top.html', '');
         $templateCache.put('./templates/edit-merchant-extend-bottom.html', '');
 
+        $templateCache.put('./templates/merchant-login-credential-top.html', '');
+        $templateCache.put('./templates/merchant-login-credential-bottom.html', '');
+
 
 
 
@@ -112,6 +136,14 @@ angular.module(MODULE_NAME, [])
             .then(
                 response => {
                     $templateCache.put('./templates/merchant-view.html', response.data);
+                }
+            )
+            .catch(catchErrorTemplate);
+
+            $http.get(`./build/${MODULE_NAME}/templates/merchant-credential.html`)
+            .then(
+                response => {
+                    $templateCache.put('./templates/merchant-credential.html', response.data);
                 }
             )
             .catch(catchErrorTemplate);

@@ -11,7 +11,7 @@
 <div style="clear:both;"></div>
 <div class="client-list box">
     <div class="box-title">
-        <h1 class="text-left"><i class="fa fa-info" aria-hidden="true"></i> Info
+        <h1 class="text-left"><i class="fa fa-info" aria-hidden="true"></i> Store Info
 
             <!-- <button type="button" class="button  button-secondary tiny" >
         <i class="fa fa-pencil" aria-hidden="true"></i>
@@ -130,11 +130,13 @@
         <p class="color-dark">{{"seller.delete_confirmation_description"|translate}}</p>
         <div class="btns">
             <button type="button" ng-click="StoreCtrl.deleteTerminalConform()" class="button small button-septenary-colorized m-t-10 m-b-0"
-                ng-disabled="StoreCtrl.loaderStates.deleteStore">{{"global.confirm"|translate}}
+                ng-disabled="StoreCtrl.loaderStates.deleteTerminal">{{"global.confirm"|translate}}
         </button>
-
+        <button type="button" ng-click="StoreCtrl.closedeleteModal()" class="button small button-septenary-colorized m-t-10 m-b-0"
+        >No
+        </button>
             <div class="spinner-loader-wrapper">
-                <spinner-loader loading="StoreCtrl.loaderStates.deleteStore" class="inline" delay="5"></spinner-loader>
+                <spinner-loader loading="StoreCtrl.loaderStates.deleteTerminal" class="inline" delay="5"></spinner-loader>
             </div>
         </div>
         <div style="clear:both;"></div>
@@ -144,47 +146,43 @@
     <form novalidate ng-submit="StoreCtrl.editStore(EditableStore)">
         <fieldset class="fieldset default">
             <div class="row">
-                <div class="large-4 columns" form-validation="EditStoreValidate.name.errors">
+                <div class="large-6 columns" form-validation="EditStoreValidate.name.errors">
                     <label>Store Name
                      <input type="text" placeholder="Store Name" ng-model="EditableStore.name"  />
                      </label>
                 </div>
-                <div class="large-4 columns" form-validation="EditStoreValidate.contactperson.errors">
-                    <label>Contact Person
-                      <input type="text" placeholder="Contact Person" ng-model="EditableStore.contactperson"/>
+                <div class="large-6 columns" form-validation="EditStoreValidate.storeurl.errors">
+                        <label>Store URL (optional)
+                        <input type="text" placeholder="Store URL" ng-model="EditableStore.storeurl"  />
                       </label>
-                </div>
-                <div class="large-4 columns" form-validation="EditStoreValidate.active.errors">
-                    <label>Active
-                    <selectize config="StoreCtrl.activeConfig" options="StoreCtrl.active" ng-model="EditableStore.active"></selectize>
-                    </label>
-                </div>
-
+                    </div>
             </div>
             <div class="row">
-                <div class="large-4 columns" form-validation="EditStoreValidate.email.errors">
-                    <label>Email
-                    <input type="email" placeholder="Email"  ng-model="EditableStore.email"/>
-                  </label>
-                </div>
-                <div class="large-4 columns">
-                    <label>Store URL (optional)
-                    <input type="text" placeholder="Store URL" ng-model="EditableStore.storeurl"  />
-                  </label>
-                </div>
-                <div class="large-4 columns" form-validation="EditStoreValidate.postalcode.errors">
+                <div class="large-6 columns" form-validation="EditStoreValidate.active.errors">
+                        <label>Active
+                        <selectize config="StoreCtrl.activeConfig" options="StoreCtrl.active" ng-model="EditableStore.active"></selectize>
+                        </label>
+                    </div>
+                <div class="large-6 columns" form-validation="EditStoreValidate.postalcode.errors">
                     <label>Postal Code
                     <input type="number" placeholder="Postal code"  ng-model="EditableStore.postalcode"/>
                   </label>
                 </div>
             </div>
             <div class="row">
-                    <div class="large-6 columns" form-validation="storeValidate.storetype.errors">
-                            <label>Store Type
-                                    <selectize config="StoreCtrl.typeConfig" options="StoreCtrl.type" ng-model="EditableStore.storetype"></selectize>
-                            </label>
-                        </div>
-                <div class="large-6 columns" form-validation="EditStoreValidate.address.errors">
+                <div class="large-6 columns" form-validation="storeValidate.storetype.errors">
+                        <label>Store Type
+                                <selectize config="StoreCtrl.typeConfig" options="StoreCtrl.type" ng-model="EditableStore.storetype"></selectize>
+                        </label>
+                    </div>
+                <div class="large-6 columns" form-validation="EditStoreValidate.email.errors">
+                    <label>Email
+                    <input type="email" placeholder="Email"  ng-model="EditableStore.email"/>
+                  </label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="large-12 columns" form-validation="EditStoreValidate.address.errors">
                     <label>Address
                     <textarea id="addstoreaddress" placeholder="Address" ng-model="EditableStore.address"></textarea>
                   </label>
@@ -204,29 +202,28 @@
                 </div>
             </div>
             <div class="row">
-
+                <div class="large-6 columns" form-validation="EditStoreValidate.contactperson.errors">
+                        <label>Contact Person
+                            <input type="text" placeholder="Contact Person" ng-model="EditableStore.contactperson"/>
+                            </label>
+                    </div>
                 <div class="large-6 columns" form-validation="EditStoreValidate.contactno.errors">
-                    <label>Contact No1
+                    <label>Contact No
                     <input type="number" placeholder="Contact No 1"  ng-model="EditableStore.contactno"/>
-                  </label>
-                </div>
-                <div class="large-6 columns">
-                    <label>Contact No2 (optional)
-                    <input type="number" placeholder="Contact No 2" ng-model="EditableStore.alternatecontactno" />
                   </label>
                 </div>
             </div>
             <div class="row">
-                <div class="large-6 columns" form-validation="EditStoreValidate.bankaccno.errors">
-                    <label>Bank Acc No
-                      <input type="text" placeholder="Bank Acc No"  ng-model="EditableStore.bankaccno"/>
-                    </label>
-                </div>
-                <div class="large-6 columns" form-validation="EditStoreValidate.bankname.errors">
-                    <label>Bank Name
-                      <input type="text" placeholder="Bank Name" ng-model="EditableStore.bankname"  />
-                    </label>
-                </div>
+                <div class="large-6 columns" form-validation="EditStoreValidate.alternatecontactperson.errors">
+                        <label>Contact Person2(optional)
+                            <input type="text" placeholder="Contact Person2" ng-model="EditableStore.alternatecontactperson"/>
+                            </label>
+                    </div>
+                <div class="large-6 columns" form-validation="EditStoreValidate.alternatecontactno.errors">
+                        <label>Contact No2 (optional)
+                        <input type="number" placeholder="Contact No 2" ng-model="EditableStore.alternatecontactno" />
+                      </label>
+                    </div>
             </div>
             <div class="row">
                 <div class="columns small-12 text-center">

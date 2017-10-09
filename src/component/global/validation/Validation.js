@@ -99,6 +99,13 @@ export default class Validation {
                     pushError(prop, 'This field Must be maximum '+ min +' characters');
                 }
             }
+            if(asserts[i].match(/^range/) ){
+                    let min =parseInt(asserts[i].split('-')[1]);
+                    let max =parseInt(asserts[i].split('-')[2]);
+                   if (checkRange(prop,min,max)){
+                    pushError(prop, 'This field Must be between '+ min +' to '+max +' characters');
+                }
+            }
 
 
                     if (asserts[i].match(/^equal_with/)) {

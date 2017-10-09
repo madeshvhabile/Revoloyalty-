@@ -7,29 +7,29 @@
             </header>
             <div class="box no-margin">
                 <div class="box-title">
-                    <h1>{{ "customer_transaction.list" |translate }}</h1>
+                    <h1><i class="fa fa-exchange" aria-hidden="true"></i> {{ "customer_transaction.list" |translate }}</h1>
                 </div>
 
                 <div class="box-content">
                     <table ng-table="CustomerTransactionCtrl.tableParams" class="default"
                            template-pagination="templatePagination.html">
                         <tr ng-repeat="row in $data">
-                            <td data-title="'customer_transaction.document_number'|translate" sortable="'documentNumber'">
+                            <td data-title="'Merchant'" sortable="'documentNumber'">
                                 <span ng-bind="row.documentNumber"></span>
                             </td>
-                            <td data-title="'customer_transaction.document_type'|translate" sortable="'documentType'">
-                                <span>{{'customer_transaction.document_types.'+row.documentType|translate}}</span>
-                            </td>
-                            <td data-title="'customer_transaction.amount'|translate">
-                                <span style="text-transform: uppercase" ng-bind="row.grossValue+row.currency"></span>
-                            </td>
-                            <td data-title="'customer_transaction.purchase_date'|translate" sortable="'purchaseDate'">
-                                <span ng-bind="row.purchaseDate|date: 'yyyy-MM-dd HH:mm'"></span>
-                            </td>
-                            <td data-title="'customer_transaction.purchase_place'|translate">
+                            <td data-title="'Store'">
                                 <span ng-bind="row.posName"></span>
                             </td>
-                            <td data-title="'customer_transaction.points_earned'|translate">
+                            <td data-title="'Transaction Type'" sortable="'documentType'">
+                                <span>{{'customer_transaction.document_types.'+row.documentType|translate}}</span>
+                            </td>
+                            <td data-title="'Transaction Amount'">
+                                <span style="text-transform: uppercase" ng-bind="row.grossValue+row.currency"></span>
+                            </td>
+                            <td data-title="'Transaction Date'" sortable="'purchaseDate'">
+                                <span ng-bind="row.purchaseDate|date: 'yyyy-MM-dd HH:mm'"></span>
+                            </td>
+                            <td data-title="'Staus'">
                                 <span ng-bind="row.pointsEarned"></span>
                             </td>
                             <td data-title="'customer_transaction.actions'|translate">

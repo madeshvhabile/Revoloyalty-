@@ -11,15 +11,16 @@ export default class StoreController {
         this.merchantId = $stateParams.merchantId || null;
         this.storeId=$stateParams.storeId || null;
         this.storeValidation = {
-            name: '@assert:not_blank|min-5|max-50',
-            contactperson: '@assert:not_blank|min-5|max-25',
+            name: '@assert:not_blank|min-4|max-50',
+            contactperson: '@assert:not_blank|min-4|max-25',
             noofterminals: '@assert:not_blank|min-1|max-3',
             email: '@assert:not_blank|max-50',
-            postalcode: '@assert:not_blank|min-5|max-10',
+            postalcode: '@assert:not_blank|min-4|max-10',
             address: '@assert:not_blank|min-5|max-100',
-            contactno: '@assert:not_blank',
-            bankaccno: '@assert:not_blank|min-5|max-20',
-            bankname: '@assert:not_blank|min-5|max-50',
+            contactno: '@assert:not_blank|min-6|max-15',
+            //bankaccno: '@assert:not_blank|min-5|max-20',
+            //bankname: '@assert:not_blank|min-5|max-50',
+            alternatecontactno:'min-6|max-15',
             storetype: '@assert:not_blank',
             // storeurl:'@assert:min-5|min-50',
             city:'@assert:not_blank|min-3|max-50',
@@ -27,22 +28,23 @@ export default class StoreController {
             active:'@assert:not_blank'
             },
             this.editStoreValidation = {
-                name: '@assert:not_blank|min-5|max-50',
-                contactperson: '@assert:not_blank|min-5|max-25',
+                name: '@assert:not_blank|min-4|max-50',
+                contactperson: '@assert:not_blank|min-4|max-25',
                 // noOfTerminals: '@assert:not_blank',
-                email: '@assert:not_blank|min-5|max-50',
-                postalcode: '@assert:not_blank',
-                address:  '@assert:not_blank|min-5|max-10',
-                contactno: '@assert:not_blank',
-                bankaccno: '@assert:not_blank|min-5|max-20',
-                bankname: '@assert:not_blank|min-5|max-50',
+                email: '@assert:not_blank|max-50',
+                postalcode: '@assert:not_blank|min-4|max-10',
+                address:  '@assert:not_blank|min-5|max-100',
+                contactno: '@assert:not_blank|min-6|max-15',
+                alternatecontactno:'min-6|max-15',
+                //bankaccno: '@assert:not_blank|min-5|max-20',
+                //bankname: '@assert:not_blank|min-5|max-50',
                 storetype: '@assert:not_blank',
                 city:'@assert:not_blank|min-3|max-50',
                 country:'@assert:not_blank',
                 active:'@assert:not_blank'
             }
             this.terminalValidation = {
-                noofterminals: '@assert:not_blank',
+                noofterminals: '@assert:not_blank|min-1|max-3',
                 terminaltype: '@assert:not_blank'
             },
         this.$state = $state;
@@ -63,6 +65,7 @@ export default class StoreController {
             labelField: 'name',
             create: false,
             sortField: 'name',
+            searchField:'name',
             maxItems: 1,
         };
         this.loaderStates = {
@@ -179,16 +182,32 @@ export default class StoreController {
     };
     deleteTerminalConform() {
         let self = this;
-        self.loaderStates.deleteStore = true;
-        _.remove(self.TerminaltableParams.settings().dataset, function (item) {
-            return self.deleteTerminal === item;
-        });
-        self.TerminaltableParams.reload().then(function (data) {
-            if (data.length === 0 && self.TerminaltableParams.total() > 0) {
-                self.TerminaltableParams.page(self.TerminaltableParams.page() - 1);
-                self.TerminaltableParams.reload();
-            }
-        });
+        self.loaderStates.deleteTerminal = true;
+        self.StoreService.deleteTerminal(self.deleteTerminal.terminalId)
+        .then(
+            res => {
+                _.remove(self.TerminaltableParams.settings().dataset, function (item) {
+                    return self.deleteTerminal === item;
+                });
+                self.TerminaltableParams.reload().then(function (data) {
+                    if (data.length === 0 && self.TerminaltableParams.total() > 0) {
+                        self.TerminaltableParams.page(self.TerminaltableParams.page() - 1);
+                        self.TerminaltableParams.reload();
+                    }
+                });
+                let message = "Terminal Deleted Successfully";
+                self.Flash.create('success', message);
+                self.loaderStates.deleteTerminal = false;
+                self.showTerminalRemoveModal=false;
+        },
+        () =>{
+            let message = "Cannot Delete Terminal,Please Try Again Later";
+            self.Flash.create('danger', message);
+            self.loaderStates.deleteTerminal = false;
+            self.showTerminalRemoveModal=false;
+        }
+    )
+
         //    var idx = self.storeList.indexOf(self.deleteStore);
         //    self.storeList.splice(idx, 1);
         //    this.storeTableParams = new this.NgTableParams({
@@ -210,27 +229,36 @@ export default class StoreController {
     deleteStoreConform() {
         let self = this;
         self.loaderStates.deleteStore = true;
-        _.remove(self.StorestableParams.settings().dataset, function (item) {
-            return self.deleteStore === item;
-        });
-        self.StorestableParams.reload().then(function (data) {
-            if (data.length === 0 && self.StorestableParams.total() > 0) {
-                self.StorestableParams.page(self.StorestableParams.page() - 1);
-                self.StorestableParams.reload();
+        self.StoreService.deleteStore(self.deleteStore.storeId)
+        .then(
+           res=> {
+                _.remove(self.StorestableParams.settings().dataset, function (item) {
+                    return self.deleteStore === item;
+                });
+                self.StorestableParams.reload().then(function (data) {
+                    if (data.length === 0 && self.StorestableParams.total() > 0) {
+                        self.StorestableParams.page(self.StorestableParams.page() - 1);
+                        self.StorestableParams.reload();
+                    }
+                });
+                let message = "Store Deleted Successfully";
+                self.Flash.create('success', message);
+                self.loaderStates.deleteTerminal = false;
+                self.showStoreRemoveModal=false;
+            },
+            () =>{
+                let message = "Cannot Delete Store,Please Try Again Later";
+                self.Flash.create('danger', message);
+                self.loaderStates.deleteTerminal = false;
+                self.showStoreRemoveModal=false;
             }
-        });
-        //    var idx = self.storeList.indexOf(self.deleteStore);
-        //    self.storeList.splice(idx, 1);
-        //    this.storeTableParams = new this.NgTableParams({
-        //        count: this.config.perPage,
-        //        sorting: {
-        //            createdAt: 'desc'
-        //        }
-        //    }, {dataset:self.storeList})
-        self.loaderStates.deleteStore = false;
-        self.showStoreRemoveModal = false;
-    }
+        )
 
+    }
+    closedeleteModal() {
+        this.showStoreRemoveModal=false;
+        this.showTerminalRemoveModal=false;
+        }
 
     addTerminals(newTerminlas) {
         let self = this;
@@ -260,7 +288,7 @@ export default class StoreController {
                     self.linkAddTerminalModal = false
                 },
                 ()=>{
-                    let message = self.$filter('translate')('xhr.post_customer.error');
+                    let message = "Something Went Wrong!,Cannot Create Terminals";
                     self.Flash.create('danger', message);
                 })
 
@@ -268,13 +296,28 @@ export default class StoreController {
 
     }
 
-    addStore(newStore) { 
+    addStore(newStore) {
         let self = this;
         // if(newStore.storeurl != undefined){
         //     self.storeValidation.storeurl='@assert:min-5|max-20'
         // }else{
         //     delete self.storeValidation.storeurl
         // }
+        if(!_.isEmpty(newStore.alternatecontactperson)){
+            self.storeValidation.alternatecontactperson = '@assert:min-4|max-25';
+        }else{
+            delete self.storeValidation.alternatecontactperson;
+        }
+        if(!_.isEmpty(newStore.storeurl)){
+            self.storeValidation.storeurl = '@assert:min-5|max-50';
+        }else{
+            delete self.storeValidation.storeurl;
+        }
+        if((newStore.alternatecontactno != undefined) &&  (!_.isNull(newStore.alternatecontactno))){
+            self.storeValidation.alternatecontactno = '@assert:min-6|max-15';
+        }else{
+            delete self.storeValidation.alternatecontactno;
+        }
 
         let validateFields = angular.copy(self.storeValidation);
         let frontValidation = self.Validation.frontValidation(newStore, validateFields);
@@ -296,7 +339,7 @@ export default class StoreController {
                 this.closeModal()
               },
               error=>{
-                let message = self.$filter('translate')('xhr.post_customer.error');
+                let message = "Something Went Wrong!,Cannot Create Store";
                 self.Flash.create('danger', message);
               }
             )
@@ -305,7 +348,7 @@ export default class StoreController {
             let message = 'Store Name Is Already Exists';
             self.Flash.create('danger', message);
         }
-           
+
             // self.$scope.stores.push(newStore)
             // console.log("self.storeList",self.storeList)
             // self.tableParams = new self.NgTableParams({
@@ -314,10 +357,10 @@ export default class StoreController {
             //         createdAt: 'desc'
             //     }
             // }, {
-            //     dataset:self.$scope.stores            
+            //     dataset:self.$scope.stores
             //  });
             // console.log("table",self.tableParams)
-            
+
             // self.MerchantService.postMerchant(newStore)
             //     .then(
             //         res => {
@@ -355,7 +398,7 @@ export default class StoreController {
                  self.loaderStates.coverLoader = false;
              },
              () => {
-                let message = self.$filter('translate')('xhr.get_customers.error');
+                let message = "Cannot get MerchantList";
                 self.Flash.create('danger', message);
                 self.loaderStates.storeList = false;
                 self.loaderStates.coverLoader = false;
@@ -372,18 +415,18 @@ export default class StoreController {
                     console.log("res")
                     // params.total(res.total);
                     // dfd.resolve(res)
-                    var result = _.reverse(res);  
+                    var result = res;
                     self.StorestableParams = new self.NgTableParams({
-                        count: 5,
+                        count: self.config.perPage,
                         sorting: {
-                            createdAt: 'desc'
+                            created: 'desc'
                         }
                     }, {
                         dataset: result
                     });
                 },
                 () => {
-                    let message = self.$filter('translate')('xhr.get_customers.error');
+                    let message = "Cannot get StoreList";
                     self.Flash.create('danger', message);
                     self.loaderStates.storeList = false;
                     self.loaderStates.coverLoader = false;
@@ -401,8 +444,8 @@ export default class StoreController {
                 let message = self.$filter('translate')('xhr.get_customer.no_id');
                 self.Flash.create('warning', message);
         }
-    
-    
+
+
         }
 
 
@@ -461,7 +504,7 @@ export default class StoreController {
         self.StoreService.getTerminal(self.storeId)
             .then(
                 res => {
-                    
+
                     self.loaderStates.terminalList = false;
                     self.loaderStates.coverLoader = false;
                     self.$scope.terminal = res;
@@ -484,9 +527,9 @@ export default class StoreController {
                     //dfd.resolve(res)
 
                     self.TerminaltableParams = new self.NgTableParams({
-                        count: 5,
+                        count: self.config.perPage,
                         sorting: {
-                            createdAt: 'desc'
+                            created: 'desc'
                         }
                     }, {
                         dataset: angular.copy(res)
@@ -496,7 +539,7 @@ export default class StoreController {
                     let message = self.$filter('translate')('xhr.get_customers.error');
                     self.Flash.create('danger', message);
                     self.loaderStates.terminalList = false;
-                   
+
                     //dfd.reject();
                 }
             ),
@@ -527,8 +570,8 @@ export default class StoreController {
                 let message = self.$filter('translate')('xhr.get_customer.no_id');
                 self.Flash.create('warning', message);
             }
-    
-    
+
+
         }
 
 
@@ -537,6 +580,24 @@ export default class StoreController {
         let self=this;
         console.log(!_.isEqual(self.$scope.temObject,ModifiedStore))
         if( !_.isEqual(self.$scope.temObject,ModifiedStore)){
+
+            /*non mantatery field validation */
+            if(!_.isEmpty(ModifiedStore.alternatecontactperson)){
+                self.editStoreValidation.alternatecontactperson = '@assert:min-4|max-25';
+            }else{
+                delete self.editStoreValidation.alternatecontactperson;
+            }
+            if(!_.isEmpty(ModifiedStore.storeurl)){
+                self.editStoreValidation.storeurl = '@assert:min-5|max-50';
+            }else{
+                delete self.editStoreValidation.storeurl;
+            }
+            if((ModifiedStore.alternatecontactno != undefined) &&  (!_.isNull(ModifiedStore.alternatecontactno))){
+                self.editStoreValidation.alternatecontactno = '@assert:min-6|max-15';
+            }else{
+                delete self.editStoreValidation.alternatecontactno;
+            }
+
             let validateFields = angular.copy(self.editStoreValidation);
             let frontValidation = self.Validation.frontValidation(ModifiedStore, validateFields);
             if (_.isEmpty(frontValidation)) {
@@ -560,8 +621,8 @@ export default class StoreController {
                         self.loaderStates.coverLoader = false;
                     }
                 )
-               
-               
+
+
             }
             else{
                 let message = 'Please Provide a valid input';
@@ -577,7 +638,7 @@ export default class StoreController {
             self.loaderStates.terminalList = false;
             self.loaderStates.coverLoader = false;
         }
-       
+
 
 
     }

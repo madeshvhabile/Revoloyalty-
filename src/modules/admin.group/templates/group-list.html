@@ -37,9 +37,9 @@
                         <span ng-if="row.active == 0">No</span>
                     </td>                  
                 <td data-title="'seller.actions'|translate">
-                    <!-- <button class="button button-septenary-colorized tiny" title="Delete Group" ng-click="GroupCtrl.showDeleteStoreModel(row)">
+                    <button class="button button-septenary-colorized tiny" title="Delete Group" ng-click="GroupCtrl.showDeleteGroupModel(row)">
                         <i class="fa fa-times"></i>
-                    </button>     -->
+                    </button>    
                     <button class="button button-septenary-colorized tiny" title="Edit Group"
                     ng-click="GroupCtrl.openEditGroupModal(row)">
                     <i class="fa fa-pencil" aria-hidden="true"></i>
@@ -96,10 +96,12 @@
     <div class="text-center">
         <p class="color-dark">{{"seller.delete_confirmation_description"|translate}}</p>
         <div class="btns">
-            <button type="button" ng-click="GroupCtrl.deleteStoreConform()" class="button small button-septenary-colorized m-t-10 m-b-0"
+            <button type="button" ng-click="GroupCtrl.deleteGroupConform()" class="button small button-septenary-colorized m-t-10 m-b-0"
                 ng-disabled="GroupCtrl.loaderStates.deleteStore">{{"global.confirm"|translate}}
         </button>
-
+        <button type="button" ng-click="GroupCtrl.closedeleteModal()" class="button small button-septenary-colorized m-t-10 m-b-0"
+        >No
+        </button>
             <div class="spinner-loader-wrapper">
                 <spinner-loader loading="GroupCtrl.loaderStates.deleteStore" class="inline" delay="5"></spinner-loader>
             </div>

@@ -3,10 +3,16 @@
     <div class="top-logo">
         <div class="container">
             <div class="row qf-menu-padding">
+                    <div class="columns medium-2">
+                            <div class="left-buttons">
+                                <button id="mob-menu" class="client-menu-button">
+                                        <i class="fa fa-bars" aria-hidden="true"></i>
+                                    </button>
+                            </div>
+                        </div>
                 <div class="columns medium-8 medium-offset-2">
                     <div class="logo" ui-sref="customer.panel.dashboard">
-                        <span class="logo-part-1">{{"customer_nav.logo1"|translate}}</span>
-                        <span class="logo-part-2">{{"customer_nav.logo2"|translate}}</span>
+                        <span class="logo-part-1">Revo <span class="f-w-1">Loyalty</span></span>
                         <br/>
                         <span class="copyrights" ng-bind-html="'customer_nav.copyrights'|translate"></span>
                     </div>
@@ -14,15 +20,14 @@
                 <div class="columns medium-2">
                     <div class="right-buttons">
                         <button class="client-logout-button" ng-click="RootCtrl.logout()">
-                            <i class="fi flaticon-unlocked-padlock"></i><br/>
-                            {{"customer_global.logout"|translate}}
+                            <i class="fi flaticon-unlocked-padlock"></i>
                         </button>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <div class="top-bar">
+    <div class="top-bar client-topbar">
         <ul class="menu">
             <li>
                 <a href="#" ui-sref="customer.panel.dashboard">
@@ -30,6 +35,12 @@
                     {{"customer_nav.home"|translate}}
                 </a>
             </li>
+            <li>
+                    <a href="#" ui-sref="customer.panel.card-show">
+                            <i class="fa fa-credit-card" aria-hidden="true"></i>
+                        Card Management
+                    </a>
+                </li>
             <li>
                 <a href="#" ui-sref="customer.panel.campaign-list">
                     <i class="fi2 flaticon-medal-2" aria-hidden="true"></i>
@@ -55,12 +66,18 @@
                      {{"customer_nav.my_profile"|translate}}
                 </a>
             </li>
-            <li>
-                <a href="#" ui-sref="customer.static({pageName: 'match-with-ecommerce'})">
-                    <i class="fi2 flaticon-scheme-1" aria-hidden="true"></i>
-                    {{"customer_nav.match_with_ecommerce"|translate}}
-                </a>
-            </li>
         </ul>
     </div>
 </nav>
+<script type="text/javascript">
+$(document).ready(function(){
+    if ($(window).width() < 695){
+    $("#mob-menu").click(function(){
+        $(".client-topbar .menu").slideToggle( "slow" );
+    });
+    $(".client-topbar .menu li a").click(function(){
+        $(".client-topbar .menu").slideToggle( "slow" );
+    });
+    }
+});
+</script>

@@ -1,0 +1,331 @@
+<div class="client-section" ng-init="CustomerCardCtrl.getData()">
+        <box-loader loading="loaderVisible" cover="1" class="cover client" delay="1000"></box-loader>
+        <div class="row">
+            <div class="columns small-12">
+                <header class="ol-main-header">
+                    <!-- <h1>{{ 'customer_status.my_card_edit' | translate }}</h1> -->
+                    <h1>Card Details</h1>
+                </header>
+            </div>
+        </div>
+        <div class="row column medium-12 small-12 medium-centered customer-tabs" style="margin-top: 20px;">
+            <ul class="tabs text-center" data-tabs id="example-tabs">
+                <li class="tabs-title is-active"><a href="#panel1" aria-selected="true">
+                    Card Info</a></li>
+                <li class="tabs-title"><a href="#panel2">TopUp</a></li>
+                <li class="tabs-title"><a href="#panel3">Loyalty</a></li>
+                <li class="tabs-title"><a href="#panel4">Transaction Info</a></li>
+            </ul>
+            <div class="tabs-content" data-tabs-content="example-tabs">
+                <div class="tabs-panel is-active" id="panel1">
+                        <div class="row">
+                                <div class="large-6 columns">
+                                  <label>Card Number
+                                    <div class="val-box" >5212421425142542</div>
+                                  </label>
+                                </div>
+                                <div class="large-6 columns">
+                                  <label>Card Balance
+                                    <div class="val-box" >1000</div>
+                                  </label>
+                                </div>
+                              </div>
+                        <div class="row">
+                        <div class="large-6 columns">
+                            <label>Card Scheme
+                            <div class="val-box" >Gift</div>
+                            </label>
+                        </div>
+                        <div class="large-6 columns">
+                            <label>Last Transaction Amount
+                            <div class="val-box" >2300</div>
+                            </label>
+                        </div>
+                        </div>
+                        <div class="row">
+                        <div class="large-6 columns">
+                            <label>Created by 
+                            <div class="val-box" >ABC Store</div>
+                            </label>
+                        </div>
+                        <div class="large-6 columns">
+                            <label>Status
+                            <div class="val-box" >Active</div>
+                            </label>
+                        </div>
+                        </div>
+                        <div class="row">
+                            <div class="large-6 columns">
+                                <label>Date of Activation 
+                                <div class="val-box" >12/08/2017</div>
+                                </label>
+                            </div>
+                            <div class="large-6 columns">
+                                <label>Date of Expiry
+                                <div class="val-box" >12/08/2019</div>
+                                </label>
+                            </div>
+                        </div>
+                </div>
+                <div class="tabs-panel" id="panel2">
+                            <ul class="tabs" data-active-collapse="true" data-tabs id="collapsing-tabs">
+                                    <li class="tabs-title is-active"><a href="#panel1c" aria-selected="true">Transfer Balance</a></li>
+                                    <li class="tabs-title"><a href="#panel2c">Transfer Balance to Friend</a></li>
+                                    <li class="tabs-title"><a href="#panel3c">Instant TopUp</a></li>
+                                  </ul>
+                                  
+                                  <div class="tabs-content" data-tabs-content="collapsing-tabs">
+                                    <div class="tabs-panel is-active" id="panel1c">
+                                        <form novalidate data-abide>    
+                                                <div class="row">
+                                                    <div class="small-12 medium-6 columns">
+                                                        <label>From Card Number
+                                                        <input type="text">
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="small-12 medium-6 columns">
+                                                        <label>Select To Card Number
+                                                            <input type="text">
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="small-12 medium-6 columns">
+                                                        <label>Select Top up Range
+                                                            <input type="text">
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            <div class="box-footer">
+                                                <div class="row">
+                                                    <div class="columns small-12">
+                                                        <button class="button button-septenary-colorized  float-left m-r-1" type="submit">
+                                                            Transfer
+                                                        </button>
+                                                        <button type="button" ui-sref="admin.customers-list"
+                                                                class="button button-default float-left">
+                                                            Reset
+                                                        </button>
+                                                    </div>
+                                                    <div style="clear:both;"></div>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <div class="tabs-panel" id="panel2c">
+                                            <form novalidate data-abide>    
+                                                    <div class="row">
+                                                        <div class="small-12 medium-6 columns">
+                                                            <label>Enter Card Number to transfer
+                                                            <input type="text">
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="small-12 medium-6 columns">
+                                                            <label>Your Card Number
+                                                                <input type="text">
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="small-12 medium-6 columns">
+                                                            <label>Select Top up Range 
+                                                                <input type="text">
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="small-12 medium-6 columns">
+                                                            <label>Enter OTP
+                                                                <input type="text">
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                <div class="box-footer">
+                                                    <div class="row">
+                                                        <div class="columns small-12">
+                                                            <button class="button button-septenary-colorized  float-left m-r-1" type="submit">
+                                                                Transfer
+                                                            </button>
+                                                            <button type="button" ui-sref="admin.customers-list"
+                                                                    class="button button-default float-left">
+                                                                Reset
+                                                            </button>
+                                                        </div>
+                                                        <div style="clear:both;"></div>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                    </div>
+                                    <div class="tabs-panel" id="panel3c">
+                                            <form novalidate data-abide>    
+                                                    <div class="row">
+                                                        <div class="small-12 medium-6 columns">
+                                                            <label>Select Card Number
+                                                            <input type="text">
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="small-12 medium-6 columns">
+                                                            <label>Select Top up Range
+                                                                <input type="text">
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                <div class="box-footer">
+                                                    <div class="row">
+                                                        <div class="columns small-12">
+                                                            <button class="button button-septenary-colorized  float-left m-r-1" type="submit">
+                                                                TopUp
+                                                            </button>
+                                                            <button type="button" ui-sref="admin.customers-list"
+                                                                    class="button button-default float-left">
+                                                                Reset
+                                                            </button>
+                                                        </div>
+                                                        <div style="clear:both;"></div>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                    </div>
+                                  </div>
+                        
+                        
+                </div>
+                <div class="tabs-panel" id="panel3">
+                        <ul class="tabs" data-active-collapse="true" data-tabs id="collapsing-tabs">
+                                <li class="tabs-title is-active"><a href="#panel1d" aria-selected="true">Information</a></li>
+                                <li class="tabs-title"><a href="#panel2d">Redeem</a></li>
+                              </ul>
+                              
+                              <div class="tabs-content" data-tabs-content="collapsing-tabs">
+                                <div class="tabs-panel is-active" id="panel1d">
+                                    <form novalidate data-abide>    
+                                            <div class="row">
+                                                <div class="small-12 medium-6 columns">
+                                                    <label class="columns small-5 medium-5 large-5 text-center">From Card Number
+                                                        <input type="text">
+                                                    </label>
+                                                    <span class="columns small-2 medium-2 large-2 text-center loyal-info-equal">=</span>
+                                                    <label class="columns small-5 medium-5 large-5 text-center">Select To Card Number
+                                                        <input type="text">
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        <div class="box-footer">
+                                            <div class="row">
+                                                <div class="columns small-12">
+                                                    <button class="button button-septenary-colorized  float-left m-r-1" type="submit">
+                                                        Transfer
+                                                    </button>
+                                                    <button type="button" ui-sref="admin.customers-list"
+                                                            class="button button-default float-left">
+                                                        Reset
+                                                    </button>
+                                                </div>
+                                                <div style="clear:both;"></div>
+                                            </div>
+                                        </div>
+                                    </form>
+                                    <div class="row">
+                                        <div class="val-box">
+                                            <h4>How to earn points?</h4>
+                                            <p>Earn Reward Points with every spend on your Gift Card Transaction.</p>
+                                            <p>Your Rewards can be redeemed to Gift card.</p>
+                                            <p>Minimum Qualifying Points to Redeem: 1000</p>
+                                        </div>
+                                        <div class="val-box">
+                                            <h4>How to Redeem?</h4>
+                                            <p>Click Redeem to transfer your loyalty points to Gift card amount.</p>
+                                            <p>Rewards Qualify Amount:</p>
+                                            <p>Say,If you have earned 10 points you can convert to $10</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="tabs-panel" id="panel2d">
+                                        <form novalidate data-abide>    
+                                                <div class="row">
+                                                    <div class="small-12 medium-6 columns">
+                                                        <label>Earned Points
+                                                        <input type="text">
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="small-12 medium-6 columns">
+                                                        <label>Select Card Number
+                                                            <input type="text">
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="small-12 medium-6 columns">
+                                                        <label>Enter the Points to Transfer 
+                                                            <input type="text">
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            <div class="box-footer">
+                                                <div class="row">
+                                                    <div class="columns small-12">
+                                                        <button class="button button-septenary-colorized  float-left m-r-1" type="submit">
+                                                            Transfer
+                                                        </button>
+                                                        <button type="button" ui-sref="admin.customers-list"
+                                                                class="button button-default float-left">
+                                                            Reset
+                                                        </button>
+                                                    </div>
+                                                    <div style="clear:both;"></div>
+                                                </div>
+                                            </div>
+                                        </form>
+                                </div>
+                              </div>
+                </div>
+                <div class="tabs-panel" id="panel4">
+                      <div class="box-content" style="overflow-x:auto;width:100%">
+                        <table ng-table="CustomerCardCtrl.tableParams" class="default"
+                                template-pagination="templatePagination.html">
+                            <tr ng-repeat="row in $data">
+                                <td data-title="'Merchant'" sortable="'documentNumber'">
+                                    <span ng-bind="row.documentNumber"></span>
+                                </td>
+                                <td data-title="'Store'">
+                                    <span ng-bind="row.posName"></span>
+                                </td>
+                                <td data-title="'Transaction Type'" sortable="'documentType'">
+                                    <span>{{'customer_transaction.document_types.'+row.documentType|translate}}</span>
+                                </td>
+                                <td data-title="'Transaction Amount'">
+                                    <span style="text-transform: uppercase" ng-bind="row.grossValue+row.currency"></span>
+                                </td>
+                                <td data-title="'Transaction Date'" sortable="'purchaseDate'">
+                                    <span ng-bind="row.purchaseDate|date: 'yyyy-MM-dd HH:mm'"></span>
+                                </td>
+                                <td data-title="'Status'">
+                                    <span ng-bind="row.pointsEarned"></span>
+                                </td>
+                                <td data-title="'customer_transaction.actions'|translate">
+                                    <button type="button" class="button  button-quinary tiny" style="margin-bottom:5px;"
+                                            ng-click="transactions[$index].showModal=true">
+                                        <i class="fa fa-search" aria-hidden="true"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr ng-if="!$data.length">
+                                <td colspan="8" class="text-center">
+                                    {{ "customer_transaction.empty_transactions" | translate }}
+                                </td>
+                            </tr>
+                        </table>
+                     </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    

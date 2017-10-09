@@ -1,0 +1,48 @@
+<box-loader loading="SellerCardCtrl.loaderStates.CardListloader" cover="1" class="cover" delay="1000"></box-loader>
+
+<div class="heading" ng-init="SellerCardCtrl.getsellerCards()">
+    <!-- <h1>Merchant</h1>
+    <div class="action-buttons">
+        <button class="button button-primary medium button-septenary-colorized" ui-sref="admin.add-merchant">Add Merchant
+        </button>
+    </div> -->
+</div>
+<div style="clear:both;"></div>
+<div class="box" ng-if="SellerCardCtrl.CardData" >
+    <div class="box-title"><h1 class="text-left">Cards List</h1></div>
+    <div class="box-content" >
+        <table ng-table="SellerCardCtrl.CardtableParams" class="default" template-pagination="templatePagination.html">
+            <tr ng-repeat="row in $data">
+                <td data-title="'CardNumber'" filter="{cardnumber: 'text'}" sortable="'cardnumber'">
+                    <span ng-bind="row.cardnumber"></span>
+                </td>
+                <td data-title="'Card Type'" sortable="'cardtype'" filter="{cardtype: 'text'}">
+                    <span ng-bind="row.cardtype"></span>
+                </td>
+                <td data-title="'Card Existence Type'" sortable="'cardexistencetype'" filter="{cardexistencetype: 'text'}">
+                       <span ng-bind="row.cardexistencetype">
+                    </td>
+                 <td data-title="'Card Scheme'" sortable="'cardscheme'" filter="{cardscheme: 'text'}">
+                    <span ng-bind="row.cardscheme"></span>
+                </td>
+
+              <td data-title="'Expiry Months'" sortable="'expirymonths'" filter="{expirymonths: 'text'}">
+                <span ng-bind="row.expirymonths"></span>
+              </td>
+              <td data-title="'Preload Amount'" sortable="'preloadamount'" filter="{preloadamount: 'text'}">
+                <span ng-bind="row.preloadamount"></span>
+              </td>
+              <td data-title="'Min Value'" sortable="'freeformmin'" filter="{freeformmin: 'text'}">
+                <span ng-bind="row.freeformmin"></span>
+              </td>
+              <td data-title="'Max Value'" sortable="'freeformmax'" filter="{freeformmax: 'text'}">
+                <span ng-bind="row.freeformmax"></span>
+              </td>
+              <td data-title="'Cross Border-Country'" sortable="'crossbordercountry'" filter="{crossbordercountry: 'text'}">
+                <span ng-bind="row.crossbordercountry"></span>
+              </td>
+
+            </tr>
+        </table>
+    </div>
+</div>

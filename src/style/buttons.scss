@@ -7,6 +7,12 @@
   }
 }
 
+.button-success-colorized{
+  @include custom_button_colorized($green);
+}
+.button-failure-colorized{
+  @include custom_button_colorized($red);
+}
 .button-primary {
   @include custom_button($septenary);
   //@include custom_button($primary);

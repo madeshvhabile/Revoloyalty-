@@ -20,20 +20,42 @@ export default class SecurityController {
 
     requestPassword() {
         let self = this;
+
         if (self.$scope.username) {
-            self.SecurityService.postPasswordRequest(self.$scope.username)
-                .then(
-                    res => {
-                        self.$scope.showSuccess = true;
-                        self.$scope.showError = false;
-                        self.$scope.successMsg = self.$filter('translate')('xhr.post_password_request.success');
-                    },
-                    res => {
-                        self.$scope.showSuccess = false;
-                        self.$scope.showError = true;
-                        self.$scope.errorMsg = self.$filter('translate')('xhr.post_password_request.error');
-                    }
-                )
+
+          switch(self.$state.current.name) {
+              case 'forgot-password-request-seller' || 'forgot-password-reset-seller':
+              self.SecurityService.postMerchantPasswordRequest(self.$scope.username)
+                  .then(
+                      res => {
+                          self.$scope.showSuccess = true;
+                          self.$scope.showError = false;
+                          self.$scope.successMsg = self.$filter('translate')('xhr.post_password_request.success');
+                      },
+                      res => {
+                          self.$scope.showSuccess = false;
+                          self.$scope.showError = true;
+                          self.$scope.errorMsg = self.$filter('translate')('xhr.post_password_request.error');
+                      }
+                  )
+                  break;
+              default:
+              self.SecurityService.postPasswordRequest(self.$scope.username)
+                  .then(
+                      res => {
+                          self.$scope.showSuccess = true;
+                          self.$scope.showError = false;
+                          self.$scope.successMsg = self.$filter('translate')('xhr.post_password_request.success');
+                      },
+                      res => {
+                          self.$scope.showSuccess = false;
+                          self.$scope.showError = true;
+                          self.$scope.errorMsg = self.$filter('translate')('xhr.post_password_request.error');
+                      }
+                  )
+                  break;
+          }
+
         }
     }
 

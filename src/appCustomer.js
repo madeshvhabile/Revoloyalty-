@@ -53,6 +53,7 @@ angular.module('OpenLoyalty', [
     'client.login',
     'client.partials',
     'client.profile',
+    'client.card',
     'client.registration',
     'client.transactions',
     'client.transfers',

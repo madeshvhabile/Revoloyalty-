@@ -1,0 +1,88 @@
+<div class="client-section" ng-init="CustomerCardCtrl.getData()">
+    <box-loader loading="loaderVisible" cover="1" class="cover client" delay="1000"></box-loader>
+    <div class="row">
+        <div class="columns small-12">
+            <header class="ol-main-header">
+                <!-- <h1>{{ 'customer_status.my_card' | translate }}</h1> -->
+                <h1>Card Management</h1>
+            </header>
+            <!-- <div id="mob-profile" class="row">
+                <div class="columns small-12 medium-12 large-4">
+                    <div class="box no-margin qf-card-height">
+                        <div class="box-content text-center p-t-10">
+                            <img src="./img/avatar.jpg"
+                                 class="user-avatar"/>
+                            <p class="customer-name color-dark">
+                                <b>{{ customer.firstName + ' ' + customer.lastName }}</b>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div> -->
+            <div class="row">        
+                <div class="columns small-12 medium-6 large-3">
+                  <a href="#" ui-sref="customer.panel.card-details">
+                    <div class="gift-card-box row box-content">
+                        <div class="small-4 medium-4 large-4 card-left columns">
+                        <div class="text-center card-icon">
+                                <i class="fa fa-gift" aria-hidden="true"></i>
+                            </div>
+                            <div class="text-center card-amnt">$10</div>
+                        </div>
+                        <div class="small-8 medium-8 large-8 card-right columns">
+                        <div class="card-merchant text-center">Robinson</div>
+                        <div class="card-no text-center">897345787846</div>
+                        </div>
+                    </div>
+                   </a>
+                </div>
+                <div class="columns small-12 medium-6 large-3">
+                  <a href="#" ui-sref="customer.panel.card-details">
+                    <div class="loyalty-card-box row box-content">
+                        <div class="small-4 medium-4 large-4 card-left columns">
+                            <div class="text-center card-icon">
+                                <i class="fa fa-credit-card" aria-hidden="true"></i>
+                            </div>
+                            <div class="text-center card-amnt">$10</div>
+                        </div>
+                        <div class="small-8 medium-8 large-8 card-right columns">
+                            <div class="card-merchant text-center">Robinson</div>
+                            <div class="card-no text-center">897345787846</div>
+                        </div>
+                    </div>
+                    </a>
+                </div>
+                <div class="columns small-12 medium-6 large-3">
+                  <a href="#" ui-sref="customer.panel.card-details">
+                    <div class="gift-card-box row box-content">
+                            <div class="small-4 medium-4 large-4 card-left columns">
+                                <div class="text-center card-icon">
+                                    <i class="fa fa-gift" aria-hidden="true"></i>
+                                </div>
+                                <div class="text-center card-amnt">$10</div>
+                            </div>
+                            <div class="small-8 medium-8 large-8 card-right columns">
+                                <div class="card-merchant text-center">Robinson</div>
+                                <div class="card-no text-center">897345787846</div>
+                            </div>
+                    </div>
+                        </a>
+                </div>
+                <div class="columns small-12 medium-6 large-3">
+                  <a href="#" ui-sref="customer.panel.card-details">
+                    <div class="loyalty-card-box row box-content">
+                        <div class="small-4 medium-4 large-4 card-left columns">
+                            <div class="text-center card-icon"><i class="fa fa-credit-card" aria-hidden="true"></i></div>
+                            <div class="text-center card-amnt">$10</div>
+                        </div>
+                        <div class="small-8 medium-8 large-8 card-right columns">
+                            <div class="card-merchant text-center">Robinson</div>
+                            <div class="card-no text-center">897345787846</div>
+                        </div>
+                    </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

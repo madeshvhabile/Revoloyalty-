@@ -51,7 +51,9 @@ angular.module('OpenLoyalty', [
     'pos.dashboard',
     'pos.earning-rules',
     'pos.partials',
-    'pos.transactions'
+    'pos.transactions',
+    'pos.card'
+
 ])
 
     .config(function ($stateProvider, $urlRouterProvider, $httpProvider, jwtInterceptorProvider, RestangularProvider, $translateProvider, $locationProvider, cfpLoadingBarProvider) {

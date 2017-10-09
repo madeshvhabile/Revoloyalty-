@@ -10,7 +10,7 @@
 <div style="clear:both;"></div>
 <div class="client-list box">
     <div class="box-title">
-        <h1 class="text-left"><i class="fa fa-info" aria-hidden="true"></i> Info
+        <h1 class="text-left"><i class="fa fa-info" aria-hidden="true"></i> Merchant Info
 
             <!-- <button type="button" class="button  button-secondary tiny" >
         <i class="fa fa-pencil" aria-hidden="true"></i>
@@ -73,15 +73,15 @@
                     <span ng-bind="row.contactperson"></span>
                 </td>
                 <td data-title="'Active'" sortable="'active'" >
-                    <span ng-if="row.active= 1">Yes</span>
-                    <span ng-if="row.active = 0">No</span>
+                    <span ng-if="row.active == 1">Yes</span>
+                    <span ng-if="row.active == 0">No</span>
                 </td>
     
                 
                 <td data-title="'seller.actions'|translate">
-                    <!-- <button class="button button-septenary-colorized tiny" title="Delete Store" ng-click="StoreCtrl.showDeleteStoreModel(row)">
+                     <button class="button button-septenary-colorized tiny" title="Delete Store" ng-click="StoreCtrl.showDeleteStoreModel(row)">
                         <i class="fa fa-times"></i>
-                    </button>   -->
+                    </button>   
                     <button class="button button-septenary-colorized tiny" title="View Terminals"
                         ui-sref="admin.terminal-list({storeId: row.storeId})">
                      <i class="fa fa-eye" aria-hidden="true"></i>
@@ -97,31 +97,27 @@
     <form novalidate ng-submit="StoreCtrl.addStore(newStore)">
         <fieldset class="fieldset default">
             <div class="row">
-                <div class="large-4 columns" form-validation="storeValidate.name.errors">
+                <div class="large-6 columns" form-validation="storeValidate.name.errors">
                     <label>Store Name
                      <input type="text" placeholder="Store Name" ng-model="newStore.name"  />
                      </label>
                 </div>
-                <div class="large-4 columns" form-validation="storeValidate.contactperson.errors">
-                    <label>Contact Person
-                      <input type="text" placeholder="Contact Person" ng-model="newStore.contactperson"/>
+                <div class="large-6 columns" form-validation="storeValidate.storeurl.errors" >
+                        <label>Store URL (optional)
+                        <input type="text" placeholder="Store URL" ng-model="newStore.storeurl"  />
                       </label>
-                </div>
-                <div class="large-4 columns" form-validation="storeValidate.noofterminals.errors">
-                    <label>No of Terminals
-                       <input type="number" placeholder="No of Terminals" ng-model="newStore.noofterminals" />
-                       </label>
-                </div>
+                    </div>
+                
             </div>
             <div class="row">
+                <div class="large-4 columns" form-validation="storeValidate.noofterminals.errors">
+                        <label>No of Terminals
+                            <input type="number" placeholder="No of Terminals" ng-model="newStore.noofterminals" />
+                            </label>
+                    </div>
                 <div class="large-4 columns" form-validation="storeValidate.email.errors">
                     <label>Email
                     <input type="email" placeholder="Email"  ng-model="newStore.email"/>
-                  </label>
-                </div>
-                <div class="large-4 columns"  >
-                    <label>Store URL (optional)
-                    <input type="text" placeholder="Store URL" ng-model="newStore.storeurl"  />
                   </label>
                 </div>
                 <div class="large-4 columns" form-validation="storeValidate.postalcode.errors">
@@ -151,29 +147,28 @@
                 </div>
             </div>
             <div class="row">
-
+                <div class="large-6 columns" form-validation="storeValidate.contactperson.errors">
+                        <label>Contact Person
+                            <input type="text" placeholder="Contact Person" ng-model="newStore.contactperson"/>
+                            </label>
+                    </div>
                 <div class="large-6 columns" form-validation="storeValidate.contactno.errors">
-                    <label>Contact No1
-                    <input type="number" placeholder="Contact No 1"  ng-model="newStore.contactno"/>
-                  </label>
-                </div>
-                <div class="large-6 columns">
-                    <label>Contact No2 (optional)
-                    <input type="number" placeholder="Contact No 2" ng-model="newStore.alternatecontactno" />
+                    <label>Contact No
+                    <input type="number" placeholder="Contact No"  ng-model="newStore.contactno"/>
                   </label>
                 </div>
             </div>
             <div class="row">
-                <div class="large-6 columns" form-validation="storeValidate.bankaccno.errors">
-                    <label>Bank Acc No
-                      <input type="number" placeholder="Bank Acc No"  ng-model="newStore.bankaccno"/>
-                    </label>
-                </div>
-                <div class="large-6 columns" form-validation="storeValidate.bankname.errors">
-                    <label>Bank Name
-                      <input type="text" placeholder="Bank Name" ng-model="newStore.bankname"  />
-                    </label>
-                </div>
+                <div class="large-4 columns" form-validation="storeValidate.alternatecontactperson.errors">
+                        <label>Contact Person2 (optional)
+                            <input type="text" placeholder="Contact Person 2" ng-model="newStore.alternatecontactperson"/>
+                            </label>
+                    </div>
+                <div class="large-6 columns" form-validation="storeValidate.alternatecontactno.errors">
+                        <label>Contact No2 (optional)
+                        <input type="number" placeholder="Contact No 2" ng-model="newStore.alternatecontactno" />
+                        </label>
+                    </div>
             </div>
             <div class="row">
                 <div class="large-6 columns" form-validation="storeValidate.storetype.errors">
@@ -207,7 +202,9 @@
             <button type="button" ng-click="StoreCtrl.deleteStoreConform()" class="button small button-septenary-colorized m-t-10 m-b-0"
                 ng-disabled="StoreCtrl.loaderStates.deleteStore">{{"global.confirm"|translate}}
         </button>
-
+        <button type="button" ng-click="StoreCtrl.closedeleteModal()" class="button small button-septenary-colorized m-t-10 m-b-0"
+        >No
+        </button>
             <div class="spinner-loader-wrapper">
                 <spinner-loader loading="StoreCtrl.loaderStates.deleteStore" class="inline" delay="5"></spinner-loader>
             </div>

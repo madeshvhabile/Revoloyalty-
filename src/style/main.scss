@@ -30,7 +30,7 @@
 body {
   font-family: $default-font;
   background: $lightgray;
-  color: $gray;
+  color: $black;
   font-size:100%;
   font-weight: 600;
 }
@@ -325,6 +325,9 @@ i{
 margin-bottom: 20px;
 }
 }
+.f-w-1 {
+    font-weight: 100;
+}
 
 .noclick {
         pointer-events: none;
@@ -367,8 +370,389 @@ ul.tabs {
     color: $black;
 }
 
+/*Add Shcema css*/
+.giftcd-data{
+    padding: 0 15px;
+}
+.amntbox {
+    margin-bottom: 10px;
+}
+.amntbox-card {
+    box-shadow: inset 0px 0px 2px 1px #c7c7c7;
+    display: inline-block;
+    width: 19%;
+    border-radius: 5px;
+    padding: 10px;
+    margin: 5px;
+}
+.amntbox-close {
+    float: right;
+    padding: 4px;
+    cursor: pointer;
+}
 
-//new added
+/*Loader logo color*/
+.loader .logo h1 {
+    color: #ffffff;
+}
+
+.check-position{
+    position: relative;
+    left: 40%;
+}
+.fieldset-margin{
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/*Edit store*/
+
+/*field spacing*/
+.edit-store {
+	fieldset.fieldset {
+		label {
+            margin: 0;
+            [type='text'] {
+				margin: 0;
+			}
+		}
+	}
+}
+
+/**********Add order css******
+*******************************/
+/*Selectize box size*/
+.admin_add-order {
+	.selectize-dropdown-content {
+		max-height: 118px;
+	}
+}
+
+/*=====Merchant Portal=======*/
+.top-navigation.pos {
+    .top-logo{
+        background: linear-gradient(to left, #3c8dbc, #32449f,#3c8dbc);
+    }
+}
+/*responsive*/
+@media screen and (max-width:639px) {
+.top-navigation.client {
+	.top-logo {
+		.right-buttons {
+			.client-logout-button {
+				right: -10px;
+				top: -52px;
+				background: transparent;
+			}
+		}
+	}
+}
+
+.top-navigation.client {
+	.top-logo {
+		.left-buttons {
+			.home-button {
+				left: -10px;
+				top: 2px;
+				background: transparent;
+			}
+		}
+	}
+}
+
+}
+
+/*=====Customer Portal=======*/
+/*bg*/
+.customer_panel_card-show {
+	background: url(/img/customer-bg.jpg);
+	background-size: contain;
+}
+.customer_panel_dashboard {
+	background: url(/img/customer-bg.jpg);
+}
+.customer_panel_campaign-list {
+	background: url(/img/customer-bg.jpg);
+	background-size: contain;
+}
+.customer_panel_transfers-list {
+	background: url(/img/customer-bg.jpg);
+}
+.customer_panel_transactions-list {
+	background: url(/img/customer-bg.jpg);
+	background-size: contain;
+}
+.customer_panel_profile-show {
+	background: url(/img/customer-bg.jpg);
+}
+
+/*Login Responsive*/
+@media screen and (max-width:695px) {
+    section.login.admin {
+        .form-box{
+            display: block !important;
+        }
+    }
+    section.login.admin {
+        .registration-box{
+            width: 327px;
+            display: block !important;
+        }
+    }
+    section.login.admin {
+        .registration-box {
+            .registration{
+                position: static;
+            }
+        }
+    }
+
+    /*Menu bar*/
+    .client-topbar{
+        .menu {
+            display: none;
+        }
+    }
+    .top-navigation.client {
+        .top-logo{
+            min-height: 65px;
+        }
+    }
+    .top-navigation.client {
+        .top-logo {
+            .logo{
+                text-align: center;
+            }
+        }
+    }
+    .client-menu-button {
+        .fa-bars {
+            font-size: 25px;
+            padding: 1px;
+        }
+    }
+
+    .client-menu-button {
+        position: absolute;
+        left: 0;
+        top: 0;
+        border: 0;
+        color: #fff;
+        transition: color 0.5s;
+        background: transparent;
+        padding: 3px 12px;
+        font-size: 9px;
+        font-style: normal;
+        font-weight: 300;
+        line-height: 1.3;
+        text-transform: uppercase;
+        cursor: pointer;
+    }
+    &:focus{
+        outline: none;
+    }
+
+    .top-navigation.client {
+        .top-logo {
+            .right-buttons {
+                .client-logout-button{
+                    top: -52px !important;
+                    background: transparent;
+                }
+            }
+        }
+    }
+    .top-navigation.client {
+        .top-bar {
+            ul.menu {
+                li{
+                    display: block;
+                    text-align: left;
+                }
+            }
+        }
+    }
+    /*fixed nav and section adjust*/
+    .top-navigation.client {
+        position: fixed;
+        z-index: 1;
+        width: 100%;
+    }
+    .client-section {
+        top: 65px;
+    }
+    .loyal-info-equal{
+        padding-top: 40px;
+    }
+}/*End menu media query*/
+
+
+/*menu bar*/
+.top-navigation.client {
+    .top-logo{
+        background: linear-gradient(to left, #32449f, #3c8dbc, #32449f);
+    }
+}
+.top-navigation.client {
+    .top-logo {
+        .right-buttons {
+            .client-logout-button{
+                top: 7px;
+                background: transparent;
+            }
+        }
+    }
+}
+.top-navigation.client {
+    .top-logo {
+        min-height: 60px;
+    }
+}
+.qf-menu-padding{
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+}
+.top-navigation.client {
+    .top-bar {
+        ul.menu {
+            li {
+                a{
+                    &:focus{
+                        color:$white;
+                    }
+                }
+            }
+        }
+    }
+}
+
+/*create account logo*/
+section.login {
+    .client-logo {
+        h1{
+            color: $white;
+            font-size: 42px;
+        }
+    }
+}
+
+
+@media only screen and (min-width:320px) and (max-width:568px) and (orientation : landscape) {
+    .client-topbar{
+        .menu {
+            height: 200px;
+            overflow:auto;
+        }
+    }
+    .top-navigation.client {
+        .top-logo {
+            .right-buttons {
+                .client-logout-button{
+                    top: -52px !important;
+                    background: transparent;
+                }
+            }
+        }
+    }
+  }
+@media only screen and (min-width:375px) and (max-width:667px) and (orientation : landscape) {
+    .client-topbar{
+        .menu {
+            height: 200px;
+            overflow:auto;
+        }
+    }
+    .left-buttons {
+        display: block !important;
+    }
+    .top-navigation.client {
+        .top-logo {
+            .right-buttons {
+                .client-logout-button{
+                    top: 6px !important;
+                    background: transparent;
+                }
+            }
+        }
+    }
+
+}
+@media only screen and (min-width:384px) and (max-width:600px) and (orientation : landscape) {
+    .top-navigation.client {
+        .top-logo {
+            .right-buttons {
+                .client-logout-button{
+                    top: -52px !important;
+                    background: transparent;
+                }
+            }
+        }
+    }
+  }
+@media only screen and (min-width:414px) and (max-width:736px) and (orientation : landscape) {
+    .left-buttons {
+        display: none;
+    }
+}
+
+/*card management*/
+.gift-card-box {
+    background: url(/img/gift-card-bg.jpg);
+    margin: 8px -5px !important;
+    background-size: cover;
+    border-radius: 7px;
+    box-shadow: 2px 3px 1px 1px #333;
+}
+.loyalty-card-box {
+    background:url(/img/loyalty-card-bg.jpg);
+    margin: 8px -5px !important;
+    background-size: cover;
+    border-radius: 7px;
+    box-shadow: 2px 3px 1px 1px #333;
+}
+.card-left {
+    padding: 10px;
+    color: #fff;
+    min-height: 120px;
+}
+.card-right {
+    padding: 10px;
+    background-size: cover;
+    min-height: 122px;
+}
+.card-icon {
+    font-size: 50px;
+}
+.card-amnt {
+    font-weight: 700;
+    font-size: 18px;
+}
+.card-merchant {
+    font-size: 32px;
+    color: #fff;
+    margin-bottom: 10px;
+}
+.card-no {
+    color: #fff;
+}
+.loyal-info-equal{
+    padding-top: 30px;
+}
+
+//new added for error validation
+.has-error{
+    border: 1px solid #ff0000
+    }
+ .customerrmsg{
+    color: #a94442;
+    background-color: #f2dede;
+    border-color: #ebccd1;
+    padding: 15px;
+    margin-bottom: 20px;
+    margin-top: 10px;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    }
 
 
 

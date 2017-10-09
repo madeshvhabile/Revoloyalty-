@@ -1,0 +1,349 @@
+<box-loader loading="false" cover="1" class="cover" delay="1000"></box-loader>
+
+<div class="heading" ng-init="CardSchemeCtrl.getCardSchemeData();">
+    <h1>Card Scheme</h1>
+
+            <button class="button button-septenary-colorized  float-right m-r-1" ui-sref="admin.cardscheme-list"  type="submit">
+               Back
+            </button>
+
+
+</div>
+<div style="clear:both;"></div>
+<div class="client-list box">
+  <div class="box-content">
+        <div class="row">
+            <div class="columns large-12 medium-12 small-12 merchat-tab" data-tabs-content="collapsing-tabs">
+                    <ul class="tabs merchat-tab-ul" data-active-collapse="true" data-tabs id="collapsing-tabs">
+                                <li class="tabs-title is-active"><a href="#panel1c" aria-selected="true">Card Scheme Info</a></li>
+                                <!-- <li class="tabs-title"><a href="#panel2c">Purchase Order and Card Info</a></li>
+                                <li class="tabs-title"><a href="#panel3c">Terminal Info</a></li> -->
+                    </ul>
+                    <div class="tabs-panel" id="panel1c">
+                                <div class="row">
+                                  <div class="large-6 medium-6 small-6 columns">
+                                    <label>Card Scheme Name
+                                      <div class="val-box" ng-bind="cardscheme.cardschemename"></div>
+                                    </label>
+                                  </div>
+                                  <div class="large-6 medium-6 small-6 columns">
+                                    <label>Active
+                                      <div class="val-box" ng-if="cardscheme.active==1">Yes</div>
+                                      <div class="val-box" ng-if="cardscheme.active==0">NO</div>
+                                    </label>
+                                  </div>
+                                </div>
+                                <div class="row">
+                                  <div class="large-6 medium-6 small-6 columns">
+                                    <label>Merchant Name
+                                      <div class="val-box" ng-bind="cardscheme.merchantname"></div>
+                                    </label>
+                                  </div>
+                                  <div class="large-6 medium-6 small-6 columns">
+                                    <label>Status
+                                      <div class="val-box" style="text-transform:uppercase;"ng-bind="cardscheme.status"></div>
+                                    </label>
+                                  </div>
+                                </div>
+
+                                <div class="row" >
+                                    <div class="medium-2 small-3 columns">
+                                        <label>Card Category</label>
+                                    </div>
+                                    <div class="medium-10 small-9 columns">
+                                        <div class="medium-5 small-3 columns">
+
+                                            <input type="checkbox" ng-model="cardscheme.isgiftcardapplicable||cardscheme.isegiftcardapplicable" disabled="disabled">Gift Card<br>
+                                        </div>
+                                        <div class="medium-5 small-3 columns">
+
+                                            <input type="checkbox" ng-model="cardscheme.isloyaltycardapplicable||cardscheme.iseloyaltycardapplicable" disabled="disabled">Loyalty Card<br>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row" ng-if="cardscheme.isgiftcardapplicable==true||cardscheme.isegiftcardapplicable==true">
+                                  <div class="columns large-12 medium-12 small-12">
+                                  <div class="columns large-6 medium-6 small-6" ng-if="cardscheme.isgiftcardapplicable == true">
+                                    <fieldset class="fieldset">
+                                      <legend>Gift Card Data</legend>
+                                      <div class="row giftcd-data">
+                                        <div class="row columns">
+                                        <div class="row" >
+                                            <div class="row columns">
+                                                <div class="large-12 medium-12 small-12 columns">
+                                                  <div class="large-4 medium-4 small-4 columns">
+                                                      <label>Pre-load Amount $ </label>
+                                                  </div>
+                                                  <div class="large-8 medium-8 small-8 columns" ng-if="cardscheme.giftcardschemedata.preload.length>0">
+                                                    <ul ng-repeat='preload in cardscheme.giftcardschemedata.preload'>
+                                                        <!-- A checkbox displaying the progress -->
+                                                        <!-- An information of a task -->
+                                                        <li>$ {{preload}} Pre-load</li>
+                                                    </ul>
+                                                  </div>
+                                                  <div class="large-8 medium-8 small-8 columns" ng-if="!(cardscheme.giftcardschemedata.preload.length>0)">
+                                                    <div class="val-box" style="font-weight:bold;">"No Pre-Load Amount Present"</div>
+                                                  </div>
+                                              </div>
+                                            </div>
+                                        </div>
+                                        <div class="row" ng-if="cardscheme.giftcardschemedata.freecard">
+
+                                          <div class="large-12 medium-12 small-12 columns">
+                                            <div class="large-4 medium-4 small-4 columns">
+                                                <label>Free Form </label>
+                                            </div>
+                                            <div class="large-8 medium-8 small-8 columns">
+                                                <checkbox ng-model="cardscheme.giftcardschemedata.freecard.isSelected" disabled="disabled"></checkbox>
+                                            </div>
+                                          </div>
+                                      </div>
+                                      <div class="row columns" ng-if="cardscheme.giftcardschemedata.freecard.isSelected == true" >
+                                        <div class="large-12 medium-12 small-12 columns">
+                                          <div class="large-4 medium-4 small-4 columns columns">
+                                              <label> Min Value </label>
+                                          </div>
+                                          <div class="large-8 medium-8 small-8 columns">
+                                              <div class="val-box" ng-bind="cardscheme.giftcardschemedata.freecard.min"></div>
+                                          </div>
+                                        </div>
+                                      </div>
+                                      <div class="row columns" ng-if="cardscheme.giftcardschemedata.freecard.isSelected == true"  >
+                                        <div class="large-12 medium-12 small-12 columns">
+                                          <div class="large-4 medium-4 small-4 columns">
+                                              <label> Max Value </label>
+                                          </div>
+                                          <div class="large-8 medium-8 small-8 columns" >
+                                              <div class="val-box" ng-bind="cardscheme.giftcardschemedata.freecard.max"></div>
+                                          </div>
+                                        </div>
+                                      </div>
+                                      <div class="row" ng-if="cardscheme.giftcardschemedata.crossborder">
+                                          <div class="large-12 medium-12 small-12 columns">
+                                                <div class="large-4 medium-4 small-4 columns">
+                                                    <label>Cross Border</label>
+                                                </div>
+                                                <div class="large-8 medium-8 small-8 columns">
+                                                    <checkbox ng-model="cardscheme.giftcardschemedata.crossborder.isSelected" disabled="disabled"></checkbox>
+                                                </div>
+                                          </div>
+                                      </div>
+                                      <div class="row columns" ng-if="cardscheme.giftcardschemedata.crossborder.isSelected == true" >
+                                        <div class="large-12 medium-12 small-12 columns">
+                                            <div class="large-4 medium-4 small-4 columns">
+                                                <label>{{ "customer.country" | translate }}</label>
+                                            </div>
+                                            <div class="large-8 medium-8 small-8 columns" >
+                                                <div class="val-box" ng-bind="cardscheme.giftcardschemedata.crossborder.country"></div>
+                                            </div>
+                                        </div>
+                                      </div>
+                                      <div class="row columns" ng-if="cardscheme.giftcardschemedata.crossborder.isSelected == true" >
+                                        <div class="large-12 medium-12 small-12 columns">
+                                          <div class="large-4 medium-4 small-4 columns columns">
+                                              <label> Min Value </label>
+                                          </div>
+                                          <div class="large-8 medium-8 small-8 columns">
+                                              <div class="val-box" ng-bind="cardscheme.giftcardschemedata.crossborder.min"></div>
+                                          </div>
+                                        </div>
+                                      </div>
+                                      <div class="row columns" ng-if="cardscheme.giftcardschemedata.crossborder.isSelected == true"  >
+                                        <div class="large-12 medium-12 small-12 columns">
+                                          <div class="large-4 medium-4 small-4 columns">
+                                              <label> Max Value </label>
+                                          </div>
+                                          <div class="large-8 medium-8 small-8 columns" >
+                                              <div class="val-box" ng-bind="cardscheme.giftcardschemedata.crossborder.max"></div>
+                                          </div>
+                                        </div>
+                                      </div>
+
+                                      </div>
+                                      </div>
+                                    </fieldset>
+                                  </div>
+                                  <div class="columns large-6 medium-6 small-6" ng-if="cardscheme.isegiftcardapplicable == true">
+                                        <fieldset class="fieldset">
+                                          <legend>E-Gift Card Data</legend>
+                                         <div class="row giftcd-data">
+                                            <div class="row columns">
+                                            <div class="row">
+                                                <div class="row columns">
+                                                    <div class="large-12 medium-12 small-12 columns">
+                                                      <div class="large-4 medium-4 small-4 columns">
+                                                          <label>Pre-load Amount $ </label>
+                                                      </div>
+                                                      <div class="large-8 medium-8 small-8 columns" ng-if="cardscheme.egiftcardschemedata.preload.length>0">
+                                                        <ul ng-repeat='preload in cardscheme.egiftcardschemedata.preload'>
+                                                            <li>$ {{preload}} Pre-load</li>
+                                                        </ul>
+                                                      </div>
+                                                      <div class="large-8 medium-8 small-8 columns" ng-if="!(cardscheme.egiftcardschemedata.preload.length>0)">
+                                                        <div class="val-box" style="font-weight:bold;" >"No Pre-Load Amount Present"</div>
+                                                      </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row" ng-if="cardscheme.egiftcardschemedata.freecard">
+                                              <div class="large-12 medium-12 small-12 columns">
+                                                <div class="large-4 medium-4 small-4 columns">
+                                                    <label>Free Form </label>
+                                                </div>
+                                                <div class="large-8 medium-8 small-8 columns">
+                                                    <checkbox ng-model="cardscheme.egiftcardschemedata.freecard.isSelected" disabled="disabled"></checkbox>
+                                                </div>
+                                              </div>
+                                            </div>
+                                            <div class="row columns" ng-if="cardscheme.egiftcardschemedata.freecard.isSelected == true" >
+                                                <div class="large-12 medium-12 small-12 columns">
+                                                <div class="large-4 medium-4 small-4 columns">
+                                                    <label> Min Value </label>
+                                                </div>
+                                                <div class="large-8 medium-8 small-8 columns">
+                                                    <div class="val-box" ng-bind="cardscheme.egiftcardschemedata.freecard.min"></div>
+                                                </div>
+                                              </div>
+                                            </div>
+                                            <div class="row columns" ng-if="cardscheme.egiftcardschemedata.freecard.isSelected == true"  >
+                                              <div class="large-12 medium-12 small-12 columns">
+                                                <div class="large-4 medium-4 small-4 columns">
+                                                    <label> Max Value </label>
+                                                </div>
+                                                <div class="large-8 medium-8 small-8 columns">
+                                                    <div class="val-box" ng-bind="cardscheme.egiftcardschemedata.freecard.max"></div>
+                                                </div>
+                                              </div>
+                                            </div>
+                                            <div class="row" ng-if="cardscheme.egiftcardschemedata.crossborder&&cardscheme.egiftcardschemedata.crossborder.isSelected">
+                                              <div class="large-12 medium-12 small-12 columns">
+                                                    <div class="large-4 medium-4 small-4 columns">
+                                                        <label>Cross Border</label>
+                                                    </div>
+                                                    <div class="large-8 medium-8 small-8 columns">
+                                                        <checkbox ng-model="cardscheme.egiftcardschemedata.crossborder.isSelected" disabled="disabled"></checkbox>
+                                                    </div>
+                                              </div>
+                                            </div>
+                                            <div class="row columns" ng-if="cardscheme.egiftcardschemedata.crossborder.isSelected == true" >
+                                              <div class="large-12 medium-12 small-12 columns">
+                                                    <div class="large-4 medium-4 small-4 columns">
+                                                        <label>{{ "customer.country" | translate }}</label>
+                                                    </div>
+                                                    <div class="large-8 medium-8 small-8 columns" >
+                                                        <div class="val-box" ng-bind="cardscheme.egiftcardschemedata.crossborder.country"></div>
+                                                    </div>
+                                              </div>
+                                            </div>
+                                            <div class="row columns" ng-if="cardscheme.egiftcardschemedata.crossborder.isSelected == true" >
+                                                <div class="large-12 medium-12 small-12 columns">
+                                                <div class="large-4 medium-4 small-4 columns">
+                                                    <label> Min Value </label>
+                                                </div>
+                                                <div class="large-8 medium-8 small-8 columns">
+                                                    <div class="val-box" ng-bind="cardscheme.egiftcardschemedata.crossborder.min"></div>
+                                                </div>
+                                              </div>
+                                            </div>
+                                            <div class="row columns" ng-if="cardscheme.egiftcardschemedata.crossborder.isSelected == true"  >
+                                              <div class="large-12 medium-12 small-12 columns">
+                                                <div class="large-4 medium-4 small-4 columns">
+                                                    <label> Max Value </label>
+                                                </div>
+                                                <div class="large-8 medium-8 small-8 columns">
+                                                    <div class="val-box" ng-bind="cardscheme.egiftcardschemedata.crossborder.max"></div>
+                                                </div>
+                                              </div>
+                                            </div>
+                                            </div>
+                                            </div>
+
+
+                                            </fieldset>
+                                          </div>
+                                  </div>
+                                </div>
+                                <div class="row" ng-if="cardscheme.isloyaltycardapplicable==true||cardscheme.iseloyaltycardapplicable==true">
+                                  <div class="columns large-12 medium-12 small-12">
+                                    <div class="columns large-6 medium-6 small-6" ng-if="cardscheme.isloyaltycardapplicable == true">
+                                      <fieldset class="fieldset" >
+                                        <legend>Loyalty Card Data</legend>
+                                        <div class="row columns">
+                                        <div class="row">
+                                          <div class="large-12 medium-12 small-12 columns">
+                                                <div class="large-4 medium-4 small-4 columns">
+                                                    <label>Rewards & Redeem</label>
+                                                </div>
+                                                <div class="large-8 medium-8 small-8 columns">
+                                                    <checkbox ng-model="cardscheme.loyaltycardschemedata.rewardRedeem.isSelected" disabled="disabled"></checkbox>
+                                                </div>
+                                          </div>
+                                        </div>
+                                         <div class="row">
+                                           <div class="large-12 medium-12 small-12 columns">
+                                              <div class="large-4 medium-4 small-4 columns">
+                                                  <label>Cross Border</label>
+                                              </div>
+                                              <div class="large-8 medium-8 small-8 columns">
+                                                  <checkbox ng-model="cardscheme.loyaltycardschemedata.crossBorder.isSelected" disabled="disabled"></checkbox>
+                                              </div>
+                                            </div>
+                                        </div>
+                                        <div class="row columns" ng-if="cardscheme.loyaltycardschemedata.crossBorder.isSelected == true"  >
+                                          <div class="large-12 medium-12 small-12 columns">
+                                              <div class="large-4 medium-4 small-4 columns">
+                                                  <label>{{ "customer.country" | translate }}<span class="required">*</span></label>
+                                              </div>
+                                              <div class="large-8 medium-8 small-8 columns" >
+                                                  <div class="val-box" ng-bind="cardscheme.loyaltycardschemedata.crossBorder.country"></div>
+                                              </div>
+                                          </div>
+                                        </div>
+                                        </div>
+                                    </fieldset>
+                                    </div>
+                                    <div class="columns large-6 medium-6 small-6" ng-if="cardscheme.iseloyaltycardapplicable == true">
+                                      <fieldset class="fieldset" >
+                                        <legend>E-Loyalty Card Data</legend>
+                                        <div class="row columns">
+                                        <div class="row">
+                                          <div class="large-12 medium-12 small-12 columns">
+                                                <div class="large-4 medium-4 small-4 columns">
+                                                    <label>Rewards & Redeem</label>
+                                                </div>
+                                                <div class="large-8 medium-8 small-8 columns">
+                                                    <checkbox ng-model="cardscheme.eloyaltycardschemedata.rewardRedeem.isSelected" disabled="disabled"></checkbox>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                          <div class="large-12 medium-12 small-12 columns">
+                                                <div class="large-4 medium-4 small-4 columns">
+                                                    <label>Cross Border</label>
+                                                </div>
+                                                <div class="large-8 medium-8 small-8 columns">
+                                                    <checkbox ng-model="cardscheme.eloyaltycardschemedata.crossBorder.isSelected" disabled="disabled"></checkbox>
+                                                </div>
+                                          </div>
+                                        </div>
+                                          <div class="row columns" ng-if="cardscheme.eloyaltycardschemedata.crossBorder.isSelected == true"  >
+                                            <div class="large-12 medium-12 small-12 columns">
+                                                <div class="large-4 medium-4 small-4 columns">
+                                                    <label>{{ "customer.country" | translate }}<span class="required">*</span></label>
+                                                </div>
+                                                <div class="large-8 medium-8 small-8 columns" >
+                                                    <div class="val-box" ng-bind="cardscheme.eloyaltycardschemedata.crossBorder.country"></div>
+                                                </div>
+                                            </div>
+                                          </div>
+                                        </div>
+                                    </fieldset>
+                                    </div>
+                                  </div>
+                                </div>
+                            </div>
+                 </div>
+            </div>
+        </div>
+</div>

@@ -4,52 +4,16 @@ export default class MerchantService {
         this.EditableMap = EditableMap;
         this.$q = $q;
         
-          this.merchantDetail ={
-            "id":"065 2845678594",
-            "name":"Mohan",
-            "group":"Habile",
-            "contact":"saranya",
-            "roc":"123124",
-            "address":"janaki complex",
-            "phone":"9796586989",
-            "store":[{
-                "store":"alpha",
-                "Terminals":"270",
-                "status":"1",
-                "Action":""
-                 },
-                 {
-                "store":"Beta",
-                "Terminals":"374",
-                "status":"1",
-                "Action":""
-                 },
-                 {
-                "store":"banshee",
-                "Terminals":"3",
-                "status":"1",
-                "Action":""
-                 },
-                 {
-                "store":"omeha",
-                "Terminals":"824",
-                "status":"1",
-                "Action":""
-                 },
-                 {
-                "store":"Cayoty",
-                "Terminals":"585",
-                "status":"0",
-                "Action":""
-                 }]
-            }
+         
         
     }
 
     getMerchants() {
         return  this.Restangular.all('merchant').getList();
       }
-
+    getMerchantsFromGroups(groupId) {		
+        return  this.Restangular.one('groupbymerchant',groupId).getList();		
+    }  
     getGroups() {
         return this.Restangular.all('group').getList();
         
@@ -97,6 +61,13 @@ export default class MerchantService {
           return this.Restangular.one('group').customPOST({group:group})
       }
 
+    postRegisterMerchant(merchant){
+        let self = this;
+        
+        return self.Restangular.one('seller').one('register').customPOST({merchant: self.EditableMap.merchant(merchant)});
+    }  
+
+
     getMerchant(merchantId) {
          return this.Restangular.one('merchant', merchantId).get();
      }
@@ -105,6 +76,9 @@ export default class MerchantService {
         return this.Restangular.one('store', merchantId).get();
     }
 
+    deleteMerchant(merchantId){
+        return this.Restangular.one('merchant',merchantId).customDELETE();
+    }
 
     
 

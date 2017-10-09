@@ -77,7 +77,9 @@ angular.module('OpenLoyalty', [
     'admin.merchant',
     'admin.store',
     'admin.group',
-    'admin.logs'
+    'admin.order',
+    'admin.logs',
+    'admin.cardScheme'
 ])
     .config(function ($stateProvider, $urlRouterProvider, $httpProvider, jwtInterceptorProvider, RestangularProvider, $translateProvider, $locationProvider, cfpLoadingBarProvider) {
         let config = window.OpenLoyaltyConfig;

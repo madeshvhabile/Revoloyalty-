@@ -27,10 +27,10 @@
                                     <a href="" class="addings" ng-click="MerchantCtrl.openCategory()"><i class="fa fa-plus" aria-hidden="true" title="Add Category"> Add Category</i></a>
                                 </div>
                                 <div class="medium-2 small-3 columns">
-                                    <label>Status</label>
+                                    <label>Active</label>
                                 </div>
                                 <div class="medium-4 small-9 columns">
-                                    <selectize config="MerchantCtrl.activeConfig" options="MerchantCtrl.active" ng-model="newMerchant.merchantMaster.active"></selectize>
+                                    <selectize config="MerchantCtrl.activeConfig" options="MerchantCtrl.activeoption" ng-model="newMerchant.merchantMaster.active"></selectize>
                                    
                                 </div>
                         
@@ -41,9 +41,9 @@
                                     <label>Merchant Name </label>
                                 </div>
                                 <div class="small-9 medium-4 columns name-field">
-                                    <input type="text" pattern="^[A-Za-z\s]{5,50}$" ng-model="newMerchant.merchantMaster.name" required>
+                                    <input type="text" pattern="^[A-Za-z\s]{4,50}$" ng-model="newMerchant.merchantMaster.name" required>
                                     <span class="form-error">
-                                            Merchant Name is required.Minimum 5 and Maximum 50 characters.
+                                            Merchant Name is required.Minimum 4 and Maximum 50 characters.
                                           </span>
                                           <p class="help-text" id="exampleHelpText"></p>
                                 </div>
@@ -51,9 +51,9 @@
                                         <label>ROC/BRN</label>
                                     </div>
                                     <div class="small-9 medium-4 columns">
-                                        <input type="text" ng-model="newMerchant.merchantMaster.roc"  aria-describedby="exampleHelpText" pattern="^[a-zA-Z0-9-]{5,20}$" required>
+                                        <input type="text" ng-model="newMerchant.merchantMaster.roc"  aria-describedby="exampleHelpText" pattern="^[a-zA-Z0-9-]{4,20}$" required>
                                         <span class="form-error">
-                                                  ROC/BRN must be minimum 5 and maximum 50 characters.
+                                                  ROC/BRN must be minimum 4 and maximum 20 characters.
                                               </span>
                                         
                                     </div>
@@ -63,9 +63,9 @@
                                     <label>DBA</label>
                                 </div>
                                 <div class="small-9 medium-4 columns">
-                                    <input type="text" ng-model="newMerchant.merchantMaster.dba" pattern="^[a-zA-Z0-9\s]{5,50}$" required>
+                                    <input type="text" ng-model="newMerchant.merchantMaster.dba" pattern="^[a-zA-Z0-9\s]{4,50}$" required>
                                     <span class="form-error">
-                                              DBA must be filled between 5 to 50 characters.
+                                              DBA must be filled between 4 to 50 characters.
                                           </span>
                                     <span class="prompt">{{ "seller.last_name_prompt" | translate }} </span>
                                 </div>
@@ -73,8 +73,8 @@
                                         <label>Address</label>
                                     </div>
                                     <div class="medium-4 small-9 columns">
-                                        <textarea rows="4" cols="50" aria-describedby="messageHelpText" ng-model="newMerchant.merchantMaster.address" pattern="^[a-zA-Z0-9\s]{5,50}$"  required></textarea>
-                                        <span class="form-error">Address is required.Minimum 5 and Maximum 50 characters.</span>
+                                        <textarea rows="4" cols="50" aria-describedby="messageHelpText" ng-model="newMerchant.merchantMaster.address" pattern="^[a-zA-Z0-9\s.,#-]{5,100}$""  required></textarea>
+                                        <span class="form-error">Address is required.Minimum 5 and Maximum 100 characters.</span>
                                     </div>
                             </div>
                             
@@ -105,7 +105,7 @@
                                     <label>Postal Code</label>
                                 </div>
                                 <div class="small-9 medium-4 columns">
-                                    <input type="number" ng-model="newMerchant.merchantMaster.postalcode"   required>
+                                    <input type="number" ng-model="newMerchant.merchantMaster.postalcode" pattern="^[0-9]{4,10}$"   required>
                                     <span class="form-error">
                                             PostCode must be entered between 4 characters to 10 characters.
                                           </span>
@@ -117,18 +117,18 @@
                                     <div class="small-9 medium-4 columns">
                                         <input type="email" ng-model="newMerchant.merchantMaster.email" required>
                                         <span class="form-error">
-                                                  Email is required. ex: "email@gamil.com".
+                                                  Email is required. ex: "email@gmail.com".
                                               </span>
                                         </div>
                             </div>
                             <div class="row">
                                     <div class="medium-2 small-3 columns">
-                                        <label>Bank AccNo</label>
+                                        <label>Bank Acc No</label>
                                     </div>
                                     <div class="medium-4 small-9 columns">
                                         <input type="number" ng-model="newMerchant.merchantMaster.bankaccno" pattern="^[0-9]{5,20}$" required>
                                         <span class="form-error">
-                                                  Bank AccNo must be entered between 5 to 20 Numbers.
+                                                  Bank Acc No must be entered between 5 to 20 Numbers.
                                               </span>
                                        
                                     </div>
@@ -136,12 +136,57 @@
                                         <label>Bank Name</label>
                                     </div>
                                     <div class="medium-4 small-9 columns" >
-                                        <input type="text" ng-model="newMerchant.merchantMaster.bankname" pattern="^[a-zA-Z0-9\s]{5,50}$" required>
+                                        <input type="text" ng-model="newMerchant.merchantMaster.bankname" pattern="^[a-zA-Z0-9\s]{4,50}$" required>
                                         <span class="form-error">
-                                                  Bank Name must be minimum 5 and maximum 50 characters.
+                                                  Bank Name must be minimum 4 and maximum 50 characters.
                                               </span>
                                         
                                     </div>
+                                </div>
+                                <div class="row">
+                                    <div class="medium-2 small-3 columns">
+                                        <label>Bank Code (optional)</label>
+                                    </div>
+                                    <div class="medium-4 small-9 columns">
+                                        <input type="text" ng-model="newMerchant.merchantMaster.bankcode" pattern="^[a-zA-Z0-9]{1,10}$">
+                                        <span class="form-error">
+                                                  Bank Code must be entered between 1 to 10 characters.
+                                              </span>
+                                       
+                                    </div>
+                                    <div class="medium-2 small-3 columns">
+                                        <label>Branch Code (optional)</label>
+                                    </div>
+                                    <div class="medium-4 small-9 columns" >
+                                        <input type="text" ng-model="newMerchant.merchantMaster.branchcode" pattern="^[a-zA-Z0-9\s]{1,10}$">
+                                        <span class="form-error">
+                                                  Branch Code must be minimum 1 and maximum 10 characters.Special Characters not allowed.
+                                              </span>
+                                        
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="medium-2 small-3 columns">
+                                      <label> Branch Name</label>
+                                     </div>
+                                    <div class="medium-4 small-9 columns" >
+                                        <input type="text" ng-model="newMerchant.merchantMaster.branchname" pattern="^[a-zA-Z0-9\s]{4,50}$" required>
+                                          <span class="form-error">
+                                                Branch Name must be minimum 4 and maximum 50 characters.
+                                         </span>
+                                                
+                                     </div>
+                                    <div class="medium-2 small-3 columns">
+                                        <label>Swift Code (optional)</label>
+                                    </div>
+                                    <div class="medium-4 small-9 columns">
+                                        <input type="text" ng-model="newMerchant.merchantMaster.swiftcode" pattern="^[a-zA-Z0-9\s]{1,15}$" style="text-transform:uppercase">
+                                        <span class="form-error">
+                                                Swift Code must be entered between 1 to 15 characters.
+                                              </span>
+                                       
+                                    </div>
+                                   
                                 </div>
                                 <div class="row">
                                         <div class="small-3 medium-2 columns">
@@ -168,37 +213,38 @@
                                     <div class="row">
                                         
                                         <div class="small-3 medium-2 columns">
-                                            <label>Contact Person <span class="required">*</span></label>
+                                            <label>Contact Person </label>
                                             
                                         </div>
-                                        <div class="small-9 medium-4 columns" form-validation="validate.merchantMaster.contactperson.errors">
-                                            <input type="text" ng-model="newMerchant.merchantMaster.contactperson"  required>
+                                        <div class="small-9 medium-4 columns">
+                                            <input type="text" ng-model="newMerchant.merchantMaster.contactperson" aria-describedby="exampleHelpText" pattern="^[a-zA-Z0-9\s]{4,25}$" required>
                                             <span class="form-error">
-                                                Contact Person Field is required.
-                                                  </span>
+                                                Contact Person Field must be entered between 4 to 25 numbers.
+                                            </span>
                                            
                                         </div>
                                         <div class="small-3 medium-2 columns">
                                             <label>Contact No</label>
                                         </div>
                                         <div class="small-9 medium-4 columns">
-                                            <input type="number" ng-model="newMerchant.merchantMaster.contactno" pattern="^[0-9]{8,15}$" required>
+                                            <input type="number" ng-model="newMerchant.merchantMaster.contactno" pattern="^[0-9]{6,15}$" required>
                                             <span class="form-error">
-                                                      Contact Number is Required.Minimum 8 Numbers.
+                                                      Contact Number is Required.Minimum 6 and Maximum 15 Numbers.
                                                   </span>
                                             
                                         </div>
                                         
                                     </div>
                                     <div class="row">
-                                           <div class="small-3 medium-2 columns">
+                                           <div class="small-3 medium-2 columns" >
                                                         <label>Alternative Contact No (optional) </label>
                                                     </div>
         
                                                     <div class="small-9 medium-4 columns">
-                                                            <input type="text" ng-model="newMerchant.merchantMaster.alternatecontactno"  >
-
-                                                            
+                                                            <input type="number" ng-model="newMerchant.merchantMaster.alternatecontactno"  pattern="^[0-9]{6,15}$">
+                                                            <span class="form-error">
+                                                               Alternate Contact Number must be Minimum 6 and Maximum 15 Numbers.
+                                                            </span>     
                                                     </div>
                                                     <div class="small-9 medium-6 columns"></div>        
                                             
@@ -250,7 +296,7 @@
                 </fieldset>
             </form>
 
-            <form novalidate ng-submit="MerchantCtrl.addMerchant(newMerchant)">
+            <form novalidate data-abide ng-submit="MerchantCtrl.addMerchant(newMerchant)">
                 <fieldset class="fieldset tabs-panel" id="panel2c">
                     <div class="row">
                         <div class="small-12 medium-6 columns " form-validation="validate.billingMaster.moduleids.errors">
@@ -309,8 +355,8 @@
                                         </div>
     
                                         <div class="medium-4 small-9 columns" form-validation="validate.billingMaster.address.errors">
-                                            <textarea rows="4" cols="50" ng-model="newMerchant.billingMaster.address"  required></textarea>
-                                            <span class="form-error"> Address should not be empty.</span>
+                                            <textarea rows="4" cols="50" ng-model="newMerchant.billingMaster.address"  pattern="^[a-zA-Z0-9\s.,#-]{5,100}$" required></textarea>
+                                            <span class="form-error"> Address is required.Minimum 5 and Maximum 100 characters.</span>
                                         </div>
     
                                     </div>
@@ -326,11 +372,13 @@
                                                                                   </span>
                                             </div>
                                             <div class="small-3 medium-2 columns">
-                                                    <label>City <span class="required">*</span></label>
+                                                    <label>City </label>
                                                 </div>
                                                 <div class="small-9 medium-4 columns" form-validation="validate.billingMaster.city.errors">
-                                                    <input type="text" ng-model="newMerchant.billingMaster.city"    required>
-                                                    
+                                                    <input type="text" ng-model="newMerchant.billingMaster.city"   aria-describedby="exampleHelpText" pattern="^[a-zA-Z\s]{3,50}$" required>
+                                                    <span class="form-error">
+                                                        City is Required.Minimum 3 and Maximum 50 characters.
+                                                      </span>
                                                     
                                                 </div>
                                         
@@ -353,47 +401,47 @@
                                 </div>
                                 <div class="small-6 medium-6 columns transspan" ng-show="newMerchant.billingMaster.isgiftcardapplicable">
                                     <label><b>Gift-Card</b></label>
-                                    <div form-validation="validate.billingMaster.giftfeepercentforcount.errors || validate.billingMaster.giftfeepercentforamount.errors">
-                                    <label> <input type="radio" class="showTotal" ng-model="newMerchant.GtransactionRadio"  value="total"  ng-change="MerchantCtrl.checkCheckedRadio(newMerchant.GtransactionRadio)" checked> <span>Count Base TransactionFee</span>
+                                    <div form-validation="validate.billingMaster.giftpertxnfeeamount.errors">
+                                    <label> <input type="radio" class="showTotal" ng-model="newMerchant.GtransactionRadio"  value="total"  ng-change="MerchantCtrl.checkCheckedRadio(newMerchant.GtransactionRadio)" checked> <span>Per Transactaction Fee Amount</span>
                                          
                                          <div class="column" ng-if="showText">
-                                          <input type="number"  style="width:20%;" ng-model="newMerchant.billingMaster.giftfeepercentforcount"  required >
-                                         <span> % for </span>                                                                   
-                                        <input type="number"  style="width:20%;" ng-model="newMerchant.billingMaster.giftfeepercentforamount" required > <span>no of transaction</span></label>
+                                          <input type="number"  style="width:20%;" ng-model="newMerchant.billingMaster.giftpertxnfeeamount"  required >
+                                         <span> $  </span>                                                                   
+                                        <!-- <input type="number"  style="width:20%;" ng-model="newMerchant.billingMaster.giftfeepercentforamount" required > <span>no of transaction</span></label> --> 
                                     </div>
                                     </div>
-                                    <div form-validation="validate.billingMaster.giftfeevalueforcount.errors || validate.billingMaster.giftfeevalueforamount.errors">
-                                    <label><input type="radio" class="showValue" ng-model="newMerchant.GtransactionRadio"  value="value" ng-change="MerchantCtrl.checkCheckedRadio(newMerchant.GtransactionRadio)"> <span>Amount Base TransactionFee</span> 
+                                    <div form-validation="validate.billingMaster.giftpertxnfeepercent.errors">
+                                    <label><input type="radio" class="showValue" ng-model="newMerchant.GtransactionRadio"  value="value" ng-change="MerchantCtrl.checkCheckedRadio(newMerchant.GtransactionRadio)"> <span>Per Transaction Fee Percentage</span> 
                                             
                                             <div class="column" ng-if="showValue">
-                                                    <input type="number"  style="width:20%;" ng-model="newMerchant.billingMaster.giftfeevalueforcount"  required > 
-                                            <span> % for </span>
-                                             <input type="number"  style="width:20%;" ng-model="newMerchant.billingMaster.giftfeevalueforamount"  required > <span>value of transaction</span>
+                                                    <input type="number"  style="width:20%;" ng-model="newMerchant.billingMaster.giftpertxnfeepercent"  required > 
+                                            <span> %  </span>
+                                             <!-- <input type="number"  style="width:20%;" ng-model="newMerchant.billingMaster.giftfeevalueforamount"  required > <span>value of transaction</span> -->
                                         </div>
                                            </label>
                                            
                                         </div>
                                         <span class="giftcard form-error" style="display:none;font-size: 13px !important;color: #BB343B !important;">Must be select atleast one option </span>
                                     <label><b>TopUp</b></label>
-                                    <div form-validation="validate.billingMaster.topupfeepercentforcount.errors || validate.billingMaster.topupfeepercentforamount.errors">
+                                    <div form-validation="validate.billingMaster.topuppertxnfeepercent.errors">
                                     <label>
-                                        <input type="radio" ng-model="newMerchant.topupTransactionRadio" value="topCount"  ng-change="MerchantCtrl.checkCheckedRadio(newMerchant.topupTransactionRadio)" checked> <span>Count Base TopUpFee</span> 
+                                        <input type="radio" ng-model="newMerchant.topupTransactionRadio" value="topCount"  ng-change="MerchantCtrl.checkCheckedtopRadio(newMerchant.topupTransactionRadio)" checked> <span>Per TopUp Fee Percentage</span> 
                                         <div class="column" ng-if="showTopupTotal">
-                                             <input type="number" style="width:20%" ng-model="newMerchant.billingMaster.topupfeepercentforcount" required > <span> % for </span>                                   
+                                             <input type="number" style="width:20%" ng-model="newMerchant.billingMaster.topuppertxnfeepercent" required > <span> %  </span>                                   
                                         
-                                            <input type="number" style="width:20%" ng-model="newMerchant.billingMaster.topupfeepercentforamount" required > <span>no of transaction</span>
+                                            <!-- <input type="number" style="width:20%" ng-model="newMerchant.billingMaster.topupfeepercentforamount" required > <span>no of transaction</span> -->
                                         </div>
                                             </label>
                                         </div>     
-                                        <div form-validation="validate.billingMaster.topupfeevalueforcount.errors || validate.billingMaster.topupfeevalueforamount.errors">
+                                        <div form-validation="validate.billingMaster.topuppertxnfeeamount.errors">
                                             <label>  
                                             
-                                                <input type="radio" ng-model="newMerchant.topupTransactionRadio" value="topValue" ng-change="MerchantCtrl.checkCheckedRadio(newMerchant.topupTransactionRadio)"> <span>Amount Base TopUpFee</span>
+                                                <input type="radio" ng-model="newMerchant.topupTransactionRadio" value="topValue" ng-change="MerchantCtrl.checkCheckedtopRadio(newMerchant.topupTransactionRadio)"> <span>Per TopUp Fee Amount</span>
                                         
                                             <div class="column" ng-if="showTopupValue"> 
-                                                <input type="number" style="width:20%" ng-model="newMerchant.billingMaster.topupfeevalueforcount" required  ><span> % for </span>                                                                  
+                                                <input type="number" style="width:20%" ng-model="newMerchant.billingMaster.topuppertxnfeeamount" required  ><span> $  </span>                                                                  
                                     
-                                            <input type="number" style="width:20%" ng-model="newMerchant.billingMaster.topupfeevalueforamount" required > <span>value of transaction</span>
+                                            <!-- <input type="number" style="width:20%" ng-model="newMerchant.billingMaster.topupfeevalueforamount" required > <span>value of transaction</span> -->
                                             </div>
                                             </label>
                                            
@@ -402,24 +450,27 @@
                                 </div>
                                 <div class="small-6 medium-6 columns" ng-show="newMerchant.billingMaster.isloyaltycardapplicable" >
                                     <label><b>Loyalty</b></label>
-                                    <div form-validation="validate.billingMaster.loyaltyfeepercentforcount.errors || validate.billingMaster.loyaltyfeepercentforamount.errors">
+                                    <div form-validation="validate.billingMaster.loyaltypertxnfeepercent.errors">
                                         <label class="nored">   
-                                            <input type="radio" ng-model="newMerchant.LtransactionRadio" value="LCount"   ng-change="MerchantCtrl.checkCheckedRadio(newMerchant.LtransactionRadio)" checked> <span>Count Base Value</span> 
+                                            <input type="radio" ng-model="newMerchant.LtransactionRadio" value="LCount"   ng-change="MerchantCtrl.checkCheckedLoyaltyRadio(newMerchant.LtransactionRadio)" checked> <span>Per Transactaction Fee Percentage</span> 
                                             <div class="column" ng-if="showLTotal"> 
-                                        <input type="number" style="width:20%" ng-model="newMerchant.billingMaster.loyaltyfeepercentforcount" required >
-                                            <span> % for </span><input type="number" style="width:20%" ng-model="newMerchant.billingMaster.loyaltyfeepercentforamount" required> <span>no of transaction</span>
+                                        <input type="number" style="width:20%" ng-model="newMerchant.billingMaster.loyaltypertxnfeepercent" required >
+                                            <span> % </span>
+                                            <!-- <input type="number" style="width:20%" ng-model="newMerchant.billingMaster.loyaltyfeepercentforamount" required> <span>no of transaction</span> -->
                                         </div>
                                         </label>
                                     </div>  
-                                    <div form-validation="validate.billingMaster.loyaltyfeevalueforcount.errors ||validate.billingMaster.loyaltyfeevalueforamount.errors">    
+                                    <div form-validation="validate.billingMaster.loyaltypertxnfeeamount.errors">    
                                         <label class="nored">
-                                            <input type="radio" ng-model="newMerchant.LtransactionRadio" value="LValue"  ng-change="MerchantCtrl.checkCheckedRadio(newMerchant.LtransactionRadio)" > <span>Value Base Value</span>
+                                            <input type="radio" ng-model="newMerchant.LtransactionRadio" value="LValue"  ng-change="MerchantCtrl.checkCheckedLoyaltyRadio(newMerchant.LtransactionRadio)" > <span>Per Transactaction Fee Amount</span>
                                             <div class="column" ng-if="showLValue"> 
-                                            <input type="number" style="width:20%" ng-model="newMerchant.billingMaster.loyaltyfeevalueforcount" required >
-                                            <span> % for </span><input type="number" style="width:20%" ng-model="newMerchant.billingMaster.loyaltyfeevalueforamount" required > <span>value of transaction</span>
+                                            <input type="number" style="width:20%" pattern="^[0-9]{1,2}$" ng-model="newMerchant.billingMaster.loyaltypertxnfeeamount" required >
+                                            <span> $  </span>
+                                            
+                                            <!-- <input type="number" style="width:20%" ng-model="newMerchant.billingMaster.loyaltyfeevalueforamount" required > <span>value of transaction</span> -->
                                         </div>
                                         </label>
-                                        
+                                        <span class="form-error">must be 1 - 99 </span>
                                     </div>  
                                     <span class="loyaltyCard form-error" style="display:none;font-size: 13px !important;color: #BB343B !important;">Must be select atleast one option </span>
                                 </div>
@@ -508,7 +559,7 @@
              
                 <div class="large-6 columns" form-validation="storeValidate.active.errors">
                     <label>Status</label>
-                    <selectize config="MerchantCtrl.activeConfig" options="MerchantCtrl.active" ng-model="newStore.active"></selectize>
+                    <selectize config="MerchantCtrl.activeConfig" options="MerchantCtrl.activeoption" ng-model="newStore.active"></selectize>
 
                 </div>
             </div>
@@ -540,11 +591,12 @@
     </form>
 </modal> -->
 <modal class="addgroup-modal" show='MerchantCtrl.linkAddGroupModal' modalId="linkAddGroupModal" modal-title="'Add Group'">
+       
     <form novalidate data-abide ng-submit="MerchantCtrl.addGroup(newGroup,newMerchant)">
         <fieldset class="fieldset default">
             <div class="row">
                 <div class="small-12">
-                    <div class="row" form-validation="groupValidate.groupName.errors">
+                    <div class="row" form-validation="groupValidate.name.errors">
                         <div class="small-4 columns" >
                             <label for="right-label" class="right">Group Name</label>
                         </div>
@@ -556,12 +608,12 @@
             </div>
             <div class="row">
                 <div class="small-12">
-                    <div class="row" form-validation="groupValidate.status.errors">
+                    <div class="row" form-validation="groupValidate.active.errors">
                         <div class="small-4 columns" >
-                            <label for="right-label" class="right">Status</label>
+                            <label for="right-label" class="right">Active</label>
                         </div>
-                        <div class="small-8 columns">
-                            <selectize config="MerchantCtrl.activeConfig" options="MerchantCtrl.active" ng-model="newGroup.active"></selectize>
+                        <div class="small-8 columns" ng-init="newGroup.active=1">
+                            <selectize config="MerchantCtrl.activeConfig" options="MerchantCtrl.activeoption" ng-model="newGroup.active"></selectize>
                         </div>
                     </div>
                 </div>
@@ -579,115 +631,111 @@
             </div>
         </fieldset>
     </form>
+   
 </modal>
 
 <modal class="addstore-modal" show='MerchantCtrl.linkAddStoreModal' modalId="linkAddStoreModal" modal-title="'Add Store'">
-    <form novalidate ng-submit="MerchantCtrl.addStore(newStore)">
-        <fieldset class="fieldset default">
-            <div class="row">
-                <div class="large-4 columns" form-validation="storeValidate.name.errors">
-                    <label>Store Name
-                     <input type="text" placeholder="Store Name" ng-model="newStore.name"  />
-                     </label>
-                </div>
-                <div class="large-4 columns" form-validation="storeValidate.contactperson.errors">
-                    <label>Contact Person
-                      <input type="text" placeholder="Contact Person" ng-model="newStore.contactperson"/>
+        <form novalidate ng-submit="MerchantCtrl.addStore(newStore)">
+            <fieldset class="fieldset default">
+                <div class="row">
+                    <div class="large-6 columns" form-validation="storeValidate.name.errors">
+                        <label>Store Name
+                         <input type="text" placeholder="Store Name" ng-model="newStore.name"  />
+                         </label>
+                    </div>
+                    <div class="large-6 columns" form-validation="storeValidate.storeurl.errors" >
+                        <label>Store URL (optional)
+                        <input type="text" placeholder="Store URL" ng-model="newStore.storeurl"  />
                       </label>
+                    </div>
                 </div>
-                <div class="large-4 columns" form-validation="storeValidate.noofterminals.errors">
-                    <label>No of Terminals
-                       <input type="number" placeholder="No of Terminals" ng-model="newStore.noofterminals" />
-                       </label>
+                <div class="row">
+                    <div class="large-4 columns" form-validation="storeValidate.noofterminals.errors">
+                            <label>No of Terminals
+                                <input type="number" placeholder="No of Terminals" ng-model="newStore.noofterminals" />
+                                </label>
+                        </div>
+                    <div class="large-4 columns" form-validation="storeValidate.email.errors">
+                        <label>Email
+                        <input type="email" placeholder="Email"  ng-model="newStore.email"/>
+                      </label>
+                    </div>
+                    <div class="large-4 columns" form-validation="storeValidate.postalcode.errors">
+                        <label>Postal Code
+                        <input type="number" placeholder="Postal code"  ng-model="newStore.postalcode"/>
+                      </label>
+                    </div>
                 </div>
-            </div>
-            <div class="row">
-                <div class="large-4 columns" form-validation="storeValidate.email.errors">
-                    <label>Email
-                    <input type="email" placeholder="Email"  ng-model="newStore.email"/>
-                  </label>
+                <div class="row">
+                    <div class="large-12 columns" form-validation="storeValidate.address.errors">
+                        <label>Address
+                        <textarea id="addstoreaddress" placeholder="Address" ng-model="newStore.address"></textarea>
+                      </label>
+                    </div>
                 </div>
-                <div class="large-4 columns"  >
-                    <label>Store URL (optional)
-                    <input type="text" placeholder="Store URL" ng-model="newStore.storeurl"  />
-                  </label>
+                <div class="row">
+                    <div class="large-6 columns" form-validation="storeValidate.city.errors">
+                        <label>City
+                            <input type="text" placeholder="City"  ng-model="newStore.city"/>
+                      </label>
+                    </div>
+                    <div class="large-6 columns" form-validation="storeValidate.country.errors">
+                        <label>Country
+                                <selectize config="MerchantCtrl.countryConfig" options="MerchantCtrl.country" style="border-radius:0" ng-model="newStore.country" required>
+                                    </selectize>
+                      </label>
+                    </div>
                 </div>
-                <div class="large-4 columns" form-validation="storeValidate.postalcode.errors">
-                    <label>Postal Code
-                    <input type="number" placeholder="Postal code"  ng-model="newStore.postalcode"/>
-                  </label>
+                <div class="row">
+                    <div class="large-6 columns" form-validation="storeValidate.contactperson.errors">
+                            <label>Contact Person1
+                                <input type="text" placeholder="Contact Person2" ng-model="newStore.contactperson"/>
+                                </label>
+                        </div>
+                    <div class="large-6 columns" form-validation="storeValidate.contactno.errors">
+                        <label>Contact No1
+                        <input type="number" placeholder="Contact No 1"  ng-model="newStore.contactno"/>
+                      </label>
+                    </div>
                 </div>
-            </div>
-            <div class="row">
-                <div class="large-12 columns" form-validation="storeValidate.address.errors">
-                    <label>Address
-                    <textarea id="addstoreaddress" placeholder="Address" ng-model="newStore.address"></textarea>
-                  </label>
+                <div class="row">
+                    <div class="large-6 columns" form-validation="storeValidate.alternatecontactperson.errors">
+                            <label>Contact Person2(optional)
+                                <input type="text" placeholder="Contact Person2" ng-model="newStore.alternatecontactperson"/>
+                                </label>
+                        </div>
+                    <div class="large-6 columns" form-validation="storeValidate.alternatecontactno.errors">
+                            <label>Contact No2 (optional)
+                            <input type="number" placeholder="Contact No 2" ng-model="newStore.alternatecontactno" />
+                          </label>
+                        </div>
                 </div>
-            </div>
-            <div class="row">
-                <div class="large-6 columns" form-validation="storeValidate.city.errors">
-                    <label>City
-                        <input type="text" placeholder="City"  ng-model="newStore.city"/>
-                  </label>
+                <div class="row">
+                    <div class="large-6 columns" form-validation="storeValidate.storetype.errors">
+                        <label>Store Type
+                                <selectize config="MerchantCtrl.typeConfig" options="MerchantCtrl.type" ng-model="newStore.storetype"></selectize>
+                        </label>
+                    </div>
+                    <div class="large-6 columns" form-validation="storeValidate.active.errors">
+                        <label>Active
+                                <selectize config="MerchantCtrl.activeConfig" options="MerchantCtrl.activeoption" ng-model="newStore.active"></selectize>
+                        </label>
+                    </div>
                 </div>
-                <div class="large-6 columns" form-validation="storeValidate.country.errors">
-                    <label>Country
-                            <selectize config="MerchantCtrl.countryConfig" options="MerchantCtrl.country" style="border-radius:0" ng-model="newStore.country" required>
-                                </selectize>
-                  </label>
+                <div class="row">
+                    <div class="columns small-12 text-center">
+                        <button type="button" ng-click='MerchantCtrl.closeModal()' class="button button-septenary-colorized m-t-10 m-b-0">
+                          {{ "global.cancel" | translate }}
+                      </button>
+                      <button class="button button-septenary-colorized m-t-10 m-b-0" type="submit">
+                            {{ "global.save" | translate }}
+                        </button>
+                    </div>
                 </div>
-            </div>
-            <div class="row">
-
-                <div class="large-6 columns" form-validation="storeValidate.contactno.errors">
-                    <label>Contact No1
-                    <input type="number" placeholder="Contact No 1"  ng-model="newStore.contactno"/>
-                  </label>
-                </div>
-                <div class="large-6 columns" form-validation="storeValidate.alternatecontactno.errors">
-                    <label>Contact No2 (optional)
-                    <input type="number" placeholder="Contact No 2" ng-model="newStore.alternatecontactno" />
-                  </label>
-                </div>
-            </div>
-            <div class="row">
-                <div class="large-6 columns" form-validation="storeValidate.bankaccno.errors">
-                    <label>Bank Acc No
-                      <input type="number" placeholder="Bank Acc No"  ng-model="newStore.bankaccno"/>
-                    </label>
-                </div>
-                <div class="large-6 columns" form-validation="storeValidate.bankname.errors">
-                    <label>Bank Name
-                      <input type="text" placeholder="Bank Name" ng-model="newStore.bankname"  />
-                    </label>
-                </div>
-            </div>
-            <div class="row">
-                <div class="large-6 columns" form-validation="storeValidate.storetype.errors">
-                    <label>Store Type
-                            <selectize config="MerchantCtrl.typeConfig" options="MerchantCtrl.type" ng-model="newStore.storetype"></selectize>
-                    </label>
-                </div>
-                <div class="large-6 columns" form-validation="storeValidate.active.errors">
-                    <label>Active
-                            <selectize config="MerchantCtrl.activeConfig" options="MerchantCtrl.active" ng-model="newStore.active"></selectize>
-                    </label>
-                </div>
-            </div>
-            <div class="row">
-                <div class="columns small-12 text-center">
-                    <button type="button" ng-click='MerchantCtrl.closeModal()' class="button button-septenary-colorized m-t-10 m-b-0">
-                      {{ "global.cancel" | translate }}
-                  </button>
-                  <button class="button button-septenary-colorized m-t-10 m-b-0" type="submit">
-                        {{ "global.save" | translate }}
-                    </button>
-                </div>
-            </div>
-        </fieldset>
-    </form>
-</modal>
+            </fieldset>
+        </form>
+        <!-- <a class="close-modal" ng-click="MerchantCtrl.closeModal()">&#215;</a> -->
+    </modal>
 <!-- <modal class="addgroup-modal" show='linkAddCategoryModal' modalId="linkAddCategoryModal" modal-title="'Add Category'">
     <form novalidate ng-submit="MerchantCtrl.addGroup(newGroup)">
         <fieldset class="fieldset default">
@@ -710,7 +758,7 @@
                             <label for="right-label" class="right">Status</label>
                         </div>
                         <div class="small-8 columns">
-                            <selectize config="MerchantCtrl.activeConfig" options="MerchantCtrl.active" ng-model="newGroup.status"></selectize>
+                            <selectize config="MerchantCtrl.activeConfig" options="MerchantCtrl.activeoption" ng-model="newGroup.status"></selectize>
                         </div>
                     </div>
                 </div>
@@ -744,6 +792,7 @@
         </div>
         <div style="clear:both;"></div>
     </div>
+    
 </modal>
 
 <modal class="addgroup-modal" show='MerchantCtrl.linkAddCategoryModal' modalId="linkAddCategoryModal" modal-title="'Add Category'">
@@ -756,23 +805,35 @@
                             <label for="right-label" class="right">Category </label>
                         </div>
                         <div class="small-8 columns">
-                            <input type="text" id="right-label" ng-model="newCategory.name" placeholder="Catagory Name" required >
+                            <input type="text" id="right-label" ng-model="newCategory.name" placeholder="Category Name" required >
                         </div>
                     </div>
                 </div>
             </div>
             <div class="row">
                     <div class="small-12">
-                        <div class="row" form-validation="categoryValidate.active.errors">
+                        <div class="row" form-validation="categoryValidate.active.errors" >
                             <div class="small-4 columns" >
                                 <label for="right-label" class="right">Active</label>
                             </div>
-                            <div class="small-8 columns">
-                                <selectize config="MerchantCtrl.activeConfig" options="MerchantCtrl.active" ng-model="newCategory.active"></selectize>
+                            <div class="small-8 columns" ng-init="newCategory.active=1">
+                                <selectize config="MerchantCtrl.activeConfig" options="MerchantCtrl.activeoption" ng-model="newCategory.active"></selectize>
                             </div>
                         </div>
                     </div>
                 </div>
+                <div class="row">
+                        <div class="small-12">
+                            <div class="row" form-validation="categoryValidate.categorycode.errors">
+                                <div class="small-4 columns" >
+                                    <label for="right-label" class="right">Category Code (optional)</label>
+                                </div>
+                                <div class="small-8 columns">
+                                        <input  type="number" id="right-label" ng-model="newCategory.categorycode" placeholder="Category Code" >
+                                </div>
+                            </div>
+                        </div>
+                    </div>
             <div class="row">
                 <div class="columns small-12 text-center">
                     <button type="button" ng-click="MerchantCtrl.closeCatagory()" type="button" class="button button-septenary-colorized m-t-10 m-b-0">
@@ -785,4 +846,5 @@
             </div>
         </fieldset>
     </form>
+    <!-- <a class="close-modal" ng-click="MerchantCtrl.closeCatagory()">&#215;</a> -->
 </modal>

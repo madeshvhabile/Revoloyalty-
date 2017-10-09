@@ -1,0 +1,305 @@
+<box-loader loading="OrderCtrl.loaderStates.coverLoader" cover="1" class="cover" delay="1000"></box-loader>
+
+<div class="heading" ng-init="OrderCtrl.getOrderData();">
+    <h1>Order Info</h1>
+     <!-- ng-if="orderDetails.status == 'Pending'" -->
+     <div  ng-if="orderDetails.status == 'Pending'" class="text-right" >
+      <button class="button button-failure-colorized m-r-1 float-right" type="button" ng-click="OrderCtrl.showRejectreason()">
+       Reject
+      </button>
+      <button class="button button-success-colorized m-r-1 float-right" type="button" ng-click="OrderCtrl.Approved(orderDetails.orderpurchaseId,orderDetails.merchantId)">
+              Approve
+       </button>
+       <button ng-if="orderDetails.status == 'Pending'"  class="button button-septenary-colorized  float-right m-r-1" ui-sref="admin.edit-order({orderId:orderDetails.orderpurchaseId})"  type="submit">
+        Edit
+       </button>
+      </div>
+
+</div>
+
+<div style="clear:both;"></div>
+<div class="client-list box tabs-content" data-tabs-content="collapsing-tabs">
+        <ul class="tabs" data-active-collapse="true" data-tabs id="collapsing-tabs">
+                <li class="tabs-title is-active"><a href="#order1" aria-selected="true">Merchant Info</a></li>
+                <li class="tabs-title"><a href="#order2">Card Assignment</a></li>
+        </ul>
+    <div class="order-box tabs-panel" id="order1">
+        <form class="order-form">
+            <div class="box">
+                    <div class="box-title"><h1 class="text-left">Merchant Info</h1></div>
+                    <div class="box-content">
+                        <div class="row">
+                            <div class="large-6 medium-6 small-6 columns">
+                              <label>Order Id
+                                <div class="val-box" ng-bind="orderDetails.orderpurchaseId"></div>
+                              </label>
+                            </div>
+                            <div class="large-6 medium-6 small-6 columns">
+                              <label>Order Date
+                                <div class="val-box" >{{orderDetails.created|date}}</div>
+                              </label>
+                            </div>
+                        </div>
+                        <div class="row">
+                          <div class="large-6 medium-6 small-6 columns">
+                            <label>Merchant Name
+                              <div class="val-box" ng-bind="orderDetails.merchantname"></div>
+                            </label>
+                          </div>
+                          <div class="large-6 medium-6 small-6 columns">
+                            <label>Card Scheme Name
+                              <div class="val-box" ng-bind="orderDetails.cardschemename"></div>
+                            </label>
+                          </div>
+                        </div>
+
+                        <div class="row">
+                          <div class="large-6 medium-6 small-6 columns">
+                            <label>Active
+                              <div class="val-box" ng-if="orderDetails.active==1">Yes</div>
+                              <div class="val-box" ng-if="orderDetails.active==0">NO</div>
+                            </label>
+                          </div>
+                          <div class="large-6 medium-6 small-6 columns">
+                            <label>Status
+                              <div class="val-box" style="text-transform:uppercase;"ng-bind="orderDetails.status"></div>
+                            </label>
+                          </div>
+                        </div>
+
+                        <div class="row" ng-if="orderDetails.storename&&orderDetails.storename.length>0">
+                          <div class="large-6 medium-6 small-6 columns">
+                            <label>Store Name
+                              <div class="val-box" ng-bind="orderDetails.storename"></div>
+                            </label>
+                          </div>
+                        </div>
+
+                    </div>
+            </div>
+        </form>
+    </div>
+
+    <div class="order-box tabs-panel" id="order2">
+        <form class="order-form" data-abide >
+            <div class="box" ng-if="orderDetails.cardassignmentdata.giftCardSchemeData || orderDetails.cardassignmentdata.eGiftCardSchemeData">
+                <div class="box-title"><h1 class="text-left">Gift Card Assignment</h1></div>
+                <div class="box-content">
+                    <div class="row">
+                            <div class="small-6 medium-6 large-6 columns" ng-if="orderDetails.cardassignmentdata.giftCardSchemeData">
+                                <div class="small-12 medium-12 large-12 columns">
+                                    <label class="small-3 medium-3 large-3 columns text-center">Qty</label>
+                                    <label class="small-6 medium-6 large-6 columns text-center">Item</label>
+                                    <label class="small-3 medium-3 large-3 columns text-center">Expiry in Months</label>
+                                </div>
+                                    <div ng-if="orderDetails.cardassignmentdata.giftCardSchemeData.preload" class="small-12 medium-12 large-12 columns" ng-repeat="card in orderDetails.cardassignmentdata.giftCardSchemeData.preload track by $index">
+                                            <label class="small-3 medium-3 large-3 columns text-center">
+                                              <div class="val-box" ng-bind="card.quantity"></div>
+                                            </label>
+                                            <label class="small-6 medium-6 large-6 columns text-center" > ${{card.value}} Gift Card </label>
+                                            <label class="small-3 medium-3 large-3 columns text-center">
+                                              <div class="val-box" ng-bind="card.expiryMonths"></div>
+                                            </label>
+                                    </div>
+                                    <div   ng-if="orderDetails.cardassignmentdata.giftCardSchemeData.freecard" class="small-12 medium-12 large-12 columns">
+                                        <label class="small-3 medium-3 large-3 columns text-center">
+                                          <div class="val-box" ng-bind="orderDetails.cardassignmentdata.giftCardSchemeData.freecard.quantity"></div>
+                                        </label>
+                                        <label class="small-6 medium-6 large-6 columns text-center" > Free Form Gift Card <br/>(Min : {{orderDetails.cardassignmentdata.giftCardSchemeData.freecard.min +" - Max : "+orderDetails.cardassignmentdata.giftCardSchemeData.freecard.max}}) </label>
+                                        <label class="small-3 medium-3 large-3 columns text-center">
+                                          <div class="val-box" ng-bind="orderDetails.cardassignmentdata.giftCardSchemeData.freecard.expiryMonths"></div>
+                                        </label>
+                                </div>
+                                <div  ng-if="orderDetails.cardassignmentdata.giftCardSchemeData.crossborder" class="small-12 medium-12 large-12 columns">
+                                    <label class="small-3 medium-3 large-3 columns text-center">
+                                        <div class="val-box" ng-bind="orderDetails.cardassignmentdata.giftCardSchemeData.crossborder.quantity"></div>
+                                    </label>
+                                    <label class="small-6 medium-6 large-6 columns text-center" >
+                                      CrossBorder Gift Card <br/>(Country : {{orderDetails.cardassignmentdata.giftCardSchemeData.crossborder.country}})
+                                      <br/>(Min : {{orderDetails.cardassignmentdata.giftCardSchemeData.crossborder.min +" - Max : "+orderDetails.cardassignmentdata.giftCardSchemeData.crossborder.max}}) </label>
+                                    </label>
+                                    <label class="small-3 medium-3 large-3 columns text-center" >
+                                      <div class="val-box" ng-bind="orderDetails.cardassignmentdata.giftCardSchemeData.crossborder.expiryMonths"></div>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="small-6 medium-6 large-6 columns" ng-if="orderDetails.cardassignmentdata.eGiftCardSchemeData">
+                                <div class="columns">
+                                    <label class="small-3 medium-3 large-3 columns text-center">Qty</label>
+                                    <label class="small-6 medium-6 large-6 columns text-center">Item</label>
+                                    <label class="small-3 medium-3 large-3 columns text-center">Expiry in Months</label>
+                                </div>
+                                    <div ng-if="orderDetails.cardassignmentdata.eGiftCardSchemeData.preload" class="small-12 medium-12 large-12 columns" ng-repeat="card in orderDetails.cardassignmentdata.eGiftCardSchemeData.preload track by $index">
+                                            <label class="small-3 medium-3 large-3 columns text-center">
+                                              <div class="val-box" ng-bind="card.quantity"></div>
+                                            </label>
+                                            <label class="small-6 medium-6 large-6 columns text-center" > ${{card.value}} E-Gift Card </label>
+                                            <label class="small-3 medium-3 large-3 columns text-center">
+                                              <div class="val-box" ng-bind="card.expiryMonths"></div>
+                                            </label>
+                                    </div>
+                                    <div   ng-if="orderDetails.cardassignmentdata.eGiftCardSchemeData.freecard" class="small-12 medium-12 large-12 columns">
+                                        <label class="small-3 medium-3 large-3 columns text-center">
+                                          <div class="val-box" ng-bind="orderDetails.cardassignmentdata.eGiftCardSchemeData.freecard.quantity"></div>
+                                        </label>
+                                        <label class="small-6 medium-6 large-6 columns text-center" > Free Form Gift Card <br/> (Min: {{orderDetails.cardassignmentdata.eGiftCardSchemeData.freecard.min +" - Max:  "+orderDetails.cardassignmentdata.eGiftCardSchemeData.freecard.max}})</label>
+                                        <label class="small-3 medium-3 large-3 columns text-center" >
+                                          <div class="val-box" ng-bind="orderDetails.cardassignmentdata.eGiftCardSchemeData.freecard.expiryMonths"></div>
+                                        </label>
+                                </div>
+                                <div  ng-if="orderDetails.cardassignmentdata.eGiftCardSchemeData.crossborder" class="small-12 medium-12 large-12 columns">
+                                    <label class="small-3 medium-3 large-3 columns text-center">
+                                        <div class="val-box" ng-bind="orderDetails.cardassignmentdata.eGiftCardSchemeData.crossborder.quantity"></div>
+                                    </label>
+                                    <label class="small-6 medium-6 large-6 columns text-center" >
+                                      CrossBorder Gift Card <br/>(Country : {{orderDetails.cardassignmentdata.eGiftCardSchemeData.crossborder.country}})
+                                      <br/> (Min: {{orderDetails.cardassignmentdata.eGiftCardSchemeData.crossborder.min +" - Max:  "+orderDetails.cardassignmentdata.eGiftCardSchemeData.crossborder.max}})</label>
+                                    </label>
+                                    <label class="small-3 medium-3 large-3 columns text-center" >
+                                      <div class="val-box" ng-bind="orderDetails.cardassignmentdata.eGiftCardSchemeData.crossborder.expiryMonths"></div>
+                                    </label>
+                                </div>
+                            </div>
+                    </div>
+            </div>
+            </div>
+            <div class="box" ng-if="orderDetails.cardassignmentdata.loyaltyCardSchemeData || orderDetails.cardassignmentdata.eLoyaltyCardSchemeData">
+                <div class="box-title"><h1 class="text-left">Loyalty Card Assignment</h1></div>
+                <div class="box-content">
+                    <div class="row">
+                            <div class="small-6 medium-6 large-6 columns" ng-if="orderDetails.cardassignmentdata.loyaltyCardSchemeData">
+                                    <div class="small-12 medium-12 large-12 columns">
+                                        <label class="small-6 medium-6 large-6 columns text-center">Qty</label>
+                                        <label class="small-6 medium-6 large-6 columns text-center">Item</label>
+
+                                    </div>
+
+                                        <div  ng-if="orderDetails.cardassignmentdata.loyaltyCardSchemeData.rewardRedeem" class="small-12 medium-12 large-12 columns">
+                                            <label class="small-6 medium-6 large-6 columns text-center">
+                                              <div class="val-box" ng-bind="orderDetails.cardassignmentdata.loyaltyCardSchemeData.rewardRedeem.quantity"></div>
+                                              </label>
+                                            <label class="small-6 medium-6 large-6 columns text-center" > Redeem Loyalty Card </label>
+
+                                    </div>
+                                    <div  ng-if="orderDetails.cardassignmentdata.loyaltyCardSchemeData.crossBorder" class="small-12 medium-12 large-12 columns">
+                                        <label class="small-6 medium-6 large-6 columns text-center">
+                                          <div class="val-box" ng-bind="orderDetails.cardassignmentdata.loyaltyCardSchemeData.crossBorder.quantity"></div>
+                                        </label>
+                                        <label class="small-6 medium-6 large-6 columns text-center" >
+                                          CrossBorder Loyalty Card <br/>(Country : {{orderDetails.cardassignmentdata.loyaltyCardSchemeData.crossBorder.country}})
+                                        </label>
+
+                                    </div>
+                            </div>
+                            <div class="small-6 medium-6 large-6 columns" ng-if="orderDetails.cardassignmentdata.eLoyaltyCardSchemeData">
+                                    <div class="small-12 medium-12 large-12 columns">
+                                        <label class="small-6 medium-6 large-6 columns text-center">Qty</label>
+                                        <label class="small-6 medium-6 large-6 columns text-center">Item</label>
+
+                                    </div>
+
+                                        <div  ng-if="orderDetails.cardassignmentdata.eLoyaltyCardSchemeData.rewardRedeem" class="small-12 medium-12 large-12 columns">
+                                            <label class="small-6 medium-6 large-6 columns text-center">
+                                              <div class="val-box" ng-bind="orderDetails.cardassignmentdata.eLoyaltyCardSchemeData.rewardRedeem.quantity"></div>
+                                              </label>
+                                            <label class="small-6 medium-6 large-6 columns text-center" > Redeem E-Loyalty Card </label>
+
+                                    </div>
+                                    <div  ng-if="orderDetails.cardassignmentdata.eLoyaltyCardSchemeData.crossBorder" class="small-12 medium-12 columns">
+                                        <label class="small-6 medium-6 large-6 columns text-center">
+                                          <div class="val-box" ng-bind="orderDetails.cardassignmentdata.eLoyaltyCardSchemeData.crossBorder.quantity"></div>
+                                        </label>
+                                        <label class="small-6 medium-6 large-6 columns text-center" >
+                                          CrossBorder E-Loyalty Card <br/>(Country: {{orderDetails.cardassignmentdata.eLoyaltyCardSchemeData.crossBorder.country}})
+                                        </label>
+
+                                    </div>
+                            </div>
+                     </div>
+                 </div>
+            </div>
+            <div class="box" ng-if="OrderCtrl.CardData" >
+                <div class="box-title"><h1 class="text-left">Card Info <button style="float:right;margin:-5px 0 0 0 "  class="button button-primary small button-septenary-colorized"  type="button" ng-click="OrderCtrl.exportExcel(orderDetails)">
+                  <i class="fa fa-file-excel-o" aria-hidden="true"></i>
+                  Export
+                 </button></h1></div>
+                <div class="box-content" >
+                    <table ng-table="OrderCtrl.CardtableParams" class="default" template-pagination="templatePagination.html">
+                        <tr ng-repeat="row in $data">
+                            <td data-title="'CardNumber'" filter="{cardnumber: 'text'}" sortable="'cardnumber'">
+                                <span ng-bind="row.cardnumber"></span>
+                            </td>
+                            <td data-title="'Card Type'" sortable="'cardtype'" filter="{cardtype: 'text'}">
+                                <span ng-bind="row.cardtype"></span>
+                            </td>
+                            <td data-title="'Card Existence Type'" sortable="'cardexistencetype'" filter="{cardexistencetype: 'text'}">
+                                   <span ng-bind="row.cardexistencetype">
+                                </td>
+                             <td data-title="'Card Scheme'" sortable="'cardscheme'" filter="{cardscheme: 'text'}">
+                                <span ng-bind="row.cardscheme"></span>
+                            </td>
+
+                          <td data-title="'Expiry Months'" sortable="'expirymonths'" filter="{expirymonths: 'text'}">
+                            <span ng-bind="row.expirymonths"></span>
+                          </td>
+                          <td data-title="'Preload Amount'" sortable="'preloadamount'" filter="{preloadamount: 'text'}">
+                            <span ng-bind="row.preloadamount"></span>
+                          </td>
+                          <td data-title="'Min Value'" sortable="'freeformmin'" filter="{freeformmin: 'text'}">
+                            <span ng-bind="row.freeformmin"></span>
+                          </td>
+                          <td data-title="'Max Value'" sortable="'freeformmax'" filter="{freeformmax: 'text'}">
+                            <span ng-bind="row.freeformmax"></span>
+                          </td>
+                          <td data-title="'Cross Border-Country'" sortable="'crossbordercountry'" filter="{crossbordercountry: 'text'}">
+                            <span ng-bind="row.crossbordercountry"></span>
+                          </td>
+
+                        </tr>
+                    </table>
+                </div>
+            </div>
+
+      </form>
+   </div>
+</div>
+
+<modal size="'tiny'" show="OrderCtrl.showModelRejectreason" modal-title="">
+  <form novalidate ng-submit="OrderCtrl.PostCardStatus(cardStatus,orderDetails.orderpurchaseId)">
+    <fieldset class="fieldset default">
+        <div class="row">
+            <div class="small-12">
+                <div class="row" form-validation="cardreasonstatus.reasonForReject.errors">
+                    <div class="small-4 columns" >
+                        <label for="right-label" class="right">Enter reason to reject</label>
+                    </div>
+                    <div class="small-8 columns">
+                        <input type="text" id="right-label" ng-model="cardStatus.reasonForReject" >
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+          <div class="columns small-12 text-center">
+              <button type="button" ng-click="OrderCtrl.showModelRejectreason= false" type="button" class="button button-septenary-colorized m-t-10 m-b-0">
+                {{ "global.cancel" | translate }}
+            </button>
+              <button class="button button-septenary-colorized m-t-10 m-b-0" type="submit">
+                  {{ "global.save" | translate }}
+              </button>
+          </div>
+      </div>
+        </fieldset>
+        </form>
+</modal>
+
+<modal size="'tiny'" show="OrderCtrl.cardGenerate" modal-title="">
+
+        <div class="spinner-loader-wrapper">
+          <spinner-loader loading="OrderCtrl.loaderStates.createdCard" class="inline" delay="5"></spinner-loader>
+          <div class="row">
+              <p>Please wait while we generate cards..! This may take some moments. </p>
+          </div>
+        </div>
+
+</modal>

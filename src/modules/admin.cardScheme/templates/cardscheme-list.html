@@ -1,0 +1,110 @@
+<box-loader loading="CardSchemeCtrl.loaderStates.coverLoader" cover="1" class="cover" delay="1000"></box-loader>
+
+<div class="heading" ng-init="CardSchemeCtrl.getCardSchemesListData()">
+
+</div>
+<div style="clear:both;"></div>
+<!-- <div class="client-list box"> -->
+    <!-- <div class="box-title">
+        <h1 class="text-left"><i class="fa fa-info" aria-hidden="true"></i> Info
+
+        <button type="button" class="button  button-secondary tiny" >
+         <i class="fa fa-pencil" aria-hidden="true"></i>
+     </button>
+        <button style="float: right;margin: -5px 0 0 0;" class="button button-primary small button-septenary-colorized " type="button" ng-click="CardSchemeCtrl.openEditModal()"><i class="fa fa-pencil" aria-hidden="true"></i>Edit Group
+        </h1>
+     </button>
+     </div> -->
+    <!-- <div class="box-content">
+            <div class="row">
+                <div class="large-6 columns">
+                    <label>Group Name
+                    <div class="val-box">{{EditableGroup.Group}}</div>
+                    </label>
+                </div>
+                <div class="large-6 columns">
+                 <label>Group Id
+                 <div class="val-box">{{EditableGroup.groupId}}</div>
+                 </label>
+             </div>
+            </div>
+            <div class="row">
+             <div class="large-6 columns">
+                 <label>No of Card schemes
+                 <div class="val-box">{{merchants.length}}</div>
+                 </label>
+             </div>
+                <div class="large-6 columns">
+                    <label>status
+                    <div class="val-box">{{EditableGroup.Status}}</div>
+                    </label>
+                </div>
+            </div>
+    </div>  -->
+ <!-- </div> -->
+<div class="client-list box">
+    <div class="box-title">
+        <h1 class="text-left"><i class="fa fa-list" aria-hidden="true"></i> Card Schemes List <button style="float:right;margin:-5px 0 0 0 " class="button button-primary small button-septenary-colorized" ui-sref="admin.add-cardscheme">  <i class="fa fa-plus" aria-hidden="true"></i> Add Card Scheme
+
+            </button> </h1>
+    </div>
+    <div class="box-content">
+        <box-loader loading="CardSchemeCtrl.loaderStates.cardSchemeList"></box-loader>
+        <table ng-table="CardSchemeCtrl.tableParams" class="default" template-pagination="templatePagination.html">
+            <tr ng-repeat="row in $data">
+                <td data-title="'Card Scheme'" sortable="'cardschemename'" filter="{cardschemename: 'text'}">
+                    <span ng-bind="row.cardschemename"></span>
+                </td>
+
+                <td data-title="'Merchant'" sortable="'merchantname'" filter="{merchantname: 'text'}">
+                        <span ng-bind="row.merchantname"></span>
+                </td>
+                <!--
+                <td data-title="'Status'" sortable="'active'" >
+                    <span ng-if="row.active==1">Yes</span>
+                    <span ng-if="row.active==0">No</span>
+                </td>
+              -->
+                <td data-title="'Active'" sortable="'active'" >
+                    <span ng-if="row.active==1">Yes</span>
+                    <span ng-if="row.active==0">No</span>
+                </td>
+                <td data-title="'Gift Card'">
+                    <span ng-if="row.isgiftcardapplicable==true||row.isegiftcardapplicable==true">Yes</span>
+                    <span ng-if="!(row.isgiftcardapplicable==true||row.isegiftcardapplicable==true)">No</span>
+                </td>
+
+                <td data-title="'Loyalty Card'" >
+                  <span ng-if="row.isloyaltycardapplicable==true||row.iseloyaltycardapplicable==true">Yes</span>
+                  <span ng-if="!(row.isloyaltycardapplicable==true||row.iseloyaltycardapplicable==true)">No</span>
+                </td>
+                <td data-title="'seller.actions'|translate">
+                    <button class="button button-septenary-colorized tiny" title="Delete Card Scheme" ng-click="CardSchemeCtrl.showDeleteCardSchemeModel(row)">
+                        <i class="fa fa-times"></i>
+                    </button>
+                    <button class="button button-septenary-colorized tiny" title="View Card Scheme"
+                            ui-sref="admin.view-cardscheme({cardschemeId: row.cardschemeId})">
+                        <i class="fa fa-eye" aria-hidden="true"></i>
+                    </button>
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>
+<modal size="'tiny'" show="CardSchemeCtrl.showCardSchemeRemoveModal" modal-title="'Do you want to remove this Card Scheme? '">
+        <div class="text-center">
+            <p class="color-dark">{{"seller.delete_confirmation_description"|translate}}</p>
+            <div class="btns">
+                <button type="button" ng-click="CardSchemeCtrl.deleteCardSchemeConfirm()" class="button small button-septenary-colorized m-t-10 m-b-0"
+                    ng-disabled="CardSchemeCtrl.loaderStates.deleteCardScheme">{{"global.confirm"|translate}}
+            </button>
+            <button type="button" ng-click="CardSchemeCtrl.closedeleteModal()" class="button small button-septenary-colorized m-t-10 m-b-0"
+            >No
+            </button>
+                <div class="spinner-loader-wrapper">
+                    <spinner-loader loading="CardSchemeCtrl.loaderStates.deleteCardScheme" class="inline" delay="5"></spinner-loader>
+                </div>
+            </div>
+            <div style="clear:both;"></div>
+        </div>
+</modal>

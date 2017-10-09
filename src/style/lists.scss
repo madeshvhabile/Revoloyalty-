@@ -32,7 +32,7 @@ ul.ng-table-pagination {
       }
     }
     li:not(.disabled), a, a > span {
-      color: $gray;
+      color: $pagination-color;
       border-radius: 3px;
     }
     li.active {
@@ -40,7 +40,7 @@ ul.ng-table-pagination {
       font-weight: 600;
       color: $white;
       a {
-        background-color: $default-button !important;
+        background-color: $pagination-color !important;
         span {
           color: $white !important;
         }

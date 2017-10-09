@@ -10,9 +10,20 @@
                 <a href="#"><i class="fa fa-address-card" aria-hidden="true"></i>{{ "nav.sellers" | translate }}</a>
                 <ul class="menu vertical nested">
                     <li><a onclick="removemenu()" ui-sref="admin.add-merchant">Add New</a></li>
+                    <!-- <li><a onclick="removemenu()" ui-sref="admin.merchant-login-credential">Add Merchant Credential</a></li> -->
                     <li><a onclick="removemenu()" ui-sref="admin.merchant-list">View Merchant List</a></li>
                     <li><a onclick="removemenu()" ui-sref="admin.Group-list">View / Create Groups </a></li>
                     <li><a onclick="removemenu()" ui-sref="admin.Category-list">View / Create Category </a></li>
+                </ul>
+            </li>
+
+            <li>
+                <a href="#"><i class="fa fa-shopping-cart" aria-hidden="true"></i>Orders</a>
+                <ul class="menu vertical nested">
+                        <li><a onclick="removemenu()" ui-sref="admin.add-order">Add New Order</a></li>
+                        <li><a onclick="removemenu()" ui-sref="admin.order-list">View Order List</a></li>
+                    <li><a onclick="removemenu()" ui-sref="admin.add-cardscheme">Add Cardscheme </a></li>
+                    <li><a onclick="removemenu()" ui-sref="admin.cardscheme-list">Cardscheme List </a></li>
                 </ul>
             </li>
             <li>
@@ -49,8 +60,8 @@
                     <li><a ui-sref="admin.add-earning-rule">{{ "nav.add_earning_rule" | translate }}</a></li>
                 </ul>
             </li>
-            
-            
+
+
             <li>
                 <a href="#"><i class="fa fa-tags" aria-hidden="true"></i>{{ "nav.segments" | translate }}</a>
                 <ul class="menu vertical nested">

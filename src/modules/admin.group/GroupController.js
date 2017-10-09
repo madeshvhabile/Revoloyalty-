@@ -9,12 +9,12 @@ export default class GroupController {
               this.$scope.newGroup = {};
               this.$scope.newCatagory={};
               this.groupValidation={
-                name: '@assert:not_blank|min-5|max-50',
+                name: '@assert:not_blank|min-4|max-50',
                 active: '@assert:not_blank',
               }
               this.catagoryValidation={
-                name: '@assert:not_blank|min-5|max-50',
-                active: '@assert:not_blank',
+                name: '@assert:not_blank|min-4|max-50',
+                active: '@assert:not_blank'
               }
               this.$state = $state;
               this.AuthService = AuthService;
@@ -109,27 +109,29 @@ export default class GroupController {
               closeGroup(){
                 let self=this;
                 self.linkAddGroupModal=false
-                
+
             }
-            
+
             closeCatagory(){
                 let self=this;
                 self.linkAddCatagoryModal=false
-                
+
             }
             openModal(){
                 let self=this
-            self.linkAddGroupModal = true
+
             this.$scope.newGroup={};
             self.$scope.groupValidate={};
+            self.linkAddGroupModal = true
             }
             openEditModal(group){
 
                 let self=this
                 self.$scope.temobject=angular.copy(group)
                 self.$scope.editableCatagory=angular.copy(group);
-                self.linkEditCatagoryModal = true
+
                 self.$scope.categoryValidator={}
+                self.linkEditCatagoryModal = true
             }
 
 
@@ -143,17 +145,18 @@ export default class GroupController {
 
             openCatagoryModal(){
                 let self=this
-            self.linkAddCatagoryModal = true
+
             self.$scope.newCatagory={}
             self.$scope.categoryValidate={}
-           
+            self.linkAddCatagoryModal = true
+
             }
 
-            addGroup(newGroup){              
+            addGroup(newGroup){
                 let self=this
                 let idx;
                 let validateFields = angular.copy(self.groupValidation);
-                let frontValidation = self.Validation.frontValidation(newGroup, validateFields);   
+                let frontValidation = self.Validation.frontValidation(newGroup, validateFields);
                 if(newGroup.name == undefined || newGroup.active == undefined){
                      idx=-1
                 }else{
@@ -170,8 +173,8 @@ export default class GroupController {
                  self.GroupService.postGroup(newGroup)
                  .then(
                      res=>{
-                        newGroup.groupId=res.groupId;  
-                        newGroup.noofmerchants=0;        
+                        newGroup.groupId=res.groupId;
+                        newGroup.noofmerchants=0;
                         self.tableParams.settings().dataset.unshift(  newGroup
                      );
                      self.tableParams.sorting({});
@@ -191,19 +194,26 @@ export default class GroupController {
                else{
                 let message = 'Group Name is Already Exists';
                 self.Flash.create('danger', message);
-               }              
+               }
             }
-            addCatagory(newCatagory){               
+            addCatagory(newCatagory){
                 let self=this
                 let idx;
+
+                if((newCatagory.categorycode != undefined) &&  (!_.isNull(newCatagory.categorycode))){
+                    self.catagoryValidation.categorycode = '@assert:min-1|max-8';
+                }else{
+                    delete self.catagoryValidation.categorycode;
+                }
+
                 let validateFields = angular.copy(self.catagoryValidation);
-                let frontValidation = self.Validation.frontValidation(newCatagory, validateFields);   
+                let frontValidation = self.Validation.frontValidation(newCatagory, validateFields);
                 if(newCatagory.name == undefined || newCatagory.active == undefined){
                      idx=-1
                 }else{
                      idx= _.findIndex(self.catagorytableParams.settings().dataset, function(o) { return o.name == newCatagory.name; });
                 }
-               
+
                 if(!(idx > -1)){
                 if (!_.isEmpty(frontValidation)) {
                     self.$scope.categoryValidate = frontValidation;
@@ -213,7 +223,7 @@ export default class GroupController {
                  self.GroupService.postCategory(newCatagory)
                  .then(
                      res=>{
-                         newCatagory.categoryId=res.categoryId;       
+                         newCatagory.categoryId=res.categoryId;
                         self.catagorytableParams.settings().dataset.unshift(  newCatagory
                      );
                      self.catagorytableParams.sorting({});
@@ -233,7 +243,7 @@ export default class GroupController {
                else{
                 let message = 'Category Name is Already Exists';
                 self.Flash.create('danger', message);
-               }              
+               }
             }
             // editCatagory(ModifiedCatagory){
             //     let self=this;
@@ -243,7 +253,7 @@ export default class GroupController {
             //         let validateFields = angular.copy(self.catagoryValidation);
             //         let frontValidation = self.Validation.frontValidation(ModifiedCatagory, validateFields);
             //         console.log("frontValidation",frontValidation)
-                    
+
             //         if (!_.isEmpty(ModifiedCatagory.Catagory)) {
             //             console.log("changes are saved")
             //             self.linkEditCatagoryModal=false
@@ -255,28 +265,30 @@ export default class GroupController {
             //             self.loaderStates.coverLoader = false;
             //             self.Catagoryerror=['front_error.not_blank']
             //         }
-        
+
             //     }else{
             //         let message = self.$filter('translate')('xhr.get_customers.error');
             //         self.Flash.create('danger', message);
             //         self.loaderStates.terminalList = false;
             //         self.loaderStates.coverLoader = false;
             //     }
-               
-        
-        
+
+
+
             // }
 
             editCatagory(ModifiedCatagory){
                 let self=this;
-               
+
                 var oldobject={
                     name:self.$scope.temobject.name,
-                    active:parseInt(self.$scope.temobject.active)
+                    active:parseInt(self.$scope.temobject.active),
+                    categorycode:self.$scope.temobject.categorycode
                 }
                 var newobject={
                     name:ModifiedCatagory.name,
-                    active:parseInt(ModifiedCatagory.active)
+                    active:parseInt(ModifiedCatagory.active),
+                    categorycode:ModifiedCatagory.categorycode
                 }
                if( !_.isEqual(oldobject,newobject)){
                  let idx;
@@ -287,14 +299,21 @@ export default class GroupController {
                }
                var changeequal=oldobject.name == newobject.name;
                if(!(idx > -1) || changeequal ){
+
+                    if((ModifiedCatagory.categorycode != undefined) &&  (!_.isNull(ModifiedCatagory.categorycode))){
+                        self.catagoryValidation.categorycode = '@assert:min-1|max-8';
+                    }else{
+                        delete self.catagoryValidation.categorycode;
+                    }
+
                     let validateFields = angular.copy(self.catagoryValidation);
-                    let frontValidation = self.Validation.frontValidation(ModifiedCatagory, validateFields);  
+                    let frontValidation = self.Validation.frontValidation(ModifiedCatagory, validateFields);
                     if (_.isEmpty(frontValidation)) {
-                        ModifiedCatagory.status="approved"
+                       // ModifiedCatagory.status="Approved"
                        self.GroupService.putCategory(ModifiedCatagory)
                        .then(
                            res =>{
-                               
+
                             self.linkEditCatagoryModal=false
                             _.remove(self.catagorytableParams.settings().dataset, function(item) {
                                 return ModifiedCatagory.categoryId == item.categoryId;
@@ -322,13 +341,13 @@ export default class GroupController {
                         self.loaderStates.coverLoader = false;
                         self.$scope.categoryValidator = frontValidation;
                     }
-                
+
             }else{
                 let message = 'Category Name is Already Exists';
                 self.Flash.create('danger', message);
             }
         }
-            
+
             // }
             else{
                     let message = 'No changes ';
@@ -349,7 +368,7 @@ export default class GroupController {
                 var newobject={
                     name:ModifiedGroup.name,
                     active:parseInt(ModifiedGroup.active)
-                } 
+                }
              if( !_.isEqual(oldobject,newobject)){
                              let idx;
                  if(ModifiedGroup.name == undefined || ModifiedGroup.active == undefined){
@@ -359,9 +378,9 @@ export default class GroupController {
                }
                var changeequal=oldobject.name == newobject.name;
                if((!(idx > -1)) || changeequal  ){
-       
+
                     let validateFields = angular.copy(self.groupValidation);
-                    let frontValidation = self.Validation.frontValidation(ModifiedGroup, validateFields);  
+                    let frontValidation = self.Validation.frontValidation(ModifiedGroup, validateFields);
                     if (_.isEmpty(frontValidation)) {
                        self.GroupService.putGroup(ModifiedGroup)
                        .then(
@@ -404,14 +423,14 @@ export default class GroupController {
                     self.loaderStates.terminalList = false;
                     self.loaderStates.coverLoader = false;
                 }
-                
+
             }
 
 
-            showDeleteStoreModel (store){
+            showDeleteGroupModel(group){
                 console.log("delete")
                 let self=this;
-                self.deleteStore=store
+                self.deleteGroup=group;
                 self.showStoreRemoveModal=true;
                };
                showDeleteCatagoryModel (Catagory){
@@ -420,52 +439,70 @@ export default class GroupController {
                 self.deleteCatagory=Catagory
                 self.showCatagoryRemoveModal=true;
                };
+
                deleteCatagoryConform(){
                 let self=this;
                 self.loaderStates.deleteStore=true;
-                _.remove(self.catagorytableParams.settings().dataset, function(item) {
-                 return self.deleteCatagory === item;
-               });
-               self.catagorytableParams.reload().then(function(data) {
-                 if (data.length === 0 && self.catagorytableParams.total() > 0) {
-                   self.catagorytableParams.page(self.catagorytableParams.page() - 1);
-                   self.catagorytableParams.reload();
-                 }
-               });
-             //    var idx = self.storeList.indexOf(self.deleteStore);
-             //    self.storeList.splice(idx, 1);
-             //    this.storeTableParams = new this.NgTableParams({
-             //        count: this.config.perPage,
-             //        sorting: {
-             //            createdAt: 'desc'
-             //        }
-             //    }, {dataset:self.storeList})
-                self.loaderStates.deleteStore=false;
-                self.showCatagoryRemoveModal=false;
+                self.GroupService.deleteCategory( self.deleteCatagory.categoryId)
+                .then(
+                    res =>{
+                        _.remove(self.catagorytableParams.settings().dataset, function(item) {
+                            return self.deleteCatagory === item;
+                          });
+                          self.catagorytableParams.reload().then(function(data) {
+                            if (data.length === 0 && self.catagorytableParams.total() > 0) {
+                              self.catagorytableParams.page(self.catagorytableParams.page() - 1);
+                              self.catagorytableParams.reload();
+                            }
+                          });
+                          let message = "Category Deleted Successfully";
+                          self.Flash.create('success', message);
+                          self.loaderStates.deleteStore=false;
+                          self.showCatagoryRemoveModal=false;
+                },
+                () =>{
+                    let message = "Cannot delete category,Please try again later";
+                    self.Flash.create('danger', message);
+                    self.loaderStates.deleteStore=false;
+                    self.showCatagoryRemoveModal=false;
+                }
+            )
+
             }
-               deleteStoreConform(){
+            deleteGroupConform(){
                    let self=this;
                    self.loaderStates.deleteStore=true;
-                   _.remove(self.tableParams.settings().dataset, function(item) {
-                    return self.deleteStore === item;
-                  });
-                  self.tableParams.reload().then(function(data) {
-                    if (data.length === 0 && self.tableParams.total() > 0) {
-                      self.tableParams.page(self.tableParams.page() - 1);
-                      self.tableParams.reload();
-                    }
-                  });
-                //    var idx = self.storeList.indexOf(self.deleteStore);
-                //    self.storeList.splice(idx, 1);
-                //    this.storeTableParams = new this.NgTableParams({
-                //        count: this.config.perPage,
-                //        sorting: {
-                //            createdAt: 'desc'
-                //        }
-                //    }, {dataset:self.storeList})
+                   self.GroupService.deleteGroup(self.deleteGroup.groupId)
+                   .then(
+                       res =>{
+                        _.remove(self.tableParams.settings().dataset, function(item) {
+                            return self.deleteGroup === item;
+                          });
+                          self.tableParams.reload().then(function(data) {
+                            if (data.length === 0 && self.tableParams.total() > 0) {
+                              self.tableParams.page(self.tableParams.page() - 1);
+                              self.tableParams.reload();
+                            }
+                          });
+                          let message = "Group Deleted Successfully";
+                          self.Flash.create('success', message);
+                          self.loaderStates.deleteStore=false;
+                          self.showStoreRemoveModal=false;
+                   },
+                   ()=>{
+                    let message = "Cannot Delete Group,Please Try Again Later";
+                    self.Flash.create('danger', message);
                    self.loaderStates.deleteStore=false;
                    self.showStoreRemoveModal=false;
+                   }
+                )
+
+
                }
+               closedeleteModal() {
+                this.showStoreRemoveModal=false;
+                this.showCatagoryRemoveModal=false;
+                }
                getCatagory () {
                 let self = this;
                         //let dfd = self.$q.defer();
@@ -482,12 +519,12 @@ export default class GroupController {
                                     self.catagorytableParams = new self.NgTableParams({
                                         count: self.config.perPage,
                                         sorting: {
-                                            createdAt: 'desc'
+                                            created: 'desc'
                                         }
                                     }, {
-                                        dataset: res                   
-                                                        
-                                        
+                                        dataset: res
+
+
                                     });
                                 },
                                 () => {
@@ -497,7 +534,7 @@ export default class GroupController {
                                     self.loaderStates.coverLoader = false;
                                    // dfd.reject();
                                 }
-                            );         
+                            );
             };
               getData() {
                 let self = this;
@@ -513,16 +550,16 @@ export default class GroupController {
                                     self.$scope.groups = res;
                                     //params.total(res.total);
                                     //dfd.resolve(res)
-                                    var result = _.reverse(res); 
+                                    var result = _.reverse(res);
                                     self.tableParams = new self.NgTableParams({
                                         count: self.config.perPage,
                                         sorting: {
-                                            createdAt: 'desc'
+                                            created: 'desc'
                                         }
                                     }, {
-                                        dataset: result                   
-                                                        
-                                        
+                                        dataset: result
+
+
                                     });
                                 },
                                 () => {
@@ -532,7 +569,7 @@ export default class GroupController {
                                     self.loaderStates.coverLoader = false;
                                    // dfd.reject();
                                 }
-                            );         
+                            );
             }
 
               getGroupData() {

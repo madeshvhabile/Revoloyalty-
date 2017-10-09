@@ -108,6 +108,7 @@ angular.module(MODULE_NAME, [])
 
 
 
+
         $http.get(`./build/${MODULE_NAME}/templates/group-list.html`)
             .then(
                 response => {
@@ -139,6 +140,14 @@ angular.module(MODULE_NAME, [])
                 }
             )
             .catch(catchErrorTemplate);
+
+          $http.get(`./build/${MODULE_NAME}/templates/Catagory-list.html`)
+              .then(
+                  response => {
+                      $templateCache.put('./templates/Catagory-list.html', response.data);
+                  }
+              )
+              .catch(catchErrorTemplate);
 
 
     })

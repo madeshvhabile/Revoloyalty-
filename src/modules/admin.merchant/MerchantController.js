@@ -3,37 +3,34 @@ export default class MerchantController {
         if (!AuthService.isGranted('ROLE_ADMIN')) {
             $state.go('admin-login')
         }
-        
+
               this.$scope = $scope;
               this.MerchantService = MerchantService;
               this.$scope.dateNow = new Date();
-             this.merchants={};
+
              this.$scope.newMerchant = {
                 billingMaster:{
                     moduleids:[],
+                    cycle:"Monthly",
+                    method:"creditCard",
+                    isbillingaddresssame:"true",
                     isgiftcardapplicable:false,
-                    giftfeepercentforcount: 0,
-                    giftfeepercentforamount:0,
-                    giftfeevalueforcount: 0,
-                    giftfeevalueforamount: 0,
-                    topupfeepercentforcount: 0,
-                    topupfeepercentforamount:0,
-                    topupfeevalueforcount:0,
-                    topupfeevalueforamount:0, 
-                    isloyaltycardapplicable:false,                    
-                    loyaltyfeepercentforcount: 0,
-                    loyaltyfeepercentforamount:0,
-                    loyaltyfeevalueforcount: 0,
-                    loyaltyfeevalueforamount:0,
+                    // giftpertxnfeepercent: 0,
+                    // giftpertxnfeeamount:0,
+                    // topuppertxnfeepercent: 0,
+                    // topuppertxnfeeamount: 0,
+                    isloyaltycardapplicable:false,
+                    // loyaltypertxnfeeamount: 0,
+                    // loyaltypertxnfeepercent:0,
                     status:'Approved',
                     },
                     merchantMaster:{
                         status:'Approved',
                         active:'1',
-                        
+
                     }
              };
-            
+
              this.type = [{
                 name: 'Physical',
                 type: 'Physical'
@@ -51,11 +48,11 @@ export default class MerchantController {
             maxItems: 1,
             searchField: 'name'
         };
-            
+
               this.$scope.newStore = {
                 status:"Approved",
                 active:1,
-                storetype:'E'
+
               };
               this.$scope.newCategory = {
                 active:1
@@ -63,6 +60,8 @@ export default class MerchantController {
               this.$scope.newGroup = {
                 active:1
               };
+              this.$scope.merchant={};
+              this.$scope.showMerchantDetail=false;
               this.merchantValidation={
                 Modules: '@assert:not_blank',
                 billingCycle: '@assert:not_blank',
@@ -71,31 +70,40 @@ export default class MerchantController {
                 noOfTransaction: '@assert:not_blank',
               },
               this.storeValidation={
-                name: '@assert:not_blank|min-5|max-50',
-                contactperson: '@assert:not_blank|min-5|max-25',
+                name: '@assert:not_blank|min-4|max-50',
+                contactperson: '@assert:not_blank|min-4|max-25',
                 noofterminals: '@assert:not_blank|max-3',
                 email: '@assert:not_blank|max-50',
                 postalcode: '@assert:not_blank|min-5|max-10',
                 address: '@assert:not_blank|min-5|max-100',
-                contactno: '@assert:not_blank',
-                bankaccno: '@assert:not_blank|min-5|max-20',
-                bankname: '@assert:not_blank|min-5|max-50',
-                alternatecontactno:'@assert:not_blank|max-10',
+                contactno: '@assert:not_blank|min-6|max-15',
+                //bankaccno: '@assert:not_blank|min-5|max-20',
+                //bankname: '@assert:not_blank|min-5|max-50',
+                alternatecontactno:'min-6|max-15',
                 storetype: '@assert:not_blank',
                 // storeurl:'@assert:min-5|min-50',
                 city:'@assert:not_blank|min-3|max-50',
                 country:'@assert:not_blank',
                 active:'@assert:not_blank'
-                
+
               },
+              this.registerValidation={
+                merchantId:'@assert:not_blank',
+                name:'@assert:not_blank',
+                contactno: '@assert:not_blank|min-6|max-15',
+                email: '@assert:not_blank|max-50',
+                active:'@assert:not_blank',
+                plainPassword:'@assert:not_blank'
+              },
+
               this.groupValidation={
-                active: '@assert:not_blank',    
-                name: '@assert:not_blank',
-              },
-              
-              this.catagoryValidation={
-                name: '@assert:not_blank',
+                name: '@assert:not_blank|min-4|max-50',
                 active: '@assert:not_blank',
+              },
+
+              this.catagoryValidation={
+                name: '@assert:not_blank|min-4|max-50',
+                active: '@assert:not_blank'
               },
               this.firstStepValidation={
                 merchantcategorytype:'@assert:not_blank',
@@ -107,42 +115,38 @@ export default class MerchantController {
                 bankname:'@assert:not_blank',
                 country:'@assert:not_blank',
                 address:'@assert:not_blank',
-                
-                postalcode:'@assert:not_blank',
+                //postalcode:'@assert:not_blank|min-5|max-10',
                 city:'@assert:not_blank',
                 contactno:'@assert:not_blank',
                 email:'@assert:not_blank',
                 group:'@assert:not_blank',
-                contactperson:'@assert:not_blank',
+                //contactperson:'@assert:not_blank|min-4|max-25',
                 postype:'@assert:not_blank',
-                alternatecontactno:'@assert:not_blank',               
+                //bankcode:'@assert:not_blank',
+                //branchcode:'@assert:not_blank',
+                branchname:'@assert:not_blank',
+                //swiftcode:'@assert:not_blank',
 
               },
-              
             this.giftTransactionAmount={
-                giftfeepercentforcount:'@assert:not_blank',
-                giftfeepercentforamount:'@assert:not_blank',
+                giftpertxnfeeamount:'@assert:not_blank',
+
             },
             this.giftTransactionValue={
-                giftfeevalueforcount:'@assert:not_blank',
-                giftfeevalueforamount:'@assert:not_blank',
+                giftpertxnfeepercent:'@assert:not_blank|max-2',
             },
             this.topTransactionAmount={
-                topupfeepercentforcount:'@assert:not_blank',
-                topupfeepercentforamount:'@assert:not_blank',
+                topuppertxnfeepercent:'@assert:not_blank|max-2',
             },
             this.topTransactionValue={
-                topupfeevalueforcount:'@assert:not_blank',
-                topupfeevalueforamount:'@assert:not_blank',
+                topuppertxnfeeamount:'@assert:not_blank',
             },
             this.loyaltyTransactionAmount={
-                loyaltyfeepercentforcount:'@assert:not_blank',
-                loyaltyfeepercentforamount:'@assert:not_blank',
-            },
+                loyaltypertxnfeepercent:'@assert:not_blank|max-2',
+                },
             this.loyaltyTransactionValue={
-                loyaltyfeevalueforcount:'@assert:not_blank',                
-                loyaltyfeevalueforamount:'@assert:not_blank'
-            }
+                loyaltypertxnfeeamount:'@assert:not_blank',
+                }
             this.billingValidation={
                 cycle:'@assert:not_blank',
                 method:'@assert:not_blank',
@@ -153,8 +157,8 @@ export default class MerchantController {
               this.AuthService = AuthService;
               this.Flash = Flash;
               this.EditableMap = EditableMap;
-              
-              this.merchantId = $stateParams.merchantId || '13d98613-7cf1-4e16-89d4-02e6e5e48924';
+
+              this.merchantId = $stateParams.merchantId || null;
               this.NgTableParams = NgTableParams;
               this.ParamsMap = ParamsMap;
               this.$q = $q;
@@ -178,7 +182,7 @@ export default class MerchantController {
                 searchField:'name',
                 maxItems: 1,
             };
-           
+
 
               this.categoryConfig={
                 valueField: 'categoryId',
@@ -212,36 +216,38 @@ export default class MerchantController {
                   assignLevel: false,
                   assignPos: false,
                   deactivateMerchant: false,
-                  deleteStore:false
+                  deleteStore:false,
+                  deleteMerchant:false
               }
-            
-            
-              this.active = [
-                {
-                    name: this.$filter('translate')('global.active'),
-                    type: 1
-                },
+
+
+              this.activeoption = [
                 {
                     name: this.$filter('translate')('global.inactive'),
                     type: 0
+                },
+                {
+                    name: this.$filter('translate')('global.active'),
+                    type: 1
                 }
+
             ];
 
             this.postype = [
                 {
                     name: "E-Commerce",
-                    type: "E"
+                    type: "E-Commerce"
                 },
                 {
                     name: "Retail",
-                    type: "R"
+                    type: "Retail"
                 },
                 {
                     name: "Both",
-                    type: "B"
+                    type: "Both"
                 }
             ];
-              
+
               this.Modules=[{
                 id:1,
                 name:'Broadcast (SMS)'
@@ -265,7 +271,7 @@ export default class MerchantController {
           {
               id:6,
               name:'CRM'
-          },            
+          },
           {
               id:7,
               name:'EDM'
@@ -283,22 +289,35 @@ export default class MerchantController {
                   sortField: 'name',
                   maxItems: 1
               };
-            
+
+              this.merchantConfig={
+                valueField: 'merchantId',
+                labelField: 'name',
+                create: false,
+                sortField: 'name',
+                searchField:'name',
+                maxItems: 1
+              }
 
             this.storeList=[];
             this.storeTableParams = new this.NgTableParams({
               count: this.config.perPage,
               sorting: {
-                  createdAt: 'desc'
+                created: 'desc'
               }
           }, {dataset:this.storeList})
           }
           stepOnevalidation(newMerchant){
                 let self=this;
                 let validateFields={};
+                if(!_.isEmpty(newMerchant.alternatecontactno)){
+                    self.firstStepValidation.alternatecontactno = '@assert:min-6|max-15';
+                }else{
+                    delete self.firstStepValidation.alternatecontactno;
+                }
                 validateFields.merchantMaster= angular.copy(self.firstStepValidation);
                 let frontValidation = self.Validation.frontValidation(newMerchant, validateFields);
-               
+
                 let message = self.$filter('translate')('xhr.post_customer.error');
                 self.$scope.validate = frontValidation;
                 console.log('newMerchant', validateFields);
@@ -306,13 +325,13 @@ export default class MerchantController {
                 if(!(_.isEmpty(frontValidation))){
                         self.Flash.create('danger', message);
                 }
-                else{                
+                else{
                     $( ".tabs li:nth-child(1)" ).removeClass( "is-active" );
                     $( ".tabs li:nth-child(2)" ).addClass( "is-active" );
                     $( "#panel2c" ).addClass( "is-active" ).attr("aria-hidden","false");
                     $( "#panel1c" ).removeClass( "is-active" ).attr("aria-hidden","true");
 
-               }              
+               }
             }
             backTostepOne(){
                 $( ".tabs li:nth-child(1)" ).addClass( "is-active" );
@@ -321,34 +340,46 @@ export default class MerchantController {
                 $( "#panel1c" ).addClass( "is-active" ).attr("aria-hidden","false");
             }
           closeModal(){
+              let self=this;
+            self.$scope.newStore={};
+            self.$scope.storeValidate={};
               this.linkAddStoreModal=false;
           };
+          closedeleteModal() {
+            this.showMerchantRemoveModal=false;
+            }
           openModal(){
               let self=this
               console.log("here")
+          self.$scope.newStore={};
+          self.$scope.storeValidate={};
           self.linkAddStoreModal = true
-          self.$scope.newStore={}
-          self.$scope.storeValidate={}
           }
           openCategory(){
             let self=this
             console.log("here")
+            self.$scope.categoryValidate={}
+            self.$scope.newCategory={}
         self.linkAddCategoryModal = true
-        self.$scope.newCategory={}
-        self.$scope.catagoryValidation={}
+
+
         }
           openGroup(){
               let self=this;
-              self.linkAddGroupModal=true;
               self.$scope.newGroup={}
               self.$scope.groupValidate={}
+              self.linkAddGroupModal=true;
           }
           closeGroup(){
               let self=this;
+              self.$scope.newGroup={};
+              self.$scope.groupValidate={};
               self.linkAddGroupModal=false;
           }
           closeCatagory(){
             let self=this;
+            self.$scope.categoryValidate={};
+            self.$scope.newCategory={};
             self.linkAddCategoryModal=false;
           }
           showDeleteStoreModel(store){
@@ -356,6 +387,14 @@ export default class MerchantController {
            self.deleteStore=store
            self.showStoreRemoveModal=true;
           };
+
+          showDeleteMerchantModel(selctedRow){
+            let self=this;
+            self.deleteMerchant=selctedRow
+            self.showMerchantRemoveModal=true;
+           };
+
+
           deleteStoreConform(){
               let self=this;
               self.loaderStates.deleteStore=true;
@@ -364,7 +403,7 @@ export default class MerchantController {
               this.storeTableParams = new this.NgTableParams({
                   count: this.config.perPage,
                   sorting: {
-                      createdAt: 'desc'
+                    created: 'desc'
                   }
               }, {dataset:self.storeList})
               self.loaderStates.deleteStore=false;
@@ -382,30 +421,62 @@ export default class MerchantController {
               }
           }
 
+          deleteMerchantConform() {
+            let self = this;
+            self.loaderStates.deleteMerchant = true;
+            self.MerchantService.deleteMerchant(self.deleteMerchant.merchantId)
+            .then(
+                res =>{
+
+                    _.remove(self.tableParams.settings().dataset, function (item) {
+                        return self.deleteMerchant === item;
+                    });
+                    self.tableParams.reload().then(function (data) {
+                        if (data.length === 0 && self.tableParams.total() > 0) {
+                            self.tableParams.page(self.tableParams.page() - 1);
+                            self.tableParams.reload();
+                        }
+                    });
+                    let message = "Merchant Deleted Successfully";
+                    self.Flash.create('success', message);
+                    self.loaderStates.deleteMerchant = false;
+                    self.showMerchantRemoveModal=false;
+                }
+            ),
+             ()=>{
+                let message = "Cannot Delete Merchant,Please Try Again Later";
+                self.Flash.create('danger', message);
+                self.loaderStates.deleteMerchant = false;
+                self.showMerchantRemoveModal=false;
+            }
+
+
+        }
           checkGiftCheck(param){
               let self= this;
             if(!param){
                 self.$scope.newMerchant.billingMaster.isgiftcardapplicable=false
             }
+            else{
+                self.$scope.newMerchant.GtransactionRadio = "total";
+                self.$scope.newMerchant.topupTransactionRadio="topCount"
+               this.checkCheckedRadio( self.$scope.newMerchant.GtransactionRadio);
+               this.checkCheckedtopRadio(self.$scope.newMerchant.topupTransactionRadio);
+            }
           }
+
           checkLoyaltyCheck(param){
             let self= this;
             if(!param){
                 self.$scope.newMerchant.billingMaster.isloyaltycardapplicable=false
             }
+            else{
+                self.$scope.newMerchant.LtransactionRadio="LCount";
+               this.checkCheckedLoyaltyRadio(self.$scope.newMerchant.LtransactionRadio);
+            }
           }
 
-          checkCheckedGiftCard(param){
-            let self =this;
-            if(param==true){
-                newMerchant.GtransactionRadio="total";
-                newMerchant.topupTransactionRadio='topCount';
-            }
-            else{
-                newMerchant.GtransactionRadio='';
-                newMerchant.topupTransactionRadio='';
-            }
-          }
+
 
           checkCheckedLoyalty(param){
             let self =this;
@@ -420,55 +491,60 @@ export default class MerchantController {
 
           checkCheckedRadio(param){
             let self =this;
-            if(param=="total"){             
-                
-                self.$scope.showText=true ;         
+            if(param=="total"){
+
+                self.$scope.showText=true ;
                 }
                 else{
-                    self.$scope.showText=false; 
+                    self.$scope.showText=false;
                 }
-                
+
                 if(param=="value"){
                     self.$scope.showValue=true ;
                 }
                 else{
                     self.$scope.showValue=false;
-                     
+
+                }
+            }
+                checkCheckedtopRadio(param){
+                    let self =this;
+                    if(param=="topCount"){
+
+                        self.$scope.showTopupTotal=true ;
+                        }
+                        else{
+                            self.$scope.showTopupTotal=false ;
+                        }
+                     if(param=="topValue"){
+
+                     self.$scope.showTopupValue=true ;
+                      }
+                      else{
+                        self.$scope.showTopupValue=false ;
+                      }
                 }
 
-                if(param=="topCount"){                
-                    
-                    self.$scope.showTopupTotal=true ;         
+               checkCheckedLoyaltyRadio(param){
+                let self =this;
+                  if(param=="LCount"){
+
+                    self.$scope.showLTotal=true ;
                     }
                     else{
-                        self.$scope.showTopupTotal=false ;  
+                        self.$scope.showLTotal=false ;
                     }
-                 if(param=="topValue"){                
-                        
-                 self.$scope.showTopupValue=true ;         
+                 if(param=="LValue"){
+
+                 self.$scope.showLValue=true ;
                   }
                   else{
-                    self.$scope.showTopupValue=false ;  
-                  }
-                  
-                  if(param=="LCount"){                
-                    
-                    self.$scope.showLTotal=true ;         
-                    }
-                    else{
-                        self.$scope.showLTotal=false ; 
-                    }
-                 if(param=="LValue"){                
-                        
-                 self.$scope.showLValue=true ;         
-                  }
-                  else{
-                    self.$scope.showLValue=false ;     
+                    self.$scope.showLValue=false ;
                   }
             }
-        
 
-         
+
+
             editToggleSelection(id){
             let self=this;
             console.log(typeof self.$scope.editMerchant.billingMaster.moduleids)
@@ -489,41 +565,43 @@ export default class MerchantController {
                     self.MerchantService.getMerchants()
                         .then(
                             res => {
-                              
+
                                 self.loaderStates.merchantList = false;
                                 self.loaderStates.coverLoader = false;
                                 self.$scope.merchants = res;
+                                //self.merchants=res;
+                                this.merchants=res;
                                 // params.total(res.total);self.config.perPage
-                                //dfd.resolve(res)   
-                                //console.log(self.$scope.merchants[1].MID);    
-                                var result = _.reverse(res);                                               
+                                //dfd.resolve(res)
+                                //console.log(self.$scope.merchants[1].MID);
+                                var result = res;
                                 self.tableParams = new self.NgTableParams({
-                                        count: 5,
+                                        count: self.config.perPage,
                                         sorting: {
-                                            createdAt: 'desc'
+                                            created: 'desc'
                                         }
                                     }, {
-                                    dataset:result            
+                                    dataset:result
                                 });
-                               
+
                             },
                             () => {
-                                let message = self.$filter('translate')('xhr.get_customers.error');
+                                let message = "Cannot get MerchantList";
                                 self.Flash.create('danger', message);
                                 self.loaderStates.merchantList = false;
                                 self.loaderStates.coverLoader = false;
                                 // dfd.reject();
                             }
                         );
-                            
+
               }
 
-            
+
               getGroup() {
                 let self = this;
                         //let dfd = self.$q.defer();
                         //self.ParamsMap.params(params.url())
-                      
+
                         self.MerchantService.getGroups()
                             .then(
                                 res => {
@@ -533,18 +611,20 @@ export default class MerchantController {
                                     var length = res.total
                                     for(var i=0; i<length ;i++){
                                         var groupname=res[i].name;
+                                        if(res[i].active == "1"){
                                         tempGroups.push({name:groupname ,groupId:res[i].groupId});
                                     }
-                                    this.groups=tempGroups;                                  
+                                }
+                                    this.groups=tempGroups;
                                     console.log(this.groups);
                                 },
                                 () => {
-                                    let message = self.$filter('translate')('xhr.get_customers.error');
+                                    let message = "Cannot get GroupList";
                                     self.Flash.create('danger', message);
                                     self.loaderStates.coverLoader = false;
                                    // dfd.reject();
                                 }
-                            );         
+                            );
             }
 
               getMerchantData() {
@@ -557,54 +637,78 @@ export default class MerchantController {
                           self.MerchantService.getMerchant(self.merchantId)
                               .then(
                                   res => {
-                                      self.$scope.merchant = res;                                                                                                           
-                                      self.loaderStates.merchantDetails = false;
-                                     
+                                    self.$scope.merchant = res;
+                                    self.viewModules=[]
+                                    let modulesarray=res.billing.moduleids.split(',')
+                                    for(var i=0;i<modulesarray.length;i++){
+                                     let idx= _.findIndex(self.Modules, function(o) { return o.id ==modulesarray[i] ; });
+                                     if(idx > -1)
+                                     self.viewModules.push(self.Modules[idx])
+                                    }
+                                    self.loaderStates.merchantDetails = false;
+
                                   },
                                   () => {
-                                      let message = self.$filter('translate')('xhr.get_customer.error');
+                                    let message = "Cannot get Merchant Details";
                                       self.Flash.create('danger', message);
                                       self.loaderStates.merchantDetails = false;
                                   }
                               )
                       ])
-                          
-                  } 
+
+                  }
               }
 
+              getMerchantDateils(merchantId){
+                  let self =this;
+               let detail =_.find(self.merchants, ['merchantId',merchantId]);
+               self.$scope.merchant={
+                   name:detail.name,
+                   active:detail.active,
+                   email:detail.email,
+                   contactno:detail.contactno
+
+               }
+               self.$scope.merchant.merchantId =merchantId;
+               self.$scope.showMerchantDetail=true;
+              }
 
 
             getCatagory () {
                 let self = this;
                         //let dfd = self.$q.defer();
                         //self.ParamsMap.params(params.url())
-                        
+
                         self.MerchantService.getCatagory()
                             .then(
                                 res => {
-                                    
+
                                     self.loaderStates.coverLoader = false;
-                                  
+                                  console.log('categoryRes',res);
                                     var length = res.total
                                     var tempCategory =[];
                                     for(var i=0; i<length ;i++){
                                         var name=res[i].name;
-                                        tempCategory.push({name:name ,categoryId:res[i].categoryId});
+                                        if(res[i].active == 1){
+                                            console.log("active");
+
+                                        tempCategory.push({name:res[i].name ,categoryId:res[i].categoryId});
                                        }
+                                    }
                                        this.categorys=tempCategory;
                                     console.log(self.$scope.categorys);
-                                    
+
                                 },
                                 () => {
-                                    let message = self.$filter('translate')('xhr.get_customers.error');
+                                    let message = "Cannot get CategoryList";
                                     self.Flash.create('danger', message);
-                                   
+
                                     self.loaderStates.coverLoader = false;
                                    // dfd.reject();
                                 }
-                            );         
+                            );
             };
-            
+
 
             getStore () {
                 let self = this;
@@ -622,25 +726,25 @@ export default class MerchantController {
                                     self.storetableParams = new self.NgTableParams({
                                         count: self.config.perPage,
                                         sorting: {
-                                            createdAt: 'desc'
+                                            created: 'desc'
                                         }
                                     }, {
-                                        dataset:  self.$scope.storeList             
-                                                        
-                                        
+                                        dataset:  self.$scope.storeList
+
+
                                     });
                                 },
                                 () => {
-                                    let message = self.$filter('translate')('xhr.get_customers.error');
+                                    let message = "Cannot get StoreList";
                                     self.Flash.create('danger', message);
                                     self.loaderStates.storeList = false;
                                     self.loaderStates.coverLoader = false;
                                    // dfd.reject();
                                 }
-                            );         
+                            );
             };
 
-          
+
 
               getAvailableGroup() {
                   let self = this;
@@ -689,47 +793,47 @@ export default class MerchantController {
                       )
               }
 
-              
+
 
               addMerchant(newMerchant) {
-                
+
                 let self = this;
                 let validateFields={};
                 let array ={};
                 let addressValidation ={
                     country : angular.copy(self.firstStepValidation.country),
                     city:angular.copy(self.firstStepValidation.country),
-                    address:angular.copy(self.firstStepValidation.address),    
-                    postalcode:angular.copy(self.firstStepValidation.postalcode),                 
+                    address:angular.copy(self.firstStepValidation.address),
+                    postalcode:angular.copy(self.firstStepValidation.postalcode),
                 };
-                if(newMerchant.billingMaster.isbillingaddresssame=='false'){ 
-                      array=  _.merge(array, addressValidation);  
+                if(newMerchant.billingMaster.isbillingaddresssame=='false'){
+                      array=  _.merge(array, addressValidation);
                 }
-                
-                array=  _.merge(array, self.billingValidation);  
+
+                array=  _.merge(array, self.billingValidation);
                 if(newMerchant.GtransactionRadio=="total"){
-                    array=  _.merge(array, self.giftTransactionAmount);                   
+                    array=  _.merge(array, self.giftTransactionAmount);
                 }
                 else if(newMerchant.GtransactionRadio =="value") {
-                    array= _.merge(array, self.giftTransactionValue);  
-                                  
+                    array= _.merge(array, self.giftTransactionValue);
+
                 }
 
                 if(newMerchant.topupTransactionRadio=="topCount"){
-                    array=  _.merge(array, self.topTransactionAmount);  
-                                    
+                    array=  _.merge(array, self.topTransactionAmount);
+
                 }
                 else if(newMerchant.topupTransactionRadio =="topValue"){
-                    array= _.merge(array, self.topTransactionValue);  
-                                  
+                    array= _.merge(array, self.topTransactionValue);
+
                 }
                 if(newMerchant.LtransactionRadio=="LCount"){
-                    array= _.merge(array, self.loyaltyTransactionAmount);  
-                                  
+                    array= _.merge(array, self.loyaltyTransactionAmount);
+
                 }
                 else if(newMerchant.LtransactionRadio =="LValue"){
-                    array= _.merge(array, self.loyaltyTransactionValue); 
-                                   
+                    array= _.merge(array, self.loyaltyTransactionValue);
+
                 }
                 validateFields.billingMaster =  array;
                 console.log(validateFields);
@@ -751,33 +855,33 @@ export default class MerchantController {
                     }
                     else{
                      booleanCheck =true;
-                     
+
                         $(".giftcard").css("display", "none");
                     }
                     if(!(newMerchant.hasOwnProperty("topupTransactionRadio"))){
                      booleanCheck =false;
-                     
+
                         $(".topup").css("display", "block");
-                    }   
+                    }
                     else{
                      booleanCheck =true;
-                     
+
                         $(".topup").css("display", "none");
-                    }                 
+                    }
                 }
                 if(newMerchant.billingMaster.isloyaltycardapplicable){
                     if(!(newMerchant.hasOwnProperty("LtransactionRadio"))){
                      booleanCheck =false;
-                     
+
                         $(".loyaltyCard").css("display", "block");
-                     }   
+                     }
                      else{
                      booleanCheck =true;
-                     
+
                         $(".loyaltyCard").css("display", "none");
                      }
                 }
-                     
+
                      if (_.isEmpty(frontValidation) && checked && booleanCheck) {
                     console.log('self.$scope.oldMerchant ',self.$scope.oldMerchant );
                     console.log(typeof self.$scope.oldMerchant );
@@ -791,7 +895,7 @@ export default class MerchantController {
                         self.Flash.create('danger', message);
                     }
                     else{
-                        
+
                        // else{
                             if(newMerchant.billingMaster.isbillingaddresssame){
                                 newMerchant.billingMaster.address = newMerchant.merchantMaster.address;
@@ -799,37 +903,59 @@ export default class MerchantController {
                                 newMerchant.billingMaster.city = newMerchant.merchantMaster.city;
                                 newMerchant.billingMaster.postalcode = newMerchant.merchantMaster.postalcode;
                             }
-                            newMerchant.billingMaster.moduleids = newMerchant.billingMaster.moduleids.join();
+
+                            newMerchant.billingMaster.moduleids = newMerchant.billingMaster.moduleids.toString();
                             newMerchant.merchantMaster.status = "Approved" ;
                             if(!(newMerchant.merchantMaster.hasOwnProperty('alternatecontactno'))){
                                 newMerchant.merchantMaster.alternatecontactno="";
                             }
+
+                            if(self.$scope.showValue == false ){
+                               delete newMerchant.billingMaster.giftpertxnfeepercent
+                            }
+                            if(self.$scope.showText == false ){
+                              delete  newMerchant.billingMaster.giftpertxnfeeamount
+                            }
+                            if(self.$scope.showTopupTotal == false ){
+                                delete newMerchant.billingMaster.topuppertxnfeepercent
+                            }
+                            if(self.$scope.showTopupValue == false ){
+                               delete newMerchant.billingMaster.topuppertxnfeeamount
+                            }
+                            if(self.$scope.showLValue == false ){
+                                delete newMerchant.billingMaster.loyaltypertxnfeeamount
+                            }
+                            if(self.$scope.showLTotal == false ){
+                                delete newMerchant.billingMaster.loyaltypertxnfeepercent
+                            }
+
+
                             self.MerchantService.postMerchant(newMerchant)
                                 .then(
                                     res => {
                                         console.log("merchantRes",res);
-                                        
+
                                          self.MerchantService.postStore(self.storeList,res.merchantId).then(
                                             res =>{
                                                 self.$state.go('admin.merchant-list');
-                                                let message = self.$filter('translate')('xhr.post_customer.success');
+                                                let message = "Merchant Added Successfully";
                                                 self.Flash.create('success', message);
                                             },
                                             res => {
                                                 self.$scope.validate = self.Validation.mapSymfonyValidation(res.data);
-                                                let message = "Success Add Merchant";
+                                                let message = "Something went Wrong,Store Cannot Create";
                                                 self.Flash.create('danger', message);
                                             }
                                         )
-                                       
+
                                     },
                                     res => {
                                         self.$scope.validate = self.Validation.mapSymfonyValidation(res.data);
-                                        let message = self.$filter('translate')('xhr.post_customer.error');
+                                        let message = "Something went Wrong,Merchant Cannot Create";
                                         self.Flash.create('danger', message);
                                     }
-                                )       
-                           // }   
+                                )
+                           // }
                     }
                 } else {
                     let message = self.$filter('translate')('xhr.post_customer.error');
@@ -839,44 +965,51 @@ export default class MerchantController {
             }
 
               saveEditMerchant(editMerchant) {
-                
+
+
                 let self = this;
                 let validateFields={};
                 let array ={};
                 let addressValidation ={
                     country : angular.copy(self.firstStepValidation.country),
                     city:angular.copy(self.firstStepValidation.country),
-                    address:angular.copy(self.firstStepValidation.address),    
-                    postalcode:angular.copy(self.firstStepValidation.postalcode),                 
+                    address:angular.copy(self.firstStepValidation.address),
+                    postalcode:angular.copy(self.firstStepValidation.postalcode),
                 };
-                if(editMerchant.billingMaster.isbillingaddresssame=='false'){ 
-                      array=  _.merge(array, addressValidation);  
+                if(editMerchant.billingMaster.isbillingaddresssame=='false'){
+                      array=  _.merge(array, addressValidation);
                 }
-                
-                array=  _.merge(array, self.billingValidation);  
+
+                array=  _.merge(array, self.billingValidation);
                 if(editMerchant.GtransactionRadio=="total"){
-                    array=  _.merge(array, self.giftTransactionAmount);                   
+                    array=  _.merge(array, self.giftTransactionAmount);
                 }
                 else if(editMerchant.GtransactionRadio =="value") {
-                    array= _.merge(array, self.giftTransactionValue);  
-                                  
+                    array= _.merge(array, self.giftTransactionValue);
+
                 }
 
                 if(editMerchant.topupTransactionRadio=="topCount"){
-                    array=  _.merge(array, self.topTransactionAmount);  
-                                    
+                    array=  _.merge(array, self.topTransactionAmount);
+
                 }
                 else if(editMerchant.topupTransactionRadio =="topValue"){
-                    array= _.merge(array, self.topTransactionValue);  
-                                  
+                    array= _.merge(array, self.topTransactionValue);
+
                 }
                 if(editMerchant.LtransactionRadio=="LCount"){
-                    array= _.merge(array, self.loyaltyTransactionAmount);  
-                                  
+                    array= _.merge(array, self.loyaltyTransactionAmount);
+
                 }
                 else if(editMerchant.LtransactionRadio =="LValue"){
-                    array= _.merge(array, self.loyaltyTransactionValue); 
-                                   
+                    array= _.merge(array, self.loyaltyTransactionValue);
+
+                }
+                if(editMerchant.billingMaster.isloyaltycardapplicable == undefined){
+                    editMerchant.billingMaster.isloyaltycardapplicable=false
+                }
+                if(editMerchant.billingMaster.isgiftcardapplicable == undefined){
+                    editMerchant.billingMaster.isgiftcardapplicable=false
                 }
                 validateFields.billingMaster =  array;
                 console.log(validateFields);
@@ -903,8 +1036,10 @@ export default class MerchantController {
                         self.Flash.create('danger', message);
                     }*/
                     //else{
+                        console.log("Edit Change Merchant",editMerchant.merchantMaster);
+                        editMerchant.merchantMaster.active=parseInt( editMerchant.merchantMaster.active)
                         if(_.isEqual(self.$scope.oldMerchant , editMerchant)){
-                           
+
                             let message = 'No change to save';
                             self.Flash.create('danger', message);
                         }
@@ -915,25 +1050,47 @@ export default class MerchantController {
                                 editMerchant.billingMaster.city = editMerchant.merchantMaster.city;
                                 editMerchant.billingMaster.postalcode = editMerchant.merchantMaster.postalcode;
                             }
-                            console.log('editMerchant.billingMaster.moduleids',typeof editMerchant.billingMaster.moduleids)
-                            if(typeof editMerchant.billingMaster.moduleids== 'Array'){ 
-                             editMerchant.billingMaster.moduleids = editMerchant.billingMaster.moduleids.join();
+                            if(!(editMerchant.merchantMaster.hasOwnProperty('alternatecontactno'))){
+                                editMerchant.merchantMaster.alternatecontactno="";
                             }
+
+                             editMerchant.billingMaster.moduleids = editMerchant.billingMaster.moduleids.toString();
+
+
+                             if(self.$scope.showValue == false ){
+                               delete editMerchant.billingMaster.giftpertxnfeepercent
+                            }
+                            if(self.$scope.showText == false ){
+                              delete  editMerchant.billingMaster.giftpertxnfeeamount
+                            }
+                            if(self.$scope.showTopupTotal == false ){
+                                delete editMerchant.billingMaster.topuppertxnfeepercent
+                            }
+                            if(self.$scope.showTopupValue == false ){
+                               delete editMerchant.billingMaster.topuppertxnfeeamount
+                            }
+                            if(self.$scope.showLValue == false ){
+                                delete editMerchant.billingMaster.loyaltypertxnfeeamount
+                            }
+                            if(self.$scope.showLTotal == false ){
+                                delete editMerchant.billingMaster.loyaltypertxnfeepercent
+                            }
+
                             self.MerchantService.putMerchant(editMerchant)
                                 .then(
                                     res => {
                                         self.$state.go('admin.merchant-list');
-                                        let message = "Success Add Merchant";
+                                        let message = "Merchant Updated Successfully";
                                         self.Flash.create('success', message);
 
                                     },
                                     res => {
                                         self.$scope.validate = self.Validation.mapSymfonyValidation(res.data);
-                                        let message = self.$filter('translate')('xhr.post_customer.error');
+                                        let message = "Something went wrong!Please try again later";
                                         self.Flash.create('danger', message);
                                     }
-                                )       
-                            }   
+                                )
+                            }
                     //}
                 } else {
                     let message = self.$filter('translate')('xhr.post_customer.error');
@@ -942,11 +1099,31 @@ export default class MerchantController {
                 }
             }
 
-           
+
               addStore(newStore) {
                 console.log("enter to submit",newStore)
                 let self = this;
                 newStore.status="Approved";
+                if(!_.isEmpty(newStore.alternatecontactperson)){
+                    self.storeValidation.alternatecontactperson = '@assert:min-4|max-25';
+                }else{
+                    delete self.storeValidation.alternatecontactperson;
+                }
+                if(!_.isEmpty(newStore.storeurl)){
+                    self.storeValidation.storeurl = '@assert:min-5|max-50';
+                }else{
+                    delete self.storeValidation.storeurl;
+                }
+                var altconno =!_.isNull(newStore.alternatecontactno);
+                console.log(altconno);
+                var altconno1 =!_.isEmpty(newStore.alternatecontactno);
+                console.log(altconno1);
+                if((newStore.alternatecontactno != undefined) &&  (!_.isNull(newStore.alternatecontactno))){
+                    self.storeValidation.alternatecontactno = '@assert:min-6|max-15';
+                }else{
+                    delete self.storeValidation.alternatecontactno;
+                }
+
                 let validateFields = angular.copy(self.storeValidation);
                 let frontValidation = self.Validation.frontValidation(newStore, validateFields);
                 console.log("frontValidation",frontValidation)
@@ -956,10 +1133,12 @@ export default class MerchantController {
                     this.storeTableParams = new this.NgTableParams({
                         count: this.config.perPage,
                         sorting: {
-                            createdAt: 'desc'
+                            created: 'desc'
                         }
                     }, {dataset:self.storeList})
                     console.log("table",self.storeTableParams)
+                    let message = "Store Added Successfully ";
+                     self.Flash.create('success', message);
                     this.closeModal()
                     // self.MerchantService.postMerchant(newStore)
                     //     .then(
@@ -981,40 +1160,40 @@ export default class MerchantController {
                     self.$scope.storeValidate = frontValidation;
                 }
             }
-            
 
-            addGroup(newGroup,newMerchant){  
-                console.log("new ",newGroup,newMerchant)              
+
+            addGroup(newGroup,newMerchant){
+                console.log("new ",newGroup,newMerchant)
                 let self=this
                 let idx;
                 let validateFields = angular.copy(self.groupValidation);
-                let frontValidation = self.Validation.frontValidation(newGroup, validateFields);   
+                let frontValidation = self.Validation.frontValidation(newGroup, validateFields);
                 if(newGroup.name == undefined || newGroup.active == undefined){
                      idx=-1
                 }
                 else{
                      idx= _.findIndex(self.groups, function(o) { return o.name == newGroup.name; });
                 }
-                if(!(idx > -1)){ 
+                if(!(idx > -1)){
                 if (!_.isEmpty(frontValidation)) {
                     self.$scope.groupValidate = frontValidation;
                 }
                else{
                  self.MerchantService.postGroup(newGroup)
                  .then(
-                     res=>{                         
-                        
+                     res=>{
+                    if(newGroup.active == "1"){
                      self.groups.push({name:res.groupname,groupId:res.groupId})
-                     
+                     }
                     //  newMerchant.merchantMaster={
                     //      group : res.groupId
                     //  }
-                     console.log('grouplist',self.groups)
-                     console.log('Categorylist',self.categorys)
+
+                     self.$scope.groupValidate = {};
                      let message = 'Group Added successfully';
                      self.linkAddGroupModal = false
                      self.Flash.create('success', message);
-                        
+
                      },
                      (error)=>{
                         let message = 'Something Went wrong Please Try again later';
@@ -1024,17 +1203,25 @@ export default class MerchantController {
                  }
                }
                else{
-                let message = 'Group Name is Already Exists';
+                let message = 'Group Name Already Exists';
                 self.Flash.create('danger', message);
-               }              
+               }
             }
 
-            addCategory(newCatagory,newMerchant){    
-                console.log('newde',newMerchant)           
+            addCategory(newCatagory,newMerchant){
+                console.log('newde',newMerchant)
                 let self=this
                 let idx;
+
+
+                if((newCatagory.categorycode != undefined) &&  (!_.isNull(newCatagory.categorycode))){
+                    self.catagoryValidation.categorycode = '@assert:min-1|max-8';
+                }else{
+                    delete self.catagoryValidation.categorycode;
+                }
+
                 let validateFields = angular.copy(self.catagoryValidation);
-                let frontValidation = self.Validation.frontValidation(newCatagory, validateFields);   
+                let frontValidation = self.Validation.frontValidation(newCatagory, validateFields);
                 if(newCatagory.name == undefined || newCatagory.active == undefined){
                      idx=-1
                 }
@@ -1045,21 +1232,25 @@ export default class MerchantController {
                 if (!_.isEmpty(frontValidation)) {
                     self.$scope.categoryValidate = frontValidation;
                 }
-               else{              
-               
+               else{
+
                  self.MerchantService.postCategory(newCatagory)
                  .then(
                      res=>{
                          newCatagory.categoryId=res.categoryId;
-                         
-                     
-                           
+
+                         if(newCatagory.active == "1"){
+                             console.log("push activated category ");
+
                          self.categorys.push({name:res.categoryname,categoryId:res.categoryId});
+                         }
+
+                         self.$scope.categoryValidate = {};
 
                      let message = 'New Category  Added successfully';
                      self.linkAddCategoryModal = false
                      self.Flash.create('success', message);
-                   
+
                      },
                      (error)=>{
                         let message = 'Something Went wrong Please Try again later';
@@ -1071,7 +1262,7 @@ export default class MerchantController {
                else{
                 let message = 'Category Name is Already Exists';
                 self.Flash.create('danger', message);
-               }              
+               }
             }
 
 
@@ -1085,14 +1276,14 @@ export default class MerchantController {
                         self.MerchantService.getMerchant(self.merchantId)
                             .then(
                                 res => {
-                                    self.$scope.merchants = res;    
+                                    self.$scope.merchants = res;
                                     let merchantDetail=res;
-                                    console.log('self.$scope.merchants',self.$scope.merchants);                                  
+                                    console.log('self.$scope.merchants',self.$scope.merchants);
                                     self.loaderStates.merchantDetails = false;
-                                    
+
                                     self.$scope.editMerchant={
                                       merchantId:self.merchantId,
-                                      merchantMaster:{                           
+                                      merchantMaster:{
                                           merchantcategorytype:merchantDetail.category,
                                           active:merchantDetail.active,
                                           city:merchantDetail.city,
@@ -1102,6 +1293,10 @@ export default class MerchantController {
                                           dba:merchantDetail.dba,
                                           bankaccno:merchantDetail.bankaccno,
                                           bankname:merchantDetail.bankname,
+                                          swiftcode:merchantDetail.swiftcode,
+                                          branchcode:merchantDetail.branchcode,
+                                          bankcode:merchantDetail.bankcode,
+                                          branchname:merchantDetail.branchname,
                                           country:merchantDetail.country,
                                           address:merchantDetail.address,
                                           postalcode:merchantDetail.postalcode,
@@ -1112,57 +1307,52 @@ export default class MerchantController {
                                           alternatecontactno:merchantDetail.alternatecontactno,
                                           status:'Approved'
                                       },
-                                      billingMaster:{    
-                                          moduleids:JSON.parse("[" + merchantDetail.billing.moduleids + "]"),                    
+                                      billingMaster:{
+                                          moduleids:JSON.parse("[" + merchantDetail.billing.moduleids + "]"),
                                           cycle:merchantDetail.billing.cycle,
-                                          method:merchantDetail.billing.method,                           
+                                          method:merchantDetail.billing.method,
                                           isbillingaddresssame:merchantDetail.billing.isbillingaddresssame.toString(),
                                           country:merchantDetail.billing.country,
                                           address:merchantDetail.billing.address,
                                           postalcode:merchantDetail.billing.postalcode,
                                           isgiftcardapplicable: merchantDetail.billing.isgiftcardapplicable,
-                                          giftfeepercentforcount: merchantDetail.billing.giftfeepercentforcount,
-                                          giftfeepercentforamount:merchantDetail.billing.giftfeepercentforamount,
-                                          giftfeevalueforcount: merchantDetail.billing.giftfeevalueforcount,
-                                          giftfeevalueforamount: merchantDetail.billing.giftfeevalueforamount,
-                                          topupfeepercentforcount: merchantDetail.billing.topupfeepercentforcount,
-                                          topupfeepercentforamount: merchantDetail.billing.topupfeepercentforamount,
-                                          topupfeevalueforcount: merchantDetail.billing.topupfeevalueforcount,
-                                          topupfeevalueforamount: merchantDetail.billing.topupfeevalueforamount,  
-                                          isloyaltycardapplicable: merchantDetail.billing.isloyaltycardapplicable,              
-                                          loyaltyfeepercentforcount: merchantDetail.billing.loyaltyfeepercentforcount,
-                                          loyaltyfeepercentforamount: merchantDetail.billing.loyaltyfeepercentforamount,
-                                          loyaltyfeevalueforcount: merchantDetail.billing.loyaltyfeevalueforcount,
-                                          loyaltyfeevalueforamount:merchantDetail.billing.loyaltyfeevalueforamount,
-                                          status: 'Approved'                                          
-                                      }                                   
-                      
-                      
+                                          giftpertxnfeepercent: merchantDetail.billing.giftpertxnfeepercent,
+                                          giftpertxnfeeamount: merchantDetail.billing.giftpertxnfeeamount,
+                                          topuppertxnfeepercent: merchantDetail.billing.topuppertxnfeepercent,
+                                          topuppertxnfeeamount: merchantDetail.billing.topuppertxnfeeamount,
+                                          isloyaltycardapplicable: merchantDetail.billing.isloyaltycardapplicable,
+                                          loyaltypertxnfeepercent: merchantDetail.billing.loyaltypertxnfeepercent,
+                                          loyaltypertxnfeeamount: merchantDetail.billing.loyaltypertxnfeeamount,
+                                          status: 'Approved'
+                                      }
+
+
                                   }
-                                  if(merchantDetail.billing.giftfeepercentforcount !=0){
-                                    self.$scope.editMerchant.GtransactionRadio="total";
-                                    self.$scope.showText=true ;
-                                }
-                                else if(merchantDetail.billing.giftfeevalueforcount !=0){
-                                    self.$scope.showValue=true ;
-                                    self.$scope.editMerchant.GtransactionRadio="value"
-                                }
-                                else if(merchantDetail.billing.topupfeepercentforcount!=0){
-                                    self.$scope.showTopupTotal=true ;      
-                                    self.$scope.editMerchant.topupTransactionRadio="topCount"
-                                }
-                                else if(merchantDetail.billing.topupfeevalueforcount!=0){
-                                    self.$scope.showTopupValue=true ;  
-                                    self.$scope.editMerchant.topupTransactionRadio="topValue"
-                                }
-                                else if(merchantDetail.billing.loyaltyfeepercentforcount!=0){
-                                    self.$scope.showLTotal=true ;   
-                                    self.$scope.editMerchant.LtransactionRadio="LCount"
-                                }
-                                else if(merchantDetail.billing.loyaltyfeevalueforcount!=0){
-                                    self.$scope.showLValue=true ;  
-                                    self.$scope.editMerchant.LtransactionRadio="LValue"
-                                }
+
+                                  if(merchantDetail.billing.giftpertxnfeepercent != undefined){
+                                       self.$scope.showValue=true ;
+                                      self.$scope.editMerchant.GtransactionRadio="value";
+                                  }
+                                  else if(merchantDetail.billing.giftpertxnfeeamount !=undefined){
+                                      self.$scope.showText=true ;
+                                      self.$scope.editMerchant.GtransactionRadio="total"
+                                  }
+                                  if(merchantDetail.billing.topuppertxnfeepercent!=undefined){
+                                      self.$scope.showTopupTotal=true ;
+                                      self.$scope.editMerchant.topupTransactionRadio="topCount"
+                                  }
+                                  else if(merchantDetail.billing.topuppertxnfeeamount!=undefined){
+                                      self.$scope.showTopupValue=true ;
+                                      self.$scope.editMerchant.topupTransactionRadio="topValue"
+                                  }
+                                  if(merchantDetail.billing.loyaltypertxnfeepercent!=undefined){
+                                      self.$scope.showLTotal=true ;
+                                      self.$scope.editMerchant.LtransactionRadio="LCount"
+                                  }
+                                  else if(merchantDetail.billing.loyaltypertxnfeeamount!=undefined){
+                                      self.$scope.showLValue=true ;
+                                      self.$scope.editMerchant.LtransactionRadio="LValue"
+                                  }
                                   self.$scope.oldMerchant =angular.copy(self.$scope.editMerchant);
                                 },
                                 () => {
@@ -1172,13 +1362,38 @@ export default class MerchantController {
                                 }
                             )
                     ])
-                        
-                } 
-            }
-           
-            
 
-        
+                }
+            }
+
+
+            addRegisterMerchant(merchant){
+                let self = this;
+
+                let validateFields = angular.copy(self.registerValidation);
+                let frontValidation = self.Validation.frontValidation(merchant, validateFields);
+
+                if (_.isEmpty(frontValidation)) {
+                    self.MerchantService.postRegisterMerchant(merchant)
+                        .then(
+                            res => {
+                                let message = "Merchant Registered Successfully";
+                                self.Flash.create('success', message);
+                                self.$state.go('admin.merchant-list');
+                            },
+                            res => {
+                                self.$scope.validate = self.Validation.mapSymfonyValidation(res.data);
+                                let message = self.$filter('translate')('xhr.post_seller.error');
+                                self.Flash.create('danger', message);
+                            }
+                        );
+                } else {
+                    self.$scope.validate = frontValidation;
+                    let message = self.$filter('translate')('xhr.put_seller.error');
+                    self.Flash.create('danger', message);
+                }
+            }
+
 
               deactivateMerchant(merchantId) {
                   let self = this;

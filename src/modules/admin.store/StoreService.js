@@ -3,116 +3,8 @@ export default class StoreService {
         this.Restangular = Restangular;
         this.EditableMap = EditableMap;
         this.$q = $q;
-       this.store = [{
-            "name":"alpha",
-            "NoofTerminals":"270",
-            "active":1
-             },
-             {
-            "name":"Beta",
-            "NoofTerminals":"374",
-            "active":1
-             },
-             {
-            "name":"banshee",
-            "NoofTerminals":"3",
-            "active":1
-             },
-             {
-            "name":"omeha",
-            "NoofTerminals":"824",
-            "active":1
-             },
-             {
-            "name":"Cayoty",
-            "NoofTerminals":"585",
-            "status":"Pending",
-             },
-             {
-            "name":"warewolf",
-            "NoofTerminals":"524",
-            "active":1
-             },
-             {
-            "name":"argent",
-            "NoofTerminals":"343",
-            "status":"Pending",
-             },
-             {
-            "name":"Hellhound",
-            "NoofTerminals":"40",
-            "active":1
-             },
-             {
-            "name":"True Alpha",
-            "NoofTerminals":"560",
-            "active":1            
-             },
-            {
-            "name":"alpha Pack",
-            "noOfTerminals":"540",
-            "active":1
-             }]
-             this.Terminal = [{
-                "Terminal":"0655671011902",
-                "Type":"Retail",
-                "status":"Approved"
-                
-                },
-                {
-                "Terminal":"065532011902",
-                "Type":"Retail",
-                "Status":"Approved",
-                
-                },
-                {
-                "Terminal":"0654201011902",
-                "Type":"Retail",
-                "Status":"Pending",
-                
-                },
-                {
-                "Terminal":"066431011902",
-                "Type":"Retail",
-                "Status":"Approved",
-                
-                },
-                {
-                "Terminal":"0653111011902",
-                "Type":"Retail",
-                "Status":"Pending",
-                
-                },
-                {
-                "Terminal":"0651201011902",
-                "Type":"Retail",
-                "Status":"Approved",
-                
-                },
-                {
-                "Terminal":"0652311011902",
-                "Type":"Retail",
-                "Status":"Pending",
-                
-                },
-                {
-                "Terminal":"0654211011902",
-                "Type":"Retail",
-                "Status":"Approved",
-                
-                },
-                {
-                "Terminal":"0653301011902",
-                "Type":"Retail",
-                "Status":"Approved",
-                
-                },
-                {
-                "Terminal":"0651231011902",
-                "Type":"Retail",
-                "Status":"Approved",
-                
-                }]
+      
+           
     }
 
    
@@ -169,6 +61,8 @@ export default class StoreService {
             postalcode:editedStore.postalcode,
             address: editedStore.address,
             contactno: editedStore.contactno,
+            alternatecontactperson:editedStore.alternatecontactperson,
+            alternatecontactno:editedStore.alternatecontactno,
             bankaccno: editedStore.bankaccno,
             bankname: editedStore.bankname,
             storetype: editedStore.storetype,
@@ -185,6 +79,14 @@ export default class StoreService {
 
     deactivateStore(storeId) {
         return this.Restangular.one('admin').one('stroe', storeId).one('deactivate').customPOST();
+    }
+
+    deleteTerminal(terminalId){
+        return this.Restangular.one('terminal',terminalId).customDELETE();
+    }
+
+    deleteStore(storeId){
+        return this.Restangular.one('store',storeId).customDELETE();
     }
 
     activatestore(storeId) {

@@ -1,0 +1,254 @@
+<box-loader loading="false" cover="1" class="cover" delay="3000"></box-loader>
+
+<div class="heading" ng-init="CardSchemeCtrl.getGroups()">
+    <h1>Add Card Scheme</h1>
+</div>
+
+<div style="clear:both;"></div>
+
+<form novalidate ng-submit="CardSchemeCtrl.addCardScheme(newCardscheme)" data-abide >
+    <div class="box-content" >
+        <div class="row">
+            <div class="columns medium-12">
+                <fieldset class="fieldset">
+
+                    <legend>{{ "customer.basic_info" | translate }}</legend>
+                    <div class="row" >
+                        <div class="medium-2 small-3 columns">
+                            <label>Scheme Name<span class="required">*</span></label>
+                        </div>
+                        <div class="medium-10 small-9 columns" >
+                            <input type="text" ng-model="newCardscheme.cardSchemeName" pattern="^[a-zA-Z0-9\s]{4,50}$" required>
+                            <span class="form-error">This field is Required.Minimun 4 and Maximun 50 Characters.</span>
+                        </div>
+                    </div>
+                    <div class="row">
+                    <div class="small-3 medium-2 columns">
+                    <label>Select a Group:</label>
+                    </div>
+                    <div class="small-9 medium-10 columns" form-validation="schemaValidation.group">
+                    <selectize config="CardSchemeCtrl.groupConfig" options="CardSchemeCtrl.schemeGroups" ng-model="newCardscheme.groupId"  ng-change="CardSchemeCtrl.getMerchantsByGroup(newCardscheme.groupId)" required></selectize>
+                    </div>
+                    <div class="medium-3 columns"></div>
+                    </div>
+                    <div class="row">
+                    <div class="small-3 medium-2 columns">
+                    <label>Select a merchant:</label>
+                    </div>
+                    <div class="small-9 medium-4 columns" form-validation="schemaValidation.merchant">
+                    <selectize config="CardSchemeCtrl.merchantConfig" options="CardSchemeCtrl.schememerchants" ng-model="newCardscheme.merchantId"  required></selectize>
+                    </div>
+                    <div class="medium-6 columns">
+                            <div class="spinner-loader-wrapper">
+                                    <spinner-loader loading="CardSchemeCtrl.loaderStates.merchant" class="inline" delay="5"></spinner-loader>
+                                </div>
+                    </div>
+                    </div>
+
+                    <div class="row" >
+                        <div class="medium-2 small-3 columns">
+                            <label>Card Category</label>
+                        </div>
+                        <div class="medium-10 small-9 columns" form-validation="schemaValidation.cardcategory">
+                            <div class="medium-5 small-3 columns">
+                                    <!-- newCardscheme.isGiftCardApplicable -->
+                                <input type="checkbox" class="m-r-1" ng-model="cardcat.gifcard" >Gift Card<br>
+                            </div>
+                            <div class="medium-5 small-3 columns">
+                                    <!-- newCardscheme.isLoyaltyCardApplicable -->
+                                <input type="checkbox" class="m-r-1" ng-model="cardcat.loyaltycard">Loyalty Card<br>
+                            </div>
+                        </div>
+                    </div>
+                </fieldset>
+            </div>
+            <div class="columns medium-12">
+                <fieldset class="fieldset" ng-if="cardcat.gifcard == true">
+                 <div class="row giftcd-data">
+                    <legend>Gift Card Data</legend>
+                    <div class="row columns"  form-validation="schemaValidation.gifcard">
+                    <div class="row" >
+                        <div class="row columns">
+                            <div class="medium-12 small-12 columns">
+
+                              <div class="medium-3 small-4 columns">
+                                  <label>Pre-load Amount $ </label>
+                              </div>
+                              <div class="medium-9 small-8 columns">
+                                <input type="number" ng-model="cardpreload"></input>
+                                <button type="button" class="tiny button button-septenary-colorized" ng-click='CardSchemeCtrl.addPreload(cardpreload)'>Add</button>
+                              </div>
+
+                          </div>
+                        </div>
+                        <div class="row columns">
+                         <div class="medium-12 small-12 columns">
+                            <div ng-repeat='preload in CardSchemeCtrl.preloadList' class="amntbox-card">
+                                <!-- A checkbox displaying the progress -->
+                                <!-- An information of a task -->
+                                <span>$ {{preload}} Pre-load<button type="button" class="amntbox-close" ng-click="CardSchemeCtrl.deletePreload(preload)">&#215;</button></span>
+                            </div>
+                         </div>
+                        </div>
+                    </div>
+                    <div class="row" >
+                        <div class="medium-2 small-3 columns">
+                            <label>Free Form </label>
+                        </div>
+                        <div class="medium-10 small-9 columns">
+                            <checkbox ng-model="newCardscheme.giftCardSchemeData.freecard.isSelected"></checkbox>
+                        </div>
+                    </div>
+                    <div class="row columns" ng-if="newCardscheme.giftCardSchemeData.freecard.isSelected == true" >
+                        <div class="medium-2 small-3 columns" ng-init="newCardscheme.giftCardSchemeData.freecard.min = null">
+                            <label> Min Value<span class="required"> *</span>
+                            </label>
+                        </div>
+                        <div class="medium-10 small-9 columns" form-validation="schemaValidation.freemin">
+                            <input type="number" ng-model="newCardscheme.giftCardSchemeData.freecard.min">
+                            <span class="prompt">{{ "customer.company_nip_prompt" | translate }}</span>
+                        </div>
+                    </div>
+                    <div class="row columns" ng-if="newCardscheme.giftCardSchemeData.freecard.isSelected == true"  >
+                        <div class="medium-2 small-3 columns" ng-init="newCardscheme.giftCardSchemeData.freecard.max = null">
+                            <label> Max Value<span class="required"> *</span>
+                        </label>
+                        </div>
+                        <div class="medium-10 small-9 columns" form-validation="schemaValidation.freemax">
+                            <input type="number" ng-model="newCardscheme.giftCardSchemeData.freecard.max">
+                            <span class="prompt">{{ "customer.company_nip_prompt" | translate }}</span>
+                        </div>
+                    </div>
+                    <div class="row">
+                            <div class="medium-2 small-3 columns">
+                                <label>Cross Border</label>
+                            </div>
+                            <div class="medium-10 small-9 columns">
+                                <checkbox ng-model="newCardscheme.giftCardSchemeData.crossborder.isSelected"></checkbox>
+                            </div>
+                    </div>
+                    <div class="row columns" ng-if="newCardscheme.giftCardSchemeData.crossborder.isSelected == true" >
+                            <div class="medium-2 small-3 columns">
+                                <label>{{ "customer.country" | translate }}<span class="required">*</span></label>
+                            </div>
+                            <div class="medium-10 small-9 columns" form-validation="schemaValidation.gcrossborder">
+                                <selectize
+                                        config="CardSchemeCtrl.countryConfig"
+                                        options="CardSchemeCtrl.countries"
+                                        style="border-radius:0"
+                                        ng-model="newCardscheme.giftCardSchemeData.crossborder.country">
+                                </selectize>
+                                <span class="prompt">{{ "customer.address_country_prompt" | translate }}</span>
+                            </div>
+                    </div>
+                    <div class="row columns" ng-if="newCardscheme.giftCardSchemeData.crossborder.isSelected == true" >
+                        <div class="medium-2 small-3 columns" ng-init="newCardscheme.giftCardSchemeData.crossborder.min = null">
+                            <label> Min Value<span class="required"> *</span>
+                            </label>
+                        </div>
+                        <div class="medium-10 small-9 columns" form-validation="schemaValidation.crossmin">
+                            <input type="number" ng-model="newCardscheme.giftCardSchemeData.crossborder.min">
+                            <span class="prompt">{{ "customer.company_nip_prompt" | translate }}</span>
+                        </div>
+                    </div>
+                    <div class="row columns" ng-if="newCardscheme.giftCardSchemeData.crossborder.isSelected == true"  >
+                        <div class="medium-2 small-3 columns" ng-init="newCardscheme.giftCardSchemeData.crossborder.max = null">
+                            <label> Max Value<span class="required"> *</span>
+                        </label>
+                        </div>
+                        <div class="medium-10 small-9 columns" form-validation="schemaValidation.crossmax">
+                            <input type="number" ng-model="newCardscheme.giftCardSchemeData.crossborder.max">
+                            <span class="prompt">{{ "customer.company_nip_prompt" | translate }}</span>
+                        </div>
+                    </div>
+
+                        <div class="row" >
+                            <div class="medium-2 small-3 columns">
+                                <label>Card Type</label>
+                            </div>
+                            <div class="medium-10 small-9 columns" form-validation="schemaValidation.cardtype">
+                                <div class="medium-5 small-3 columns">
+                                        <!-- newCardscheme.isGiftCardApplicable -->
+                                    <input type="checkbox" class="m-r-1" ng-model="newCardscheme.isGiftCardApplicable" >Physical Gift Card<br>
+                                </div>
+                                <div class="medium-5 small-3 columns">
+                                        <!-- newCardscheme.isLoyaltyCardApplicable -->
+                                    <input type="checkbox" class="m-r-1" ng-model="newCardscheme.isEGiftCardApplicable">E-Gift card<br>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    </div>
+
+
+                    </fieldset>
+            </div>
+            <div class="columns medium-12">
+                <fieldset class="fieldset" ng-if="cardcat.loyaltycard == true">
+                  <div ></div>
+                    <legend>Loyalty Card Data</legend>
+                    <div class="row columns" form-validation="schemaValidation.loyalty" >
+                    <div class="row">
+                            <div class="medium-2 small-3 columns">
+                                <label>Rewards & Redeem</label>
+                            </div>
+                            <div class="medium-10 small-9 columns">
+                                <checkbox ng-model="newCardscheme.loyaltyCardSchemeData.rewardRedeem.isSelected"></checkbox>
+                            </div>
+                        </div>
+                         <div class="row">
+                                    <div class="medium-2 small-3 columns">
+                                        <label>Cross Border</label>
+                                    </div>
+                                    <div class="medium-10 small-9 columns">
+                                        <checkbox ng-model="newCardscheme.loyaltyCardSchemeData.crossBorder.isSelected"></checkbox>
+                                    </div>
+                      </div>
+                      <div class="row" ng-if="newCardscheme.loyaltyCardSchemeData.crossBorder.isSelected == true"  >
+                            <div class="medium-2 small-3 columns">
+                                <label>{{ "customer.country" | translate }}<span class="required">*</span></label>
+                            </div>
+                            <div class="medium-10 small-9 columns" form-validation="schemaValidation.lcrossborder" >
+                                <selectize
+                                        config="CardSchemeCtrl.countryConfig"
+                                        options="CardSchemeCtrl.countries"
+                                        style="border-radius:0"
+                                        ng-model="newCardscheme.loyaltyCardSchemeData.crossBorder.country">
+                                </selectize>
+                                <span class="prompt">{{ "customer.address_country_prompt" | translate }}</span>
+                            </div>
+                        </div>
+                        <div class="row" >
+                            <div class="medium-2 small-4 columns">
+                                <label>Card Type</label>
+                            </div>
+                            <div class="medium-10 small-8 columns" form-validation="schemaValidation.lcardtype">
+                                <div class="medium-5 small-4 columns">
+                                        <!-- newCardscheme.isGiftCardApplicable -->
+                                    <input type="checkbox" class="m-r-1" ng-model="newCardscheme.isLoyaltyCardApplicable" >Physical Loyalty Card<br>
+                                </div>
+                                <div class="medium-5 small-4 columns">
+                                        <!-- newCardscheme.isLoyaltyCardApplicable -->
+                                    <input type="checkbox" class="m-r-1" ng-model="newCardscheme.isELoyaltyCardApplicable">E-Loyalty card<br>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </fieldset>
+            </div>
+        </div>
+    </div>
+    <div class="box-footer" ng-init="CardSchemeCtrl.loaderStates.customerDetails=false">
+        <div class="row">
+            <div class="columns small-12">
+                <button class="button button-septenary-colorized  float-left m-r-1" type="submit">
+                    {{ "global.save" | translate }}
+                </button>
+                <button type="button" ui-sref="admin.cardscheme-list" class="button button-septenary-colorized float-left">
+                    {{ "global.cancel" | translate }}
+                </button>
+            </div>
+            <div style="clear:both;"></div>
+        </div>
+    </div>
+</form>

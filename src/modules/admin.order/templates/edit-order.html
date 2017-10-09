@@ -1,0 +1,439 @@
+<box-loader loading="false" cover="1" class="cover" delay="1000"></box-loader>
+
+<div class="heading" ng-init="OrderCtrl.editOrderbyOrderId();">
+    <h1>Order</h1>
+</div>
+
+<div style="clear:both;"></div>
+<div class="client-list box tabs-content" data-tabs-content="collapsing-tabs">
+        <ul class="tabs noclick " data-active-collapse="true" data-tabs id="collapsing-tabs">
+                <!-- <li class="tabs-title is-active"><a href="#order1" aria-selected="true">Merchant Info</a></li> -->
+                <li class="tabs-title is-active"><a href="#order2">Card Scheme</a></li>
+                <li class="tabs-title"><a href="#order3">Card Assignment</a></li>
+        </ul>
+
+
+        <div class="order-box tabs-panel" id="order2">
+            <form class="order-form" ng-submit="OrderCtrl.stepEditTwoValidation(editSelectedScheme)">
+
+                                <div><h4 class="text-left">Select your preferred cards :</h4></div>
+
+                                <div class="row" ng-if="ordersbyId.cardscheme.isgiftcardapplicable ||ordersbyId.cardscheme.isloyaltycardapplicable">
+                                  <div class="columns large-12 medium-12 small-12">
+                                  <div class="columns large-6 medium-6 small-6" ng-if="ordersbyId.cardscheme.isgiftcardapplicable">
+                                    <fieldset class="fieldset">
+                                      <legend><input type="checkbox" data-abide-validator="checkbox_limit"  ng-checked="editSelectedScheme.isGiftCardApplicable" ng-click="OrderCtrl.checkEditGiftSelectedAll(editSelectedScheme.isGiftCardApplicable)"> Gift Card Data</legend>
+
+                                     <div class="row giftcd-data">
+                                        <div class="row columns">
+                                        <div class="row" ng-if="OrderCtrl.preloads.length>0">
+
+                                                <div class="large-12 medium-12 small-12 columns">
+                                                  <div class="large-4 medium-4 small-4 columns">
+                                                      <label>Pre-load Amount $ </label>
+                                                  </div>
+                                                  <div class="large-8 medium-8 small-8 columns">
+                                                    <ul ng-repeat="card in OrderCtrl.preloads" style="list-style:none;">
+                                                        <li> <input type="checkbox" ng-checked="editSelectedScheme.giftCardSchemeData.preload.indexOf(card) > -1"  ng-click="OrderCtrl.toggleEditPreLoadSelection(card)" >  $ {{card}} Pre-load</li>
+                                                    </ul>
+                                                  </div>
+                                                  <!--<div class="large-8 medium-8 small-8 columns" ng-if="!(card in OrderCtrl.preloads.length>0)">
+                                                    <div class="val-box" style="font-weight:bold;">"No Pre-Load Amount Present"</div>
+                                                  </div>-->
+                                                </div>
+
+                                        </div>
+                                        <div class="row" ng-if="OrderCtrl.editfreecard">
+
+                                          <div class="large-12 medium-12 small-12 columns">
+                                            <div class="large-4 medium-4 small-4 columns">
+                                                <label> Free Form </label><br/>
+                                            </div>
+                                            <div class="large-8 medium-8 small-8 columns">
+                                              <input type="checkbox" ng-checked="editChoosen.freecard"  ng-click="OrderCtrl.toggleEditFreecardSelection(editChoosen.freecard)">
+                                            </div>
+                                          </div>
+
+
+                                          <div class="large-12 medium-12 small-12 columns">
+                                            <div class="large-4 medium-4 small-4 columns columns">
+                                                <label> Min Value </label>
+                                            </div>
+                                            <div class="large-8 medium-8 small-8 columns">
+                                                <div class="val-box" ng-bind="editSelectedScheme.freecards.min"></div>
+                                            </div>
+                                          </div>
+
+                                          <div class="large-12 medium-12 small-12 columns">
+                                            <div class="large-4 medium-4 small-4 columns">
+                                                <label> Max Value </label>
+                                            </div>
+                                            <div class="large-8 medium-8 small-8 columns" >
+                                                <div class="val-box" ng-bind="editSelectedScheme.freecards.max"></div>
+                                            </div>
+                                          </div>
+
+                                        </div>
+                                        <div class="row" ng-if="OrderCtrl.editcrossborder">
+
+                                          <div class="large-12 medium-12 small-12 columns">
+                                                <div class="large-4 medium-4 small-4 columns">
+                                                    <label>Cross Border</label>
+                                                </div>
+                                                <div class="large-8 medium-8 small-8 columns">
+                                                    <input type="checkbox" ng-checked="editChoosen.crossborder"  ng-click="OrderCtrl.toggleEditCrossborderSelection(editChoosen.crossborder)" >
+                                                </div>
+                                          </div>
+                                          <div class="large-12 medium-12 small-12 columns">
+                                              <div class="large-4 medium-4 small-4 columns">
+                                                  <label>{{ "customer.country" | translate }}</label>
+                                              </div>
+                                              <div class="large-8 medium-8 small-8 columns" >
+                                                  <div class="val-box" ng-bind="editSelectedScheme.country"></div>
+                                              </div>
+                                          </div>
+                                          <div class="large-12 medium-12 small-12 columns">
+                                            <div class="large-4 medium-4 small-4 columns columns">
+                                                <label> Min Value </label>
+                                            </div>
+                                            <div class="large-8 medium-8 small-8 columns">
+                                                <div class="val-box" ng-bind="editSelectedScheme.crossborder.min"></div>
+                                            </div>
+                                          </div>
+                                          <div class="large-12 medium-12 small-12 columns">
+                                            <div class="large-4 medium-4 small-4 columns">
+                                                <label> Max Value </label>
+                                            </div>
+                                            <div class="large-8 medium-8 small-8 columns" >
+                                                <div class="val-box" ng-bind="editSelectedScheme.crossborder.max"></div>
+                                            </div>
+                                          </div>
+
+                                        </div>
+
+                                      </div>
+                                     </div>
+                                    </fieldset>
+                                  </div>
+                                  <div class="columns large-6 medium-6 small-6" ng-if="ordersbyId.cardscheme.isegiftcardapplicable">
+                                    <fieldset class="fieldset">
+                                      <legend>  <input type="checkbox" data-abide-validator="checkbox_limit"   ng-checked="editSelectedScheme.isEGiftCardApplicable" ng-click="OrderCtrl.checkEditEleGiftSelectedAll(editSelectedScheme.isEGiftCardApplicable)"> E-Gift Card Data</legend>
+                                     <div class="row giftcd-data">
+                                        <div class="row columns">
+                                          <div class="row" ng-if="OrderCtrl.Epreload.length>0">
+
+                                                  <div class="large-12 medium-12 small-12 columns">
+                                                    <div class="large-4 medium-4 small-4 columns">
+                                                        <label>Pre-load Amount $ </label>
+                                                    </div>
+                                                    <div class="large-8 medium-8 small-8 columns">
+                                                      <ul ng-repeat="card in OrderCtrl.Epreload" style="list-style:none;">
+                                                          <li> <input type="checkbox" ng-checked="editSelectedScheme.eGiftCardSchemeData.preload.indexOf(card) > -1"  ng-click="OrderCtrl.toggleEditSelection(card)" >  $ {{card}} Pre-load</li>
+                                                      </ul>
+                                                    </div>
+                                                    <!--<div class="large-8 medium-8 small-8 columns" ng-if="!(card in OrderCtrl.preloads.length>0)">
+                                                      <div class="val-box" style="font-weight:bold;">"No Pre-Load Amount Present"</div>
+                                                    </div>-->
+                                                  </div>
+
+                                          </div>
+
+                                          <div class="row" ng-if="OrderCtrl.editElefreecard">
+
+                                            <div class="large-12 medium-12 small-12 columns">
+                                              <div class="large-4 medium-4 small-4 columns">
+                                                  <label> Free Form </label><br/>
+                                              </div>
+                                              <div class="large-8 medium-8 small-8 columns">
+                                                <input type="checkbox" ng-checked="editChoosen.eFreecard"  ng-click="OrderCtrl.toggleEditEFreecardSelection(editChoosen.eFreecard)">
+                                              </div>
+                                            </div>
+
+                                            <div class="large-12 medium-12 small-12 columns">
+                                              <div class="large-4 medium-4 small-4 columns columns">
+                                                  <label> Min Value </label>
+                                              </div>
+                                              <div class="large-8 medium-8 small-8 columns">
+                                                  <div class="val-box" ng-bind="editSelectedScheme.eFreecard.min"></div>
+                                              </div>
+                                            </div>
+
+
+                                            <div class="large-12 medium-12 small-12 columns">
+                                              <div class="large-4 medium-4 small-4 columns">
+                                                  <label> Max Value </label>
+                                              </div>
+                                              <div class="large-8 medium-8 small-8 columns" >
+                                                  <div class="val-box" ng-bind="editSelectedScheme.eFreecard.max"></div>
+                                              </div>
+                                            </div>
+
+                                          </div>
+
+                                          <div class="row" ng-if="OrderCtrl.editElecrossborder">
+
+                                            <div class="large-12 medium-12 small-12 columns">
+                                                  <div class="large-4 medium-4 small-4 columns">
+                                                      <label>Cross Border</label>
+                                                  </div>
+                                                  <div class="large-8 medium-8 small-8 columns">
+                                                       <input type="checkbox" ng-checked="editChoosen.Ecrossborder"  ng-click="OrderCtrl.toggleEditECrossborderSelection(editChoosen.Ecrossborder)" >
+                                                  </div>
+                                            </div>
+                                            <div class="large-12 medium-12 small-12 columns">
+                                                <div class="large-4 medium-4 small-4 columns">
+                                                    <label>{{ "customer.country" | translate }}</label>
+                                                </div>
+                                                <div class="large-8 medium-8 small-8 columns" >
+                                                    <div class="val-box" ng-bind="editSelectedScheme.Ecountry"></div>
+                                                </div>
+                                            </div>
+
+                                            <div class="large-12 medium-12 small-12 columns">
+                                              <div class="large-4 medium-4 small-4 columns columns">
+                                                  <label> Min Value </label>
+                                              </div>
+                                              <div class="large-8 medium-8 small-8 columns">
+                                                  <div class="val-box" ng-bind="editSelectedScheme.eCrossborder.min"></div>
+                                              </div>
+                                            </div>
+
+
+                                            <div class="large-12 medium-12 small-12 columns">
+                                              <div class="large-4 medium-4 small-4 columns">
+                                                  <label> Max Value </label>
+                                              </div>
+                                              <div class="large-8 medium-8 small-8 columns" >
+                                                  <div class="val-box" ng-bind="editSelectedScheme.eCrossborder.max"></div>
+                                              </div>
+                                            </div>
+
+                                          </div>
+
+                                        </div>
+                                    </div>
+                                    </fieldset>
+                                  </div>
+                                  <span class="form-error">You must be choose any one card scheme</span>
+                                  </div>
+                                </div>
+                                <div class="row" ng-if="ordersbyId.cardscheme.isloyaltycardapplicable || ordersbyId.cardscheme.iseloyaltycardapplicable">
+                                    <div class="columns large-12 medium-12 small-12">
+                                      <div class="columns large-6 medium-6 small-6" ng-if="ordersbyId.cardscheme.isloyaltycardapplicable">
+                                        <fieldset class="fieldset" >
+
+                                          <legend><input type="checkbox" data-abide-validator="checkbox_limit"  ng-checked="editSelectedScheme.isLoyaltyCardApplicable"  ng-click=OrderCtrl.checkEditLoyaltySelectedAll(editSelectedScheme.isLoyaltyCardApplicable)> Loyalty Card Data</legend>
+                                          <div class="row columns">
+                                          <div class="row" ng-if="OrderCtrl.editredeem">
+                                            <div class="large-12 medium-12 small-12 columns">
+                                                  <div class="large-4 medium-4 small-4 columns">
+                                                      <label>Rewards & Redeem</label>
+                                                  </div>
+                                                  <div class="large-8 medium-8 small-8 columns">
+                                                      <input type="checkbox" ng-checked="editChoosen.rewardRedeem"  ng-click="OrderCtrl.toggleEditRedeemSelection(editChoosen.rewardRedeem)" >
+                                                  </div>
+                                            </div>
+                                          </div>
+                                           <div class="row" ng-if="OrderCtrl.editCrossborder">
+                                             <div class="large-12 medium-12 small-12 columns">
+                                                <div class="large-4 medium-4 small-4 columns">
+                                                    <label>Cross Border</label>
+                                                </div>
+                                                <div class="large-8 medium-8 small-8 columns">
+                                                    <input type="checkbox" ng-checked="editChoosen.Lcrossborder"  ng-click="OrderCtrl.toggleEditCrossSelection(editChoosen.Lcrossborder)" >
+                                                </div>
+                                              </div>
+                                              <div class="large-12 medium-12 small-12 columns">
+                                                  <div class="large-4 medium-4 small-4 columns">
+                                                      <label>{{ "customer.country" | translate }}<span class="required">*</span></label>
+                                                  </div>
+                                                  <div class="large-8 medium-8 small-8 columns" >
+                                                      <div class="val-box" ng-bind="editSelectedScheme.Lcountry"></div>
+                                                  </div>
+                                              </div>
+                                          </div>
+                                          </div>
+                                        </fieldset>
+                                      </div>
+                                      <div class="columns large-6 medium-6 small-6" ng-if="ordersbyId.cardscheme.iseloyaltycardapplicable">
+                                        <fieldset class="fieldset" >
+
+                                          <legend><input type="checkbox" data-abide-validator="checkbox_limit"  ng-checked="editSelectedScheme.isELoyaltyCardApplicable" ng-click="OrderCtrl.checkEditEleLoyaltySelectedAll(editSelectedScheme.isELoyaltyCardApplicable)" > E-Loyalty Card Data</legend>
+                                          <div class="row columns">
+                                          <div class="row" ng-if="OrderCtrl.editElredeem">
+                                            <div class="large-12 medium-12 small-12 columns">
+                                                  <div class="large-4 medium-4 small-4 columns">
+                                                      <label>Rewards & Redeem</label>
+                                                  </div>
+                                                  <div class="large-8 medium-8 small-8 columns">
+                                                      <input type="checkbox" ng-checked="editChoosen.ErewardRedeem"  ng-click="OrderCtrl.toggleEditErewardRedeemSelection(editChoosen.ErewardRedeem)" value="card">
+                                                  </div>
+                                            </div>
+                                          </div>
+                                           <div class="row" ng-if="OrderCtrl.editEloyaCrossborder">
+                                             <div class="large-12 medium-12 small-12 columns">
+                                                <div class="large-4 medium-4 small-4 columns">
+                                                    <label>Cross Border</label>
+                                                </div>
+                                                <div class="large-8 medium-8 small-8 columns">
+                                                    <input type="checkbox" ng-checked="editChoosen.eLcrossborder"  ng-click="OrderCtrl.toggleEditElCrossborderSelection(editChoosen.eLcrossborder)" value="card">
+                                                </div>
+                                              </div>
+                                              <div class="large-12 medium-12 small-12 columns">
+                                                  <div class="large-4 medium-4 small-4 columns">
+                                                      <label>{{ "customer.country" | translate }}<span class="required">*</span></label>
+                                                  </div>
+                                                  <div class="large-8 medium-8 small-8 columns" >
+                                                      <div class="val-box" ng-bind="editSelectedScheme.Elcountry"></div>
+                                                  </div>
+                                              </div>
+                                          </div>
+                                          </div>
+                                        </fieldset>
+                                      </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                  <div class="text-right" style="padding-top:20px">
+                                          <button class="button button-septenary-colorized m-r-1" type="button" ng-click="OrderCtrl.backToOne()">
+                                                  Back
+                                           </button>
+                                      <button class="button button-septenary-colorized m-r-1" type="submit">
+                                                                  Next
+                                      </button>
+                                  </div>
+                               </div>
+                                </div>
+
+            </form>
+        </div>
+
+
+
+
+
+    <div class="order-box tabs-panel" id="order3">
+        <form name="cardassign" class="order-form" ng-submit="OrderCtrl.saveEditOrder(finalEditCardSchemeJson,cardassign)" data-abide novalidate>
+            <div class="box" ng-if="editSelectedScheme.isGiftCardApplicable || editSelectedScheme.isEGiftCardApplicable">
+                <div class="box-title"><h1 class="text-left">Card Assignment</h1></div>
+                <div class="box-content">
+                    <div class="row">
+                            <div class="small-6 medium-6 columns" ng-if="editSelectedScheme.isGiftCardApplicable">
+                                <div class="columns">
+                                    <label class="small-2 medium-3 columns">Qty</label>
+                                    <label class="small-2 medium-3 columns">Item</label>
+                                    <label class="small-2 medium-6 columns">Expiry in Months<br><span>(From Date of Activation)</span></label>
+                                </div>
+                                    <div ng-if="OrderCtrl.finalPreLoad" class="small-12 medium-12 columns" ng-repeat="card in editSelectedScheme.giftCardSchemeData.preload track by $index">
+                                            <label class="small-3 medium-3 columns"><input type="number" ng-class="{ 'has-error' : cardassign['preload_{{$index}}'].$invalid && cardassign['preload_{{$index}}'].$dirty }" name="preload_{{$index}}" ng-pattern="/^[0-9]{1,9}$/" ng-model="finalEditCardSchemeJson.cardAssignmentData.giftCardSchemeData.preload[$index].quantity" ng-change="finalEditCardSchemeJson.cardAssignmentData.giftCardSchemeData.preload[$index].value = card" required >
+
+                                            </label>
+                                            <label class="small-3 medium-4 columns" > ${{card}} Gift-Card </label>
+                                            <label class="small-3 medium-3" style="float:left;position: relative;left: -5%;" > <input type="number" ng-model="finalEditCardSchemeJson.cardAssignmentData.giftCardSchemeData.preload[$index].expiryMonths" ng-pattern="/^[0-9]{1,4}$/" required ng-class="{ 'has-error' : cardassign['preexpireMont_{{$index}}'].$invalid && cardassign['preexpireMont_{{$index}}'].$dirty }" name="preexpireMont_{{$index}}" >
+                                            </label>
+                                            <label class="small-2 medium-2 columns" style="position: relative;left: -5%;" > month</label>
+                                    </div>
+                                    <div   ng-if="OrderCtrl.finalFreecard" class="small-12 medium-12 columns">
+                                        <label class="small-3 medium-3 columns"><input type="number" ng-class="{ 'has-error' : cardassign['freecard'].$invalid && cardassign['freecard'].$dirty }" name="freecard" ng-pattern="/^[0-9]{1,9}$/" ng-model="finalEditCardSchemeJson.cardAssignmentData.giftCardSchemeData.freecard.quantity" ng-change="finalEditCardSchemeJson.cardAssignmentData.giftCardSchemeData.freecard.min = editSelectedScheme.giftCardSchemeData.freecard.min;finalEditCardSchemeJson.cardAssignmentData.giftCardSchemeData.freecard.max = editSelectedScheme.giftCardSchemeData.freecard.max"></label>
+                                        <label class="small-3 medium-4 columns" > Free Form Gift Cards </label>
+                                        <label class="small-3 medium-3" style="float:left;position: relative;left: -5%;" > <input type="number" ng-class="{ 'has-error' : cardassign['freecardexpire'].$invalid && cardassign['freecardexpire'].$dirty }" name="freecardexpire"  ng-pattern="/^[0-9]{1,4}$/" ng-model="finalEditCardSchemeJson.cardAssignmentData.giftCardSchemeData.freecard.expiryMonths"></label>
+                                        <label class="small-2 medium-2 columns" style="position: relative;left: -5%;" > month</label>
+                                </div>
+                                <div  ng-if="OrderCtrl.finalCrossborder" class="small-12 medium-12 columns">
+                                    <label class="small-3 medium-3 columns"><input type="number" ng-class="{ 'has-error' : cardassign['gcrossbroder'].$invalid && cardassign['gcrossbroder'].$dirty }" name="gcrossbroder" ng-pattern="/^[0-9]{1,9}$/"  ng-model="finalEditCardSchemeJson.cardAssignmentData.giftCardSchemeData.crossborder.quantity" ng-change="finalEditCardSchemeJson.cardAssignmentData.giftCardSchemeData.crossborder.country = editSelectedScheme.giftCardSchemeData.crossborder.country;finalEditCardSchemeJson.cardAssignmentData.giftCardSchemeData.crossborder.min =editSelectedScheme.giftCardSchemeData.crossborder.min;finalEditCardSchemeJson.cardAssignmentData.giftCardSchemeData.crossborder.max =editSelectedScheme.giftCardSchemeData.crossborder.max;"></label>
+                                    <label class="small-3 medium-4 columns" > Cross Border Gift Cards </label>
+                                    <label class="small-3 medium-3" style="float:left;position: relative;left: -5%;" > <input type="number" ng-class="{ 'has-error' : cardassign['gcrossbroderexp'].$invalid && cardassign['gcrossbroderexp'].$dirty }" name="gcrossbroderexp" ng-pattern="/^[0-9]{1,4}$/"  ng-model="finalEditCardSchemeJson.cardAssignmentData.giftCardSchemeData.crossborder.expiryMonths"></label>
+                                    <label class="small-2 medium-2 columns" style="position: relative;left: -5%;" > month</label>
+                                </div>
+                            </div>
+                            <div class="small-6 medium-6 columns" ng-if="editSelectedScheme.isEGiftCardApplicable">
+                                <div class="columns">
+                                    <label class="small-2 medium-3 columns">Qty</label>
+                                    <label class="small-2 medium-3 columns">Item</label>
+                                    <label class="small-2 medium-6 columns">Expiry in Months<br><span>(From Date of Activation)</span></label>
+                                </div>
+                                    <div ng-if="OrderCtrl.finalePreLoad" class="small-12 medium-12 columns" ng-repeat="card in editSelectedScheme.eGiftCardSchemeData.preload track by $index">
+                                            <label class="small-3 medium-3 columns"><input type="number" ng-model="finalEditCardSchemeJson.cardAssignmentData.eGiftCardSchemeData.preload[$index].quantity" ng-class="{ 'has-error' : cardassign['epreload_{{$index}}'].$invalid && cardassign['epreload_{{$index}}'].$dirty }" name="epreload_{{$index}}"   ng-change="finalEditCardSchemeJson.cardAssignmentData.eGiftCardSchemeData.preload[$index].value = card" ng-pattern="/^[0-9]{1,9}$/" required >
+                                            </label>
+                                            <label class="small-3 medium-4 columns" > ${{card}} E-Gift-Card </label>
+                                            <label class="small-3 medium-3" style="float:left;position: relative;left: -5%;" > <input type="number" ng-model="finalEditCardSchemeJson.cardAssignmentData.eGiftCardSchemeData.preload[$index].expiryMonths" required ng-class="{ 'has-error' : cardassign['epreloadexp_{{$index}}'].$invalid && cardassign['epreloadexp_{{$index}}'].$dirty }" name="epreloadexp_{{$index}}" ng-pattern="/^[0-9]{1,4}$/">
+                                            </label>
+                                            <label class="small-2 medium-2 columns" style="position: relative;left: -5%;" > month</label>
+                                    </div>
+                                    <div   ng-if="OrderCtrl.finaleFreecard" class="small-12 medium-12 columns">
+                                        <label class="small-3 medium-3 columns"><input type="number" ng-class="{ 'has-error' : cardassign['efreeform_{{$index}}'].$invalid && cardassign['efreeform_{{$index}}'].$dirty }" name="efreeform_{{$index}}" ng-pattern="/^[0-9]{1,9}$/" ng-model="finalEditCardSchemeJson.cardAssignmentData.eGiftCardSchemeData.freecard.quantity" ng-change="finalEditCardSchemeJson.cardAssignmentData.eGiftCardSchemeData.freecard.min = editSelectedScheme.eGiftCardSchemeData.freecard.min;finalEditCardSchemeJson.cardAssignmentData.eGiftCardSchemeData.freecard.max = editSelectedScheme.eGiftCardSchemeData.freecard.max"></label>
+                                        <label class="small-3 medium-4 columns" > Free Form E-Gift Cards </label>
+                                        <label class="small-3 medium-3" style="float:left;position: relative;left: -5%;" > <input type="number"  ng-class="{ 'has-error' : cardassign['efreeformexp_{{$index}}'].$invalid && cardassign['efreeformexp_{{$index}}'].$dirty }" name="efreeformexp_{{$index}}" ng-model="finalEditCardSchemeJson.cardAssignmentData.eGiftCardSchemeData.freecard.expiryMonths" ng-pattern="/^[0-9]{1,4}$/"></label>
+                                        <label class="small-2 medium-2 columns" style="position: relative;left: -5%;" > month</label>
+                                </div>
+                                <div  ng-if="OrderCtrl.finaleCrossborder" class="small-12 medium-12 columns">
+                                    <label class="small-3 medium-3 columns"><input type="number" ng-class="{ 'has-error' : cardassign['ecrossborder_{{$index}}'].$invalid && cardassign['ecrossborder_{{$index}}'].$dirty }" name="ecrossborder_{{$index}}" ng-pattern="/^[0-9]{1,9}$/" ng-model="finalEditCardSchemeJson.cardAssignmentData.eGiftCardSchemeData.crossborder.quantity" ng-change="finalEditCardSchemeJson.cardAssignmentData.eGiftCardSchemeData.crossborder.country = editSelectedScheme.eGiftCardSchemeData.crossborder.country;finalEditCardSchemeJson.cardAssignmentData.eGiftCardSchemeData.crossborder.min=editSelectedScheme.eGiftCardSchemeData.crossborder.min;finalEditCardSchemeJson.cardAssignmentData.eGiftCardSchemeData.crossborder.max = editSelectedScheme.eGiftCardSchemeData.crossborder.max;"></label>
+                                    <label class="small-3 medium-4 columns" > Cross Border E-Gift Cards </label>
+                                    <label class="small-3 medium-3" style="float:left;position: relative;left: -5%;" > <input type="number" ng-class="{ 'has-error' : cardassign['ecrossborderexp_{{$index}}'].$invalid && cardassign['ecrossborderexp_{{$index}}'].$dirty }" name="ecrossborderexp_{{$index}}" ng-pattern="/^[0-9]{1,4}$/" ng-model="finalEditCardSchemeJson.cardAssignmentData.eGiftCardSchemeData.crossborder.expiryMonths"></label>
+                                    <label class="small-2 medium-2 columns" style="position: relative;left: -5%;" > month</label>
+                                </div>
+                            </div>
+                    </div>
+            </div>
+            </div>
+            <div class="box" ng-if="editSelectedScheme.isLoyaltyCardApplicable || editSelectedScheme.isELoyaltyCardApplicable">
+                <div class="box-title"><h1 class="text-left">Loyalty Setting</h1></div>
+                <div class="box-content">
+                    <div class="row">
+                            <div class="small-6 medium-6 columns" ng-if="editSelectedScheme.isLoyaltyCardApplicable">
+                                    <div class="columns">
+                                        <label class="small-2 medium-3 columns">Qty</label>
+                                        <label class="small-2 medium-6 columns">Item</label>
+
+                                    </div>
+
+                                        <div  ng-if="editSelectedScheme.loyaltyCardSchemeData.rewardRedeem" class="small-12 medium-12 columns">
+                                            <label class="small-3 medium-3 columns"><input type="number" ng-class="{ 'has-error' : cardassign['loyaltyreddem_{{$index}}'].$invalid && cardassign['loyaltyreddem_{{$index}}'].$dirty }" name="loyaltyreddem_{{$index}}"  ng-pattern="/^[0-9]{1,9}$/" ng-model="finalEditCardSchemeJson.cardAssignmentData.loyaltyCardSchemeData.rewardRedeem.quantity" ></label>
+                                            <label class="small-3 medium-6 columns" > Redeem Loyalty Cards </label>
+
+                                    </div>
+                                    <div  ng-if="OrderCtrl.finalLoyalCrossborder" class="small-12 medium-12 columns">
+                                        <label class="small-3 medium-3 columns"><input type="number" ng-class="{ 'has-error' : cardassign['loyaltycross_{{$index}}'].$invalid && cardassign['loyaltycross_{{$index}}'].$dirty }" name="loyaltycross_{{$index}}" ng-pattern="/^[0-9]{1,9}$/" ng-model="finalEditCardSchemeJson.cardAssignmentData.loyaltyCardSchemeData.crossBorder.quantity" ng-change="finalEditCardSchemeJson.cardAssignmentData.loyaltyCardSchemeData.crossBorder.country = editSelectedScheme.loyaltyCardSchemeData.crossborder.country"></label>
+                                        <label class="small-3 medium-6 columns" > CrossBorder Loyalty Cards </label>
+                                    </div>
+                            </div>
+                            <div class="small-6 medium-6 columns" ng-if="editSelectedScheme.isELoyaltyCardApplicable">
+                                    <div class="columns">
+                                        <label class="small-2 medium-3 columns">Qty</label>
+                                        <label class="small-2 medium-6 columns">Item</label>
+                                    </div>
+
+                                        <div  ng-if="editSelectedScheme.eLoyaltyCardSchemeData.rewardRedeem" class="small-12 medium-12 columns">
+                                            <label class="small-3 medium-3 columns"><input type="number" ng-class="{ 'has-error' : cardassign['eloyaltyreddem_{{$index}}'].$invalid && cardassign['eloyaltyreddem_{{$index}}'].$dirty }" name="eloyaltyreddem_{{$index}}" ng-pattern="/^[0-9]{1,9}$/" ng-model="finalEditCardSchemeJson.cardAssignmentData.eLoyaltyCardSchemeData.rewardRedeem.quantity" ></label>
+                                            <label class="small-3 medium-6 columns" > Redeem E-Loyalty Cards </label>
+
+                                    </div>
+                                    <div  ng-if="OrderCtrl.finaleLoyalCrossborder" class="small-12 medium-12 columns">
+                                        <label class="small-3 medium-3 columns"><input type="number" ng-class="{ 'has-error' : cardassign['eloyaltycross_{{$index}}'].$invalid && cardassign['eloyaltycross_{{$index}}'].$dirty }" name="eloyaltycross_{{$index}}" ng-pattern="/^[0-9]{1,9}$/" ng-model="finalEditCardSchemeJson.cardAssignmentData.eLoyaltyCardSchemeData.crossBorder.quantity" ng-change="finalEditCardSchemeJson.cardAssignmentData.eLoyaltyCardSchemeData.crossBorder.country = editSelectedScheme.eLoyaltyCardSchemeData.crossborder.country"></label>
+                                        <label class="small-3 medium-6 columns" > Cross Border E-Loyalty Cards </label>
+
+                                    </div>
+                            </div>
+                     </div>
+                 </div>
+            </div>
+            <div class="customerrmsg" ng-show="cardassign.$invalid && cardassign.$dirty ">
+                <span>This form should be filled with valid value.</span>
+            </div>
+            <div class="row">
+                <div class="text-right" style="padding-top:20px">
+                        <button class="button button-septenary-colorized m-r-1" type="button" ng-click="OrderCtrl.backToTwo()">
+                                Back
+                         </button>
+                         <button  class="button button-septenary-colorized m-r-1" type="button" title="Cancel Edit"
+                                ui-sref="admin.view-order({OrderId: OrderCtrl.orderId})">
+                            Cancel
+                        </button>
+                        <button class="button button-septenary-colorized m-r-1" type="submit">
+                                                    Save Order
+                        </button>
+            </div>
+          </div>
+      </form>
+   </div>
+</div>
