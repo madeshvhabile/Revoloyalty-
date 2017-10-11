@@ -1,5 +1,5 @@
 <section class="pos-section"
-         ng-init="SellerCustomerCtrl.getAvailableLevels();SellerCustomerCtrl.getAvailablePos();">
+         ng-init="SellerCustomerCtrl.getAvailableLevels();SellerCustomerCtrl.getAvailableStore();">
 
     <h1>{{ "seller.dashboard.title.customer_registration" | translate }}</h1>
 
@@ -94,18 +94,18 @@
                             </div>
                             <div class="row">
                                 <div class="medium-3 small-3 columns">
-                                    <label>{{ "pos.select_pos"|translate }}</label>
+                                    <label>Select Store</label>
                                 </div>
-                                <div class="medium-9 small-9 columns" form-validation="validate.posId.errors">
+                                <div class="medium-9 small-9 columns" form-validation="validate.storeid.errors">
                                     <selectize
-                                            ng-model="newCustomer.posId"
-                                            ng-if="availablePos.total"
-                                            config="SellerCustomerCtrl.posConfig"
-                                            options="SellerCustomerCtrl.posList"
+                                            ng-model="newCustomer.storeid"
+                                            ng-if="SellerCustomerCtrl.storelist.length"
+                                            config="SellerCustomerCtrl.storeConfig"
+                                            options="SellerCustomerCtrl.storeList"
                                     >
                                     </selectize>
-                                    <div class="text-left font-small color-red p-t-10" ng-if="!availableLevels.total">
-                                        {{ "pos.no_pos"|translate }}
+                                    <div class="text-left font-small color-red p-t-10" ng-if="!SellerCustomerCtrl.storelist.length">
+                                       No store is available
                                     </div>
                                 </div>
                             </div>

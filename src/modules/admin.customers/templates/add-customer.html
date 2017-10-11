@@ -1,12 +1,15 @@
 <box-loader loading="false" cover="1" class="cover" delay="3000"></box-loader>
 
-<div class="heading" ng-init="CustomerCtrl.getAvailablePos();CustomerCtrl.getAvailableLevels();">
+<div class="heading" ng-init="CustomerCtrl.getAvailableMerchant();CustomerCtrl.getAvailableLevels();">
     <h1>{{ "customer.add_heading" | translate }}</h1>
 </div>
 
 <div style="clear:both;"></div>
 
-<form novalidate ng-submit="CustomerCtrl.addCustomer(newCustomer)">
+
+
+
+<form data-abide novalidate ng-submit="CustomerCtrl.addCustomer(newCustomer)">
     <div class="box-content">
         <div class="row">
             <div class="columns medium-12">
@@ -17,18 +20,20 @@
                         <div class="medium-2 small-3 columns">
                             <label>{{ "customer.name" | translate }}<span class="required">*</span></label>
                         </div>
-                        <div class="medium-10 small-9 columns" form-validation="validate.firstName.errors">
-                            <input type="text" ng-model="newCustomer.firstName" required>
-                            <span class="prompt">{{ "customer.first_name_prompt" | translate }}</span>
+                        <div class="medium-10 small-9 columns" >
+                            <input type="text" ng-model="newCustomer.firstName" pattern="^[A-Za-z\s]{4,50}$" required>
+                            <span class="form-error">
+                                    First Name is required.Minimum 4 and Maximum 50 characters.
+                                  </span>
                         </div>
                     </div>
                     <div class="row">
                         <div class="medium-2 small-3 columns">
                             <label>{{ "customer.surname" | translate }}<span class="required">*</span></label>
                         </div>
-                        <div class="medium-10 small-9 columns" form-validation="validate.lastName.errors">
-                            <input type="text" ng-model="newCustomer.lastName" required>
-                            <span class="prompt">{{ "customer.last_name_prompt" | translate }}</span>
+                        <div class="medium-10 small-9 columns">
+                            <input type="text" ng-model="newCustomer.lastName" pattern="^[A-Za-z\s]{1,50}$" required>
+                            <span class="form-error"> Last Name is required.Minimum 1 and Maximum 50 characters. </span>
                         </div>
                     </div>
                     <div class="row">
@@ -57,18 +62,18 @@
                         <div class="medium-2 small-3 columns">
                             <label>{{ "customer.email" | translate }}<span class="required">*</span></label>
                         </div>
-                        <div class="medium-10 small-9 columns" form-validation="validate.email.errors">
-                            <input type="email" ng-model="newCustomer.email" required>
-                            <span class="prompt">{{ "customer.email_prompt" | translate }}</span>
+                        <div class="medium-10 small-9 columns" >
+                            <input type="email" ng-model="newCustomer.email" pattern="^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$" required>
+                            <span class="form-error"> Enter Valid EmailId.</span>
                         </div>
                     </div>
                     <div class="row">
                         <div class="medium-2 small-3 columns">
                             <label>{{ "customer.phone" | translate }}</label>
                         </div>
-                        <div class="medium-10 small-9 columns" form-validation="validate.phone.errors">
-                            <input type="text" ng-model="newCustomer.phone">
-                            <span class="prompt">{{ "customer.phone_prompt" | translate }}</span>
+                        <div class="medium-10 small-9 columns" >
+                            <input type="text" ng-model="newCustomer.phone" pattern="^[0-9]{6,15}$">
+                            <span class="form-error"> Phone number should be Minimum 8 and Maximum 16 digits. </span>
                         </div>
                     </div>
                     <div class="row">
@@ -99,21 +104,36 @@
                     </div>
                     <div class="row">
                         <div class="medium-2 small-3 columns">
-                            <label>{{ "pos.select_pos"|translate }}</label>
+                            <label>select Merchant</label>
                         </div>
-                        <div class="medium-10 small-9 columns" form-validation="validate.posId.errors">
+                       <div class="medium-10 small-9 columns" form-validation="validate.merchantid.errors">
                             <selectize
-                                    ng-model="newCustomer.posId"
-                                    ng-if="availablePos.total"
-                                    config="CustomerCtrl.posConfig"
-                                    options="CustomerCtrl.posList"
+                                    ng-model="newCustomer.merchantid"
+                                    ng-if="CustomerCtrl.merchantList.length"
+                                    config="CustomerCtrl.merchantConfig"
+                                    options="CustomerCtrl.merchantList"
+                                    ng-change="CustomerCtrl.checkMerchantSelect(newCustomer.merchantid)"
                             >
                             </selectize>
-                            <div class="text-left font-small color-red" ng-if="!availablePos.total">
+                            <div class="text-left font-small color-red" ng-if="!CustomerCtrl.merchantList.length">
                                 {{ "pos.no_pos"|translate }}
                             </div>
                         </div>
+
                     </div>
+                    <div class="row">
+                            <div class="medium-2 small-3 columns">
+                                <label>Select Store </label>
+                            </div>
+                            <div class="medium-4 small-4 columns"  >
+                                <selectize config="CustomerCtrl.storesConfig" options="CustomerCtrl.stores" ng-model="newCustomer.storeid"></selectize>
+                            </div>
+                            <div class="medium-6 columns">
+                                <div class="spinner-loader-wrapper">
+                                    <spinner-loader loading="CustomerCtrl.loaderStates.store" class="inline" delay="5"></spinner-loader>
+                                </div>
+                            </div>
+                        </div>
                     <div class="row">
                         <div class="medium-2 small-3 columns">
                             <label>{{ "customer.add_company" | translate }}</label>
@@ -132,6 +152,15 @@
                             <span class="prompt">{{ "customer.show_address_prompt" | translate }}</span>
                         </div>
                     </div>
+                    <div class="row">
+                            <div class="medium-2 small-3 columns">
+                                <label>Referral Email</label>
+                            </div>
+                             <div class="medium-10 small-9 columns" >
+                                <input type="email" ng-model="newCustomer.referral_customer_email"   pattern="^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$">
+                                <span class="form-error"> Enter Valid EmailId.</span>
+                            </div>
+                        </div>
                 </fieldset>
                 <fieldset class="fieldset" ng-show="showCompany">
                     
@@ -155,11 +184,11 @@
                             <span class="prompt">{{ "customer.company_nip_prompt" | translate }}</span>
                         </div>
                     </div>
+
                 </fieldset>
             </div>
             <div class="columns medium-12">
                 <fieldset class="fieldset" ng-show="showAddress">
-                    
                     <legend>{{ "customer.address" | translate }}</legend>
                     <div class="row">
                         <div class="medium-2 small-3 columns">

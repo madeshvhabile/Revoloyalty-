@@ -322,6 +322,7 @@ export default class CardSchemeController {
      if(cardscheme.isELoyaltyCardApplicable == true){
         cardscheme.eLoyaltyCardSchemeData=angular.copy(cardscheme.loyaltyCardSchemeData)
      }
+     cardscheme.status="Activate"
      self.CardSchemeService.postCardscheme(cardscheme)
      .then(
          res =>{
@@ -376,34 +377,84 @@ export default class CardSchemeController {
       self.showCardSchemeRemoveModal=true;
      };
 
+    activateSchema(cardscheme){
+        let self = this;
+        self.loaderStates.coverLoader=true
+        let status={"status" : "Approved"}
+        self.CardSchemeService.deleteCardScheme(cardscheme.cardschemeId,status)
+            .then(
+                res => {
+
+
+                    let deletedrow = _.findIndex(self.tableParams.settings().dataset, function (r) {
+                        return r === cardscheme;
+                    });
+                    cardscheme.active = 1;
+                    cardscheme.status = 'Activated'
+                    angular.extend(self.tableParams.settings().dataset[deletedrow], cardscheme);
+                    // _.remove(self.tableParams.settings().dataset, function (item) {
+                    //     return self.deleteCardScheme === item;
+                    // });
+                    // self.tableParams.reload().then(function (data) {
+                    //     if (data.length === 0 && self.tableParams.total() > 0) {
+                    //         self.tableParams.page(self.tableParams.page() - 1);
+                    //         self.tableParams.reload();
+                    //     }
+                    // });
+                    self.loaderStates.coverLoader=false
+                    let message = "Card scheme Activated successfully";
+                    self.Flash.create('success', message);
+                },
+                ()=>{
+                    let message = "Cannot delete card scheme,Please try again later";
+                    self.Flash.create('danger', message);
+                }
+            )
+
+
+
+    }
+
+
      deleteCardSchemeConfirm() {
        let self = this;
        self.loaderStates.deleteCardScheme = true;
-       self.CardSchemeService.deleteCardScheme(self.deleteCardScheme.cardschemeId)
+       self.loaderStates.coverLoader=true
+       let status={"status" : "Deactivated"}
+       self.CardSchemeService.deleteCardScheme(self.deleteCardScheme.cardschemeId,status)
        .then(
            res =>{
 
-               _.remove(self.tableParams.settings().dataset, function (item) {
-                   return self.deleteCardScheme === item;
+
+              let deletedrow= _.findIndex(self.tableParams.settings().dataset, function(r){
+                   return r === self.deleteCardScheme;
                });
-               self.tableParams.reload().then(function (data) {
-                   if (data.length === 0 && self.tableParams.total() > 0) {
-                       self.tableParams.page(self.tableParams.page() - 1);
-                       self.tableParams.reload();
-                   }
-               });
-               let message = "Card scheme deleted successfully";
+               self.deleteCardScheme.active=0;
+               self.deleteCardScheme.status='deactivated'
+               angular.extend(self.tableParams.settings().dataset[deletedrow], self.deleteCardScheme);
+               // _.remove(self.tableParams.settings().dataset, function (item) {
+               //     return self.deleteCardScheme === item;
+               // });
+               // self.tableParams.reload().then(function (data) {
+               //     if (data.length === 0 && self.tableParams.total() > 0) {
+               //         self.tableParams.page(self.tableParams.page() - 1);
+               //         self.tableParams.reload();
+               //     }
+               // });
+               let message = "Card scheme Deactivated successfully";
                self.Flash.create('success', message);
+               self.loaderStates.deleteCardScheme = false;
+               self.loaderStates.coverLoader=false
+               self.showCardSchemeRemoveModal=false;
+           },
+           ()=>{
+               let message = "Cannot delete card scheme,Please try again later";
+               self.Flash.create('danger', message);
                self.loaderStates.deleteCardScheme = false;
                self.showCardSchemeRemoveModal=false;
            }
-       ),
-        ()=>{
-           let message = "Cannot delete card scheme,Please try again later";
-           self.Flash.create('danger', message);
-           self.loaderStates.deleteCardScheme = false;
-           self.showCardSchemeRemoveModal=false;
-       }
+       )
+
 
 
    }
@@ -413,14 +464,14 @@ export default class CardSchemeController {
         let self = this;
           //let dfd = self.$q.defer();
           self.loaderStates.cardSchemeList = true;
+          self.loaderStates
           self.jsonData;
           //self.ParamsMap.params(params.url())
           self.CardSchemeService.getCardSchemesList()
               .then(
                   res => {
 
-                      self.loaderStates.cardSchemeList = false;
-                      self.loaderStates.coverLoader = false;
+
                       self.$scope.cardSchemes = res;
                       this.cardSchemes=res;
                       // params.total(res.total);self.config.perPage
@@ -435,6 +486,8 @@ export default class CardSchemeController {
                           }, {
                           dataset:result
                       });
+                      self.loaderStates.cardSchemeList = false;
+                      self.loaderStates.coverLoader = false;
 
                   },
                   () => {

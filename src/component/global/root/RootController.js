@@ -1,5 +1,5 @@
 export default class RootController {
-    constructor($rootScope, AuthService, $state, $timeout, $translate, $sce, $stateParams, $interval) {
+    constructor($rootScope,DataService,Flash, AuthService, $state, $timeout, $translate, $sce, $stateParams, $interval) {
         let self = this;
         this.$state = $state;
         this.$stateParams = $stateParams;
@@ -7,7 +7,7 @@ export default class RootController {
         this.$timeout = $timeout;
         this.$interval = $interval;
         this.AuthService = AuthService;
-
+        DataService.logeduser=this.AuthService.getStoredUserId();
         this.translate = $translate;
         this.initialRequests = true;
         this.loadingParts = {
@@ -72,6 +72,18 @@ export default class RootController {
                 'customer.panel.registration_from_invitation',
                 'customer.panel.registration_success'
             ];
+            // if(self.$state.includes('seller') && (DataService.sellerDetails == undefined)){
+            //     DataService.getSellerDetails().then(
+            //         res=>{
+            //             DataService.sellerDetails=res
+            //
+            //         },
+            //         err=>{
+            //             let message = "Something went wrong Please try again later";
+            //             self.Flassh.create('danger', message);
+            //         }
+            //     )
+            // }
 
             if (self.$state.includes('admin') || self.$state.includes('customer') || self.$state.includes('seller')) {
                 if (!_.includes(excludedStates, self.$state.current.name)) {
@@ -79,6 +91,8 @@ export default class RootController {
                     self.AuthService.setLogoutFromParams(self.$stateParams);
                 }
             }
+
+
         });
 
         this.$rootScope.$on('$stateChangeError', () => {
@@ -248,4 +262,4 @@ export default class RootController {
     }
 }
 
-RootController.$inject = ['$rootScope', 'AuthService', '$state', '$timeout', '$translate', '$sce', '$stateParams', '$interval'];
+RootController.$inject = ['$rootScope','Flash','DataService', 'AuthService', '$state', '$timeout', '$translate', '$sce', '$stateParams', '$interval'];

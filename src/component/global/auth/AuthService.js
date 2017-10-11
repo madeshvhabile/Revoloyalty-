@@ -10,6 +10,11 @@ export default class AuthService {
             customer_: localStorage.getItem('customer_id_token') || null,
             seller_: localStorage.getItem('seller_id_token') || null,
         };
+        this.userId={
+            admin_: localStorage.getItem('admin_user_id') || null,
+            customer_: localStorage.getItem('customer_user_id') || null,
+            seller_: localStorage.getItem('seller_user_id') || null,
+        };
         this.refreshToken = {
             admin_: localStorage.getItem('admin_refresh_token') || null,
             customer_: localStorage.getItem('customer_refresh_token') || null,
@@ -95,6 +100,26 @@ export default class AuthService {
 
         localStorage.setItem(prefix + 'id_token', idToken);
         self.idToken[prefix] = idToken;
+    }
+
+    getStoredUserId() {
+        let self = this;
+
+        switch (self.selectPrefix()) {
+            case 'customer_':
+                return self.userId['customer_'];
+            case 'seller_':
+                return self.userId['seller_'];
+            default:
+                return self.userId['admin_'];
+        }
+    }
+
+    setUserId(id){
+        let self = this;
+        let prefix = self.selectPrefix();
+        localStorage.setItem(prefix + 'user_id', id);
+        self.userId[prefix] = id;
     }
 
     getLogoutFromParams() {

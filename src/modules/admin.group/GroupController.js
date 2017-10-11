@@ -152,6 +152,7 @@ export default class GroupController {
 
             }
 
+
             addGroup(newGroup){
                 let self=this
                 let idx;

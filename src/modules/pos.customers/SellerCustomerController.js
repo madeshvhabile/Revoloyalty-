@@ -1,5 +1,5 @@
 export default class SellerCustomerController {
-    constructor($scope, $state, $stateParams, SellerCustomerService, Flash, $filter, DataService, Validation, EditableMap, $q, ParamsMap, NgTableParams) {
+    constructor($scope, $state, $stateParams,AuthService, SellerCustomerService, Flash, $filter, DataService, Validation, EditableMap, $q, ParamsMap, NgTableParams) {
         this.$scope = $scope;
         this.$scope.newCustomer = {};
         this.$scope.editableFields = {};
@@ -11,6 +11,8 @@ export default class SellerCustomerController {
         this.Flash = Flash;
         this.$filter = $filter;
         this.country = DataService.getCountries();
+        this.DataService=DataService;
+        this.AuthService=AuthService;
         this.EditableMap = EditableMap;
         this.Validation = Validation;
         this.$scope.addressValidation = {
@@ -51,6 +53,14 @@ export default class SellerCustomerController {
             labelField: 'name',
             create: false,
             sortField: 'name',
+            maxItems: 1,
+        };
+        this.storesConfig = {
+            valueField: 'storeId',
+            labelField: 'name',
+            create: false,
+            sortField: 'name',
+            searchField:'name',
             maxItems: 1,
         };
         this.$scope.search = {};
@@ -125,6 +135,7 @@ export default class SellerCustomerController {
         let frontValidation = self.Validation.frontValidation(newCustomer, validateFields);
 
         if (_.isEmpty(frontValidation)) {
+            newCustomer.merchantid=self.AuthService.getLoggedUserId()
             self.SellerCustomerService.postCustomer(newCustomer)
                 .then(
                     res => {
@@ -346,6 +357,22 @@ export default class SellerCustomerController {
             )
     }
 
+    getAvailableStore() {
+        let self = this;
+        console.log("self.DataService",self.DataService)
+        let merchantId=self.AuthService.getStoredUserId();
+        self.SellerCustomerService.getStoreList(merchantId)
+            .then(
+                res => {
+                    self.$scope.availableStore = res.store;
+                    self.storeListList = res.store;
+                },
+                () => {
+                    let message = "Can't get storeList" ;
+                    self.Flash.create('danger', message);
+                }
+            )
+    }
     getAvailablePos() {
         let self = this;
 
@@ -475,4 +502,4 @@ export default class SellerCustomerController {
     }
 }
 
-SellerCustomerController.$inject = ['$scope', '$state', '$stateParams', 'SellerCustomerService', 'Flash', '$filter', 'DataService', 'Validation', 'EditableMap', '$q', 'ParamsMap', 'NgTableParams'];
+SellerCustomerController.$inject = ['$scope', '$state', '$stateParams', 'AuthService','SellerCustomerService', 'Flash', '$filter', 'DataService', 'Validation', 'EditableMap', '$q', 'ParamsMap', 'NgTableParams'];

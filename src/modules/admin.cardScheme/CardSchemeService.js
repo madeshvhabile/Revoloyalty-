@@ -19,8 +19,8 @@ export default class CardSchemeService {
          return this.Restangular.one('cardscheme', cardschmeId).get();
      }
 
-    deleteCardScheme(cardschmeId){
-         return this.Restangular.one('cardscheme',cardschmeId).customDELETE();
+    deleteCardScheme(cardschmeId,status){
+         return this.Restangular.one('cardscheme',cardschmeId).customPUT({data:status});
      }
 
     // getOrder(Order) {

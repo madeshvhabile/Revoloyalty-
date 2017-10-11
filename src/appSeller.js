@@ -130,6 +130,9 @@ angular.module('OpenLoyalty', [
             .state('seller', {
                 url: "/seller",
                 resolve: {
+                    // user:['DataService',function (DataService) {
+                    //     return DataService.getsellerloginDetails()
+                    // }],
                     DataServiceResolver: ['DataService', function (DataService) {
                         return DataService.getAvailableData()
                     }]
@@ -173,7 +176,6 @@ angular.module('OpenLoyalty', [
         });
         Restangular.addRequestInterceptor(req => {
             $rootScope.pendingRequests += 1;
-
             return req;
         });
         $templateCache.put('ng-table/filters/text.html', '<input type="text" name="{{name}}" ng-disabled="$filterRow.disabled" ng-model="params.filter()[name]" class="input-filter form-control" placeholder="{{getFilterPlaceholderValue(filter, name)}}" ng-model-options="{debounce: 1500}" /> ');

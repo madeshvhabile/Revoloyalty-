@@ -1,5 +1,5 @@
 export default class CustomerController {
-    constructor($scope, $state, $stateParams, AuthService, CustomerService, Flash, EditableMap, NgTableParams, ParamsMap, $q, LevelService, Validation, $filter, DataService, PosService, TransferService) {
+    constructor($scope, $state, $stateParams, AuthService, CustomerService, Flash, EditableMap, NgTableParams, ParamsMap, $q, LevelService, Validation, $filter, DataService, PosService, TransferService, MerchantService) {
         if (!AuthService.isGranted('ROLE_ADMIN')) {
             $state.go('admin-login')
         }
@@ -7,6 +7,7 @@ export default class CustomerController {
         this.TransferService = TransferService;
         this.$scope.dateNow = new Date();
         this.$scope.newCustomer = {};
+        this.$scope.customarray = {};
         this.$scope.newLevel = {};
         this.$scope.newPos = {};
         this.$scope.showCompany = false;
@@ -26,8 +27,13 @@ export default class CustomerController {
             firstName: '@assert:not_blank',
             lastName: '@assert:not_blank',
             agreement1: '@assert:not_blank',
-            email: '@assert:not_blank'
+            email: '@assert:not_blank',
+            merchantid: '@assert:not_blank'
         };
+        this.$scope.excelarryvalidate = {
+            merchantid: '@assert:not_blank',
+            couponsCsv: '@assert:not_blank'
+        }
         this.levels = null;
         this.posList = null;
         this.$state = $state;
@@ -43,6 +49,7 @@ export default class CustomerController {
         this.Validation = Validation;
         this.$filter = $filter;
         this.PosService = PosService;
+        this.MerchantService = MerchantService;
         this.country = DataService.getCountries();
         this.config = DataService.getConfig();
         this.countryConfig = {
@@ -59,6 +66,14 @@ export default class CustomerController {
             sortField: 'name',
             maxItems: 1,
         };
+        this.storesConfig = {
+            valueField: 'storeId',
+            labelField: 'name',
+            create: false,
+            sortField: 'name',
+            searchField: 'name',
+            maxItems: 1,
+        };
         this.posConfig = {
             valueField: 'posId',
             labelField: 'name',
@@ -66,6 +81,15 @@ export default class CustomerController {
             sortField: 'name',
             maxItems: 1,
         };
+        this.merchantConfig = {
+            valueField: 'merchantId',
+            labelField: 'name',
+            create: false,
+            sortField: 'name',
+            searchField: 'name',
+            maxItems: 1
+        };
+        this.$scope.excelfile = 'text.xlx';
         if (this.customerId && this.$state.current.name === 'admin.single-customer') {
             let self = this;
 
@@ -130,6 +154,7 @@ export default class CustomerController {
             maxItems: 1,
             allowEmptyOption: true
         };
+        this.reserr=false
     }
 
     getData() {
@@ -165,6 +190,200 @@ export default class CustomerController {
                 return dfd.promise;
             }
         });
+    }
+
+    readExcel(fileselect) {
+        let self = this;
+        let excelarrayvalidate = angular.copy(self.$scope.excelarryvalidate);
+        let frontValidation = self.Validation.frontValidation(fileselect, excelarrayvalidate);
+        if (_.isEmpty(frontValidation)) {
+            self.$scope.excelvalidate={};
+            let temobj = angular.copy(fileselect.couponsCsv)
+            self.checkedjson = []
+            self.$scope.ExcelError = false
+            self.$scope.exceluploadbtn = false;
+            for (var i = 0; i < temobj.length; i++) {
+                self.checkMandatory(temobj[i])
+            }
+            self.excelTableParams = new self.NgTableParams({
+                count: self.config.perPage,
+                sorting: {
+                    createdAt: 'desc'
+                }
+            }, {
+                dataset: self.checkedjson
+            });
+            if(self.checkedjson.length){
+                self.excelTableParams.reload().then(function (data) {
+                    if (data.length === 0 && self.tableParams.total() > 0) {
+                        self.excelTableParams.page(self.excelTableParams.page() - 1);
+                        self.excelTableParams.reload();
+                    }
+                });
+            }
+
+            if (!self.$scope.ExcelError) {
+                self.$scope.exceluploadbtn = true
+            }
+
+        } else {
+            let message = self.$filter('translate')('xhr.post_customer.error');
+            self.Flash.create('danger', message);
+            self.$scope.excelvalidate = frontValidation;
+        }
+
+
+    }
+
+    checkMandatory(customer) {
+        let self = this;
+        self.reserr=false;
+        let error = [];
+        if (!customer.hasOwnProperty('customeraddress')) {
+            customer.customeraddress = false
+        }
+        if (!customer.hasOwnProperty('customercompany')) {
+            customer.customercompany = false
+        }
+        if (customer.hasOwnProperty('firstName')) {
+
+        } else {
+            error.push('FirstName should not be empty')
+        }
+        if (customer.hasOwnProperty('lastName')) {
+
+        } else {
+            error.push('FirstName should not be empty')
+        }
+        if (customer.hasOwnProperty('email')) {
+
+        } else {
+            error.push('email should not be empty')
+        }
+        if (customer.hasOwnProperty('phone')) {
+
+        } else {
+            error.push('Phonenumber  should not be empty')
+        }
+        if (customer.customeraddress == 'true') {
+            customer.address = {}
+            if (customer.hasOwnProperty('street')) {
+                customer.address['street'] = customer.street;
+                delete customer.street
+            } else {
+                error.push('streetname  should not be empty')
+            }
+            if (customer.hasOwnProperty('address1')) {
+                customer.address['address1'] = customer.address1;
+                delete customer.address1
+            } else {
+                error.push('Address1 should not be empty')
+            }
+            if (customer.hasOwnProperty('postal')) {
+                customer.address['postal'] = customer.postal;
+                delete customer.postal
+            } else {
+                error.push('Postalcode should not be empty ')
+            }
+            // if (customer.hasOwnProperty('province')) {
+            //     customer.address['province'] = customer.province;
+            //     delete customer.province
+            // } else {
+            //     error.push('Postalcode should not be empty ')
+            // }
+            if (customer.hasOwnProperty('city')) {
+                customer.address['city'] = customer.city;
+                delete customer.city
+            } else {
+                error.push('city should not be empty')
+            }
+            if (customer.hasOwnProperty('country')) {
+                customer.address['country'] = customer.country;
+                delete customer.country
+            } else {
+                error.push('country should not be empty')
+            }
+            delete customer.customeraddress
+        }else{
+            delete customer.customeraddress;
+            delete customer.street;
+            delete customer.province;
+            delete customer.address1;
+            delete customer.address2;
+            delete customer.city;
+            delete customer.country;
+            delete customer.postal;
+        }
+
+        if (customer.customercompany == 'true') {
+            customer.company = {}
+            if (customer.hasOwnProperty('companyname')) {
+                customer.company['name'] = customer.companyname;
+                delete customer.companyname
+            } else {
+                error.push('company name should not be empty')
+            }
+            if (customer.hasOwnProperty('companynip')) {
+                customer.company['nip'] = customer.companynip;
+                delete customer.companynip
+            } else {
+                error.push('company Nip number should not be empty')
+            }
+            delete customer.customercompany
+        }else{
+            delete customer.customercompany;
+            delete customer.companyname;
+            delete customer.companynip
+        }
+
+        if (error.length && !self.$scope.ExcelError) {
+            self.$scope.ExcelError = true
+        }
+        customer.merchantid = self.$scope.customarray.merchantid;
+        customer.storeid = self.$scope.customarray.storeid;
+        customer.agreement1=true;
+        if (error.length) {
+            customer.errorsInForm = error;
+        }
+        self.checkedjson.push(customer)
+    }
+
+    uploadexcelData(){
+        let self=this;
+        self.CustomerService.postCustomers(self.checkedjson)
+        .then(
+            res=>{
+                let message = 'Customer List add Successfully'
+                self.Flash.create('success', message);
+            },
+            error=>{
+                if(error.status == 400){
+                    self.reserr=true;
+                    let errorData=error.data;
+                    self.excelTableParams = new self.NgTableParams({
+                        count: self.config.perPage,
+                        sorting: {
+                            createdAt: 'desc'
+                        }
+                    }, {
+                        dataset: errorData
+                    });
+                    if(errorData.length){
+                        self.excelTableParams.reload().then(function (data) {
+                            if (data.length === 0 && self.tableParams.total() > 0) {
+                                self.excelTableParams.page(self.excelTableParams.page() - 1);
+                                self.excelTableParams.reload();
+                            }
+                        });
+                    }
+
+
+                }
+                let message = self.$filter('translate')('xhr.get_referred_customers.error');
+                self.Flash.create('danger', message);
+            }
+        )
+
     }
 
     getReferredData() {
@@ -549,17 +768,51 @@ export default class CustomerController {
                 }
             )
     }
+    checkMerchantSelect(param) {
+        let self = this;
+        if (param) {
+            self.getStore(param);
+            //   self.getCardSchemesByMerchant(param);
+        }
+    }
 
-    getAvailablePos() {
+    getStore(param) {
+        let self = this;
+
+        //let dfd = self.$q.defer();
+        //self.ParamsMap.params(params.url())
+        self.loaderStates.store = true;
+        // $( ".store" ).attr("disabled","true");
+        self.MerchantService.getStore(param)
+            .then(
+                res => {
+                    console.log("res", res)
+                    self.loaderStates.coverLoader = false;
+                    var tempStores = [];
+                    var length = res.total;
+                    this.stores = res.store;
+                    self.loaderStates.store = false;
+                    // $( ".store" ).attr("disabled","false");
+                },
+                () => {
+                    let message = "Cannot fetch stores.Please try again larer";
+                    self.Flash.create('danger', message);
+                    self.loaderStates.store = false;
+                    // dfd.reject();
+                }
+            );
+    }
+
+    getAvailableMerchant() {
         let self = this;
 
         self.loaderStates.customerPOS = true;
 
-        self.PosService.getPosList()
+        self.MerchantService.getMerchants()
             .then(
                 res => {
-                    self.$scope.availablePos = res;
-                    self.posList = res;
+                    self.$scope.availableMerchants = res;
+                    self.merchantList = res;
                     self.loaderStates.customerPOS = false;
                 },
                 () => {
@@ -683,4 +936,4 @@ export default class CustomerController {
     }
 
 }
-CustomerController.$inject = ['$scope', '$state', '$stateParams', 'AuthService', 'CustomerService', 'Flash', 'EditableMap', 'NgTableParams', 'ParamsMap', '$q', 'LevelService', 'Validation', '$filter', 'DataService', 'PosService', 'TransferService'];
+CustomerController.$inject = ['$scope', '$state', '$stateParams', 'AuthService', 'CustomerService', 'Flash', 'EditableMap', 'NgTableParams', 'ParamsMap', '$q', 'LevelService', 'Validation', '$filter', 'DataService', 'PosService', 'TransferService', 'MerchantService'];

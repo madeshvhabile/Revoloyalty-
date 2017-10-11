@@ -1,5 +1,5 @@
 export default class DataService {
-    constructor(Restangular, $q, $filter) {
+    constructor(Restangular, $q, $filter,AuthService) {
         this.Restangular = Restangular;
         this.$q = $q;
         this.$filter = $filter;
@@ -9,6 +9,7 @@ export default class DataService {
         this.availablePromotedEvents = null;
         this._availableReferralEvents = null;
         this._availableReferralTypes = null;
+        this.AuthService=AuthService
         this.availableFrontendTranslations = null;
         this._availableEarningRuleLimitPeriods = null;
         this.availableCurrencies = [
@@ -48,9 +49,26 @@ export default class DataService {
         return this.config;
     }
 
+    getSellerDetails(){
+        return this.Restangular.one('seller').one('data').one('{{seller}}').get()
+    }
+
+
+    getsellerloginDetails(){
+        let self=this;
+        self.getSellerDetails().then(
+            res=>{
+                this.sellerDetails=res
+                return res
+            },
+            err=>{
+                return false
+            }
+        )
+    }
+
     getAvailableData() {
         let self = this;
-
         let languages = self.Restangular.one('settings').one('choices').one('language').get();
         let availableFrontendTranslations = self.Restangular.one('settings').one('choices').one('availableFrontendTranslations').get();
         let availableEarningRuleLimitPeriods = self.Restangular.one('settings').one('choices').one('earningRuleLimitPeriod').get();
@@ -59,7 +77,6 @@ export default class DataService {
         let events = self.Restangular.one('settings').one('choices').one('promotedEvents').get();
         let referralEvents = self.Restangular.one('settings').one('choices').one('referralEvents').get();
         let referralTypes = self.Restangular.one('settings').one('choices').one('referralTypes').get();
-
         let dfd = self.$q.defer();
 
         self.$q.all([languages, timezones, countries, events, availableFrontendTranslations, availableEarningRuleLimitPeriods, referralEvents, referralTypes])
@@ -282,4 +299,4 @@ export default class DataService {
     }
 }
 
-DataService.$inject = ['Restangular', '$q', '$filter'];
+DataService.$inject = ['Restangular', '$q', '$filter','AuthService'];

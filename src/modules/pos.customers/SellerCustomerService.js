@@ -31,6 +31,9 @@ export default class SellerCustomerService {
     getPosList(params) {
         return this.Restangular.one('seller').all('pos').getList(params);
     }
+    getStoreList(merchantId) {
+        return this.Restangular.one('store', merchantId).get();
+    }
 
     getCustomer(customerId) {
         return this.Restangular.one('customer', customerId).get();

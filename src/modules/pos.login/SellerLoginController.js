@@ -1,5 +1,5 @@
 export default class SellerLoginController {
-    constructor($scope, $state, AuthService) {
+    constructor($scope, $state, AuthService,DataService) {
         if (AuthService.getStoredRefreshToken()) {
             AuthService.getRefreshToken()
                 .then(
@@ -7,7 +7,16 @@ export default class SellerLoginController {
                         AuthService.setStoredRefreshToken(res.refresh_token);
                         AuthService.setStoredToken(res.token);
                         if (AuthService.isGranted('ROLE_SELLER')) {
-                            $state.go('seller.panel.dashboard')
+                            DataService.getSellerDetails().then(
+                                res =>{
+                                    DataService.sellerDetails=res
+                                    $state.go('seller.panel.dashboard')
+                                },
+                                err =>{
+                                    $state.go('seller-login')
+                                }
+                            )
+
                         } else {
                             $state.go('seller-login')
                         }
@@ -20,6 +29,12 @@ export default class SellerLoginController {
         this.$scope = $scope;
         this.$state = $state;
         this.AuthService = AuthService;
+        this.DataService=DataService
+    }
+
+    getMe(){
+        let self = this;
+
     }
 
     submit() {
@@ -39,9 +54,28 @@ export default class SellerLoginController {
                     }
 
                     if (redirectTo) {
-                        self.$state.go(redirectTo);
+
+                        self.DataService.getSellerDetails().then(
+                            res =>{
+                                self.AuthService.setUserId(res.id)
+                                self.$state.go(redirectTo);
+                            },
+                            err =>{
+                                $state.go('seller-login')
+                            }
+                        )
+
+
                     } else {
-                        self.$state.go('seller.panel.dashboard');
+                        self.DataService.getSellerDetails().then(
+                            res =>{
+                                self.DataService.sellerDetails=res
+                                $state.go('seller.panel.dashboard')
+                            },
+                            err =>{
+                                $state.go('seller-login')
+                            }
+                        )
                     }
                 },
                 res => { //error
@@ -52,4 +86,4 @@ export default class SellerLoginController {
     }
 }
 
-SellerLoginController.$inject = ['$scope', '$state', 'AuthService'];
+SellerLoginController.$inject = ['$scope', '$state', 'AuthService','DataService'];

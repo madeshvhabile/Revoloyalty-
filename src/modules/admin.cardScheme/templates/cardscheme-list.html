@@ -3,7 +3,7 @@
 <div class="heading" ng-init="CardSchemeCtrl.getCardSchemesListData()">
 
 </div>
-<div style="clear:both;"></div>
+<div ng-if="!CardSchemeCtrl.loaderStates.coverLoader" style="clear:both;"></div>
 <!-- <div class="client-list box"> -->
     <!-- <div class="box-title">
         <h1 class="text-left"><i class="fa fa-info" aria-hidden="true"></i> Info
@@ -79,8 +79,11 @@
                   <span ng-if="!(row.isloyaltycardapplicable==true||row.iseloyaltycardapplicable==true)">No</span>
                 </td>
                 <td data-title="'seller.actions'|translate">
-                    <button class="button button-septenary-colorized tiny" title="Delete Card Scheme" ng-click="CardSchemeCtrl.showDeleteCardSchemeModel(row)">
-                        <i class="fa fa-times"></i>
+                    <button ng-if="row.active == 1" class="button button-septenary-colorized tiny" title="Deactivate Card Scheme" ng-click="CardSchemeCtrl.showDeleteCardSchemeModel(row)">
+                        Inactive
+                    </button>
+                    <button ng-if="row.active == 0" class="button button-septenary-colorized tiny" title="Activate Card Scheme" ng-click="CardSchemeCtrl.activateSchema(row)">
+                        Active
                     </button>
                     <button class="button button-septenary-colorized tiny" title="View Card Scheme"
                             ui-sref="admin.view-cardscheme({cardschemeId: row.cardschemeId})">
@@ -91,9 +94,9 @@
         </table>
     </div>
 </div>
-<modal size="'tiny'" show="CardSchemeCtrl.showCardSchemeRemoveModal" modal-title="'Do you want to remove this Card Scheme? '">
+<modal size="'tiny'" show="CardSchemeCtrl.showCardSchemeRemoveModal" modal-title="'Do you want to deactivate this Card Scheme? '">
         <div class="text-center">
-            <p class="color-dark">{{"seller.delete_confirmation_description"|translate}}</p>
+            <p class="color-dark">You can activate this Card Scheme later</p>
             <div class="btns">
                 <button type="button" ng-click="CardSchemeCtrl.deleteCardSchemeConfirm()" class="button small button-septenary-colorized m-t-10 m-b-0"
                     ng-disabled="CardSchemeCtrl.loaderStates.deleteCardScheme">{{"global.confirm"|translate}}

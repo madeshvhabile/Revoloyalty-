@@ -19,6 +19,11 @@ export default class CustomerService {
         return this.Restangular.all('invitations').getList(params);
     }
 
+    postCustomers(customers){
+        return this.Restangular.one('customer').one('bulkregister').customPOST({customer:customers})
+    }
+
+
     postCustomer(newCustomer) {
         return this.Restangular.one('customer').one('register').customPOST({customer:newCustomer})
     }

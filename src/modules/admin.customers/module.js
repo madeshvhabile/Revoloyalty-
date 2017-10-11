@@ -66,6 +66,26 @@ angular.module(MODULE_NAME, [])
                     }
                 }
             })
+            .state('admin.upload-customer', {
+                url: "/upload-customer",
+                views: {
+                    'extendTop@': {
+                        templateUrl: './templates/add-customer-extend-top.html',
+                        controller: 'CustomerController',
+                        controllerAs: 'CustomerCtrl'
+                    },
+                    'main@': {
+                        templateUrl: './templates/bulkupload.html',
+                        controller: 'CustomerController',
+                        controllerAs: 'CustomerCtrl'
+                    },
+                    'extendBottom@': {
+                        templateUrl: './templates/add-customer-extend-bottom.html',
+                        controller: 'CustomerController',
+                        controllerAs: 'CustomerCtrl'
+                    }
+                }
+            })
             .state('admin.edit-customer', {
                 url: "/edit-customer/:customerId",
                 views: {
@@ -223,6 +243,14 @@ angular.module(MODULE_NAME, [])
             .then(
                 response => {
                     $templateCache.put('./templates/add-customer.html', response.data);
+                }
+            )
+            .catch(catchErrorTemplate);
+
+            $http.get(`./build/${MODULE_NAME}/templates/bulkupload.html`)
+            .then(
+                response => {
+                    $templateCache.put('./templates/bulkupload.html', response.data);
                 }
             )
             .catch(catchErrorTemplate);

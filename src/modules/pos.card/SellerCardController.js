@@ -11,8 +11,10 @@ export default class SellerCustomerController {
         this.Flash = Flash;
         this.$filter = $filter;
         this.country = DataService.getCountries();
+        this.DataService=DataService;
         this.EditableMap = EditableMap;
         this.Validation = Validation;
+        // this.DataService.getsellerloginDetails()
         // this.$scope.addressValidation = {
         //     street: '@assert:not_blank',
         //     address1: '@assert:not_blank',
@@ -101,6 +103,7 @@ export default class SellerCustomerController {
         let self = this;
         self.loaderStates.CardListloader= true;
          self.sellerId='f2c75459-ab41-4d53-abf9-40baede053fc';
+         console.log("details",self.DataService)
         if (self.sellerId) {
             self.$q.all([
                 // self.SellerCardService.getOrderData(self.sellerId)
@@ -148,7 +151,9 @@ export default class SellerCustomerController {
     }
 
     getCardDetailData(response){
+
         let self =this;
+
         self.$scope.totalCardobj=[];
         if(response.total !=0){
             self.CardData =true;
@@ -238,7 +243,7 @@ export default class SellerCustomerController {
     // deactivateCustomer(customerId) {
     //     let self = this;
     //
-    //     self.SellerCardService.deactivateCustomer(customerId)
+    //     self.SellerCardServicgetStoreListe.deactivateCustomer(customerId)
     //         .then(
     //             res => {
     //                 let message = self.$filter('translate')('xhr.post_deactivate_customer.success');
